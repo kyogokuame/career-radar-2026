@@ -25,6 +25,22 @@ const roles: Role[] = [
   {id:"stryker",company:"Stryker",title:"Senior Manager, Commercial Solutions",source:"Apex · Anthea Ong",date:"7/29",work:"设计销售策略和区域规划，建设 Salesforce，并用 Power BI/SQL 监测销售队伍表现。",salary:"未公开",onsite:"灵活办公；天数未公开",commute:"办公地点未确认",distance:"待确认",management:"管理职责明确",reports:"4 人",fit:"中",reason:"商业策略、销售绩效和带人机会有吸引力；需确认 Salesforce/BI/SQL 深度。",status:"待确认",tags:["带人","商业卓越","Salesforce"]},
 ];
 
+type CompanyProfile = { hq: string; listing: string; size: string; sourceHref: string; sourceLabel: string };
+const companyProfiles: Record<string, CompanyProfile> = {
+  flatiron: {hq:"美国纽约",listing:"非上市 · Roche 旗下独立运营",size:"约 2,500+ 人（全球）",sourceHref:"https://www.roche.com/innovation/structure/flatiron",sourceLabel:"Roche · Flatiron 公司资料"},
+  jmdc: {hq:"日本东京 · 港区芝大门",listing:"东证 Prime · 4483",size:"499 人（单体，2026/3）",sourceHref:"https://www.jmdc.co.jp/en/profile/",sourceLabel:"JMDC 官方公司资料"},
+  syneos: {hq:"美国 Morrisville, North Carolina",listing:"非上市 · 2023 年被私有化",size:"约 29,000 人（全球）",sourceHref:"https://www.syneoshealth.com/clinical-corporate-careers",sourceLabel:"Syneos 官方招聘资料"},
+  hokuto: {hq:"日本东京 · 涩谷区涩谷",listing:"非上市 · 医疗科技创业公司",size:"85 人（含兼职，2026/5）",sourceHref:"https://corp.hokuto.app/about",sourceLabel:"HOKUTO 官方公司资料"},
+  prevent: {hq:"日本名古屋 · 东区葵",listing:"非上市 · 住友生命 100% 持有",size:"约 111 人（公开职场资料）",sourceHref:"https://prevent.co.jp/company/",sourceLabel:"PREVENT 官方公司资料"},
+  contrea: {hq:"日本东京 · 新宿区西新宿",listing:"非上市 · 医疗 SaaS 创业公司",size:"未公开（2023 年约 10 名正式员工）",sourceHref:"https://www.contrea.jp/",sourceLabel:"Contrea 官方公司资料"},
+  "bi-human": {hq:"德国 Ingelheim am Rhein",listing:"非上市 · 家族所有",size:"约 52,000+ 人（全球集团）",sourceHref:"https://animalhealth.boehringer-ingelheim.com/articles/nexgard-combo-feline-parasite-protection-fda-approval",sourceLabel:"Boehringer Ingelheim 官方资料"},
+  cooper: {hq:"美国 San Ramon, California",listing:"NASDAQ: COO（母公司 CooperCompanies）",size:"15,000+ 人（全球集团）",sourceHref:"https://www.coopercos.com/our-company/",sourceLabel:"CooperCompanies 官方公司资料"},
+  alcon: {hq:"瑞士日内瓦（运营总部）",listing:"SIX / NYSE: ALC",size:"25,942 FTE（2025 年末）",sourceHref:"https://www.sec.gov/Archives/edgar/data/1167379/000116737926000014/alc-20251231.htm",sourceLabel:"Alcon 2025 年报"},
+  "bi-animal": {hq:"德国 Ingelheim am Rhein（集团）",listing:"非上市 · 家族所有",size:"约 52,000+ 人（全球集团；日本动保约 130 人）",sourceHref:"https://animalhealth.boehringer-ingelheim.com/articles/nexgard-combo-feline-parasite-protection-fda-approval",sourceLabel:"Boehringer Ingelheim 官方资料"},
+  jnj: {hq:"美国 New Brunswick, New Jersey",listing:"NYSE: JNJ",size:"约 140,800 人（2025 年末）",sourceHref:"https://www.sec.gov/Archives/edgar/data/200406/000020040626000016/jnj-20251228.htm",sourceLabel:"Johnson & Johnson 2025 年报"},
+  stryker: {hq:"美国 Portage, Michigan",listing:"NYSE: SYK",size:"约 56,000 人（全球，2025 年末）",sourceHref:"https://www.stryker.com/ir/en/about.html",sourceLabel:"Stryker 官方公司资料"},
+};
+
 const options: Status[] = ["待确认","待研究","已联系","面谈待排期","已投递","暂停"];
 const classFor = (fit: Fit) => fit === "高" ? "high" : fit === "中" ? "mid" : "low";
 const commuteFor = (value: Role["distance"]) => ({近:"near",中:"medium",远:"far",远程:"remote",待确认:"unknown"})[value];
@@ -43,6 +59,7 @@ export default function Home() {
     return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || r.fit === fit) && (status === "全部" || (saved[r.id] ?? r.status) === status) && (!remoteOnly || r.distance === "远程");
   }), [query,fit,status,saved,remoteOnly]);
   const selected = roles.find((r) => r.id === selectedId) ?? roles[0];
+  const company = companyProfiles[selected.id];
   const high = roles.filter((r) => r.fit === "高").length;
 
   return <main>
@@ -60,7 +77,8 @@ export default function Home() {
     <section className="workspace">
       <div className="list"><div className="list-title"><span>职位池</span><b>{visible.length} / 12</b></div>{visible.map((r) => <article key={r.id} tabIndex={0} onClick={() => setSelectedId(r.id)} onKeyDown={(e) => e.key==="Enter" && setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(r.fit)}>{r.fit}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><i className="status">{saved[r.id] ?? r.status}</i></div></article>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
       <aside className="detail"><div className="eyebrow">职位详情</div><div className="detail-head"><div><small>{selected.company}</small><h2>{selected.title}</h2></div><i className={classFor(selected.fit)}>{selected.fit}适配</i></div><p className="summary">{selected.work}</p><div className="tags">{selected.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-        <div className="facts"><Fact label="来源" value={selected.source+" · "+selected.date}/><Fact label="想定年收入" value={selected.salary}/><Fact label="出社要求" value={selected.onsite}/><Fact label="新小岩通勤" value={selected.commute} cls={commuteFor(selected.distance)}/><Fact label="管理职能" value={selected.management}/><Fact label="直属部下" value={selected.reports}/></div>
+        <div className="facts"><Fact label="来源" value={selected.source+" · "+selected.date}/><Fact label="总部 HQ" value={company.hq}/><Fact label="上市状态" value={company.listing}/><Fact label="公司规模" value={company.size}/><Fact label="想定年收入" value={selected.salary}/><Fact label="出社要求" value={selected.onsite}/><Fact label="新小岩通勤" value={selected.commute} cls={commuteFor(selected.distance)}/><Fact label="管理职能" value={selected.management}/><Fact label="直属部下" value={selected.reports}/></div>
+        <a className="company-source" href={company.sourceHref} target="_blank" rel="noreferrer">↗ {company.sourceLabel}</a>
         <div className="fit-note"><b>适配判断</b><p>{selected.reason}</p></div><div className="editor"><div><b>目前投递情况</b><small>更新会保存在此浏览器</small></div><select value={saved[selected.id] ?? selected.status} onChange={(e) => setRoleStatus(selected.id,e.target.value as Status)}>{options.map((x) => <option key={x}>{x}</option>)}</select></div><div className="note">通勤为从 JR 新小岩站出发的单程估算；未计实时延误、步行及精确办公地址差异。</div>
       </aside>
     </section>
