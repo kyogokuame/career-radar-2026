@@ -33,14 +33,15 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [fit, setFit] = useState<Fit | "全部">("全部");
   const [status, setStatus] = useState<Status | "全部">("全部");
+  const [remoteOnly, setRemoteOnly] = useState(false);
   const [selectedId, setSelectedId] = useState("jmdc");
   const [saved, setSaved] = useState<Record<string, Status>>({});
   useEffect(() => { const raw = localStorage.getItem("career-radar-status"); if (raw) setSaved(JSON.parse(raw)); }, []);
   const setRoleStatus = (id: string, value: Status) => { const next = {...saved,[id]:value}; setSaved(next); localStorage.setItem("career-radar-status",JSON.stringify(next)); };
   const visible = useMemo(() => roles.filter((r) => {
     const text = [r.company,r.title,r.work,r.source,...r.tags].join(" ").toLowerCase();
-    return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || r.fit === fit) && (status === "全部" || (saved[r.id] ?? r.status) === status);
-  }), [query,fit,status,saved]);
+    return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || r.fit === fit) && (status === "全部" || (saved[r.id] ?? r.status) === status) && (!remoteOnly || r.distance === "远程");
+  }), [query,fit,status,saved,remoteOnly]);
   const selected = roles.find((r) => r.id === selectedId) ?? roles[0];
   const high = roles.filter((r) => r.fit === "高").length;
 
@@ -53,6 +54,7 @@ export default function Home() {
     <section className="controls">
       <label className="search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="搜索公司、职位、关键词"/></label>
       <div className="buttons">{(["全部","高","中","低"] as const).map((x) => <button className={fit===x?"active":""} onClick={() => setFit(x)} key={x}>{x==="全部"?"全部适配度":x+"适配"}</button>)}</div>
+      <button className={"remote-filter "+(remoteOnly ? "active" : "")} onClick={() => setRemoteOnly((value) => !value)} aria-pressed={remoteOnly}>⌂ 无需通勤</button>
       <select value={status} onChange={(e) => setStatus(e.target.value as Status | "全部")}><option>全部</option>{options.map((x) => <option key={x}>{x}</option>)}</select>
     </section>
     <section className="workspace">
