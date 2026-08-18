@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type Fit = "高" | "中" | "低";
 type Status = "待确认" | "待研究" | "已联系" | "面谈待排期" | "已投递" | "暂停";
+type Reaction = "赞" | "踩";
 type Role = {
   id: string; company: string; title: string; source: string; date: string; work: string;
   salary: string; onsite: string; commute: string; distance: "近" | "中" | "远" | "远程" | "待确认";
@@ -52,15 +53,32 @@ export default function Home() {
   const [remoteOnly, setRemoteOnly] = useState(false);
   const [selectedId, setSelectedId] = useState("jmdc");
   const [saved, setSaved] = useState<Record<string, Status>>({});
-  useEffect(() => { const raw = localStorage.getItem("career-radar-status"); if (raw) setSaved(JSON.parse(raw)); }, []);
+  const [reactions, setReactions] = useState<Record<string, Reaction>>({});
+  const [reactionFilter, setReactionFilter] = useState<"全部" | "已点赞" | "已点踩">("全部");
+  useEffect(() => {
+    const rawStatus = localStorage.getItem("career-radar-status");
+    const rawReactions = localStorage.getItem("career-radar-reactions");
+    if (rawStatus) setSaved(JSON.parse(rawStatus));
+    if (rawReactions) setReactions(JSON.parse(rawReactions));
+  }, []);
   const setRoleStatus = (id: string, value: Status) => { const next = {...saved,[id]:value}; setSaved(next); localStorage.setItem("career-radar-status",JSON.stringify(next)); };
+  const setReaction = (id: string, value: Reaction) => {
+    const next = {...reactions};
+    if (next[id] === value) delete next[id]; else next[id] = value;
+    setReactions(next); localStorage.setItem("career-radar-reactions",JSON.stringify(next));
+  };
+  const fitFor = (role: Role): Fit => reactions[role.id] === "赞" ? "高" : reactions[role.id] === "踩" ? "低" : role.fit;
   const visible = useMemo(() => roles.filter((r) => {
     const text = [r.company,r.title,r.work,r.source,...r.tags].join(" ").toLowerCase();
-    return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || r.fit === fit) && (status === "全部" || (saved[r.id] ?? r.status) === status) && (!remoteOnly || r.distance === "远程");
-  }), [query,fit,status,saved,remoteOnly]);
+    const reaction = reactions[r.id];
+    return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || fitFor(r) === fit) && (status === "全部" || (saved[r.id] ?? r.status) === status) && (!remoteOnly || r.distance === "远程") && (reactionFilter === "全部" || (reactionFilter === "已点赞" && reaction === "赞") || (reactionFilter === "已点踩" && reaction === "踩"));
+  }).sort((a,b) => {
+    const priority = (role: Role) => reactions[role.id] === "赞" ? 0 : reactions[role.id] === "踩" ? 2 : 1;
+    return priority(a) - priority(b);
+  }), [query,fit,status,saved,remoteOnly,reactions,reactionFilter]);
   const selected = roles.find((r) => r.id === selectedId) ?? roles[0];
   const company = companyProfiles[selected.id];
-  const high = roles.filter((r) => r.fit === "高").length;
+  const high = roles.filter((r) => fitFor(r) === "高").length;
 
   return <main>
     <section className="hero">
@@ -73,13 +91,14 @@ export default function Home() {
       <div className="buttons">{(["全部","高","中","低"] as const).map((x) => <button className={fit===x?"active":""} onClick={() => setFit(x)} key={x}>{x==="全部"?"全部适配度":x+"适配"}</button>)}</div>
       <button className={"remote-filter "+(remoteOnly ? "active" : "")} onClick={() => setRemoteOnly((value) => !value)} aria-pressed={remoteOnly}>⌂ 无需通勤</button>
       <select value={status} onChange={(e) => setStatus(e.target.value as Status | "全部")}><option>全部</option>{options.map((x) => <option key={x}>{x}</option>)}</select>
+      <select aria-label="按我的判断筛选" value={reactionFilter} onChange={(e) => setReactionFilter(e.target.value as "全部" | "已点赞" | "已点踩")}><option>我的判断：全部</option><option value="已点赞">已点赞</option><option value="已点踩">已点踩</option></select>
     </section>
     <section className="workspace">
-      <div className="list"><div className="list-title"><span>职位池</span><b>{visible.length} / 12</b></div>{visible.map((r) => <article key={r.id} tabIndex={0} onClick={() => setSelectedId(r.id)} onKeyDown={(e) => e.key==="Enter" && setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(r.fit)}>{r.fit}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><i className="status">{saved[r.id] ?? r.status}</i></div></article>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
-      <aside className="detail"><div className="eyebrow">职位详情</div><div className="detail-head"><div><small>{selected.company}</small><h2>{selected.title}</h2></div><i className={classFor(selected.fit)}>{selected.fit}适配</i></div><p className="summary">{selected.work}</p><div className="tags">{selected.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+      <div className="list"><div className="list-title"><span>职位池</span><b>{visible.length} / 12</b></div>{visible.map((r) => <article key={r.id} tabIndex={0} onClick={() => setSelectedId(r.id)} onKeyDown={(e) => e.key==="Enter" && setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(fitFor(r))}>{fitFor(r)}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><span className="card-state">{reactions[r.id] ? reactions[r.id] === "赞" ? "👍 已赞" : "👎 已踩" : <i className="status">{saved[r.id] ?? r.status}</i>}</span></div></article>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
+      <aside className="detail"><div className="eyebrow">职位详情</div><div className="detail-head"><div><small>{selected.company}</small><h2>{selected.title}</h2></div><i className={classFor(fitFor(selected))}>{fitFor(selected)}适配</i></div><p className="summary">{selected.work}</p><div className="tags">{selected.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         <div className="facts"><Fact label="来源" value={selected.source+" · "+selected.date}/><Fact label="总部 HQ" value={company.hq}/><Fact label="上市状态" value={company.listing}/><Fact label="公司规模" value={company.size}/><Fact label="想定年收入" value={selected.salary}/><Fact label="出社要求" value={selected.onsite}/><Fact label="新小岩通勤" value={selected.commute} cls={commuteFor(selected.distance)}/><Fact label="管理职能" value={selected.management}/><Fact label="直属部下" value={selected.reports}/></div>
         <a className="company-source" href={company.sourceHref} target="_blank" rel="noreferrer">↗ {company.sourceLabel}</a>
-        <div className="fit-note"><b>适配判断</b><p>{selected.reason}</p></div><div className="editor"><div><b>目前投递情况</b><small>更新会保存在此浏览器</small></div><select value={saved[selected.id] ?? selected.status} onChange={(e) => setRoleStatus(selected.id,e.target.value as Status)}>{options.map((x) => <option key={x}>{x}</option>)}</select></div><div className="note">通勤为从 JR 新小岩站出发的单程估算；未计实时延误、步行及精确办公地址差异。</div>
+        <div className="fit-note"><b>适配判断</b><p>{selected.reason}</p></div><div className="reaction-box"><div><b>我的判断</b><small>点赞置顶并归为高适配；点踩置底并归为低适配</small></div><div className="reaction-buttons"><button className={reactions[selected.id] === "赞" ? "chosen" : ""} onClick={() => setReaction(selected.id,"赞")} aria-pressed={reactions[selected.id] === "赞"}>👍 点赞</button><button className={reactions[selected.id] === "踩" ? "chosen" : ""} onClick={() => setReaction(selected.id,"踩")} aria-pressed={reactions[selected.id] === "踩"}>👎 点踩</button></div></div><div className="editor"><div><b>目前投递情况</b><small>更新会保存在此浏览器</small></div><select value={saved[selected.id] ?? selected.status} onChange={(e) => setRoleStatus(selected.id,e.target.value as Status)}>{options.map((x) => <option key={x}>{x}</option>)}</select></div><div className="note">通勤为从 JR 新小岩站出发的单程估算；未计实时延误、步行及精确办公地址差异。</div>
       </aside>
     </section>
   </main>;
