@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Fit = "高" | "中" | "低";
-type Status = "待确认" | "待研究" | "已联系" | "面谈待排期" | "已投递" | "暂停";
+type Status = "待确认" | "待研究" | "已联系" | "面谈待排期" | "面谈已确定" | "已投递" | "暂停";
 type Reaction = "赞" | "踩";
 type Role = {
   id: string; company: string; title: string; source: string; date: string; work: string;
@@ -13,7 +13,7 @@ type Role = {
 
 const roles: Role[] = [
   {id:"flatiron",company:"Flatiron Health",title:"Strategic Partnerships Senior Manager",source:"Apex · 岡本由依",date:"8/18",work:"连接癌症医院、政府和医疗机构，拓展肿瘤 RWD 数据合作；推进伦理、合同、市场洞察和项目落地。",salary:"未公开",onsite:"每周 2 天出社",commute:"品川约 35–40 分钟",distance:"中",management:"高级个人贡献者；跨团队协作",reports:"未公开",fit:"高",reason:"战略项目、跨国协作与医疗数据合作高度相关；需补足医院/肿瘤生态知识。",status:"待研究",tags:["RWD","合作战略","全球"]},
-  {id:"jmdc",company:"JMDC",title:"制药业务战略・解决方案 Business Produce",source:"Apex · 工藤悟",date:"7/31",work:"用医疗大数据为药企做战略与解决方案，负责客户开拓、提案、交付和新业务化；目标承担约 1 亿日元级业务。",salary:"1,000–2,000 万日元（邮件沟通）",onsite:"弹性制；天数未公开",commute:"芝大门约 35–40 分钟",distance:"中",management:"业务经营与团队建设职责",reports:"未公开",fit:"高",reason:"McKinsey 战略、商业策略和数据治理经验直接匹配；薪酬也覆盖当前基线。",status:"面谈待排期",tags:["医疗数据","新业务","药企"]},
+  {id:"jmdc",company:"JMDC",title:"制药业务战略・解决方案 Business Produce",source:"Apex · 工藤悟",date:"7/31",work:"用医疗大数据为药企做战略与解决方案，负责客户开拓、提案、交付和新业务化；目标承担约 1 亿日元级业务。",salary:"1,000–2,000 万日元（邮件沟通）",onsite:"弹性制；天数未公开",commute:"芝大门约 35–40 分钟",distance:"中",management:"业务经营与团队建设职责",reports:"未公开",fit:"高",reason:"McKinsey 战略、商业策略和数据治理经验直接匹配；薪酬也覆盖当前基线。",status:"面谈已确定",tags:["医疗数据","新业务","药企","8/27 10:00 面谈"]},
   {id:"syneos",company:"Syneos Health",title:"Sr. Strategic Project Manager",source:"Apex · 吉野すみれ",date:"7/29",work:"领导药企新品上市与 Commercial Solutions 项目，连接 BD、方案设计和交付团队。",salary:"未公开",onsite:"每周约 2 天出社",commute:"丸之内约 20–25 分钟",distance:"近",management:"跨职能项目领导",reports:"未公开",fit:"高",reason:"咨询、GTM、跨团队转型经验高度贴合；日英双语符合要求。",status:"待确认",tags:["咨询","上市","药企"]},
   {id:"hokuto",company:"HOKUTO",title:"Solution Strategist",source:"Apex · 吉野すみれ",date:"7/29",work:"为药企设计营销/销售策略，负责数据分析、交付、KPI 改善和新服务 PoC。",salary:"未公开",onsite:"全远程 / 全弹性",commute:"无需通勤",distance:"远程",management:"项目与客户领导",reports:"未公开",fit:"高",reason:"商业策略、市场洞察和运营体系经验可直接迁移。",status:"待确认",tags:["HealthTech","商业策略","远程"]},
   {id:"prevent",company:"PREVENT",title:"CSO / Corporate Planning Director",source:"Apex · Andrew Areiter",date:"7/29",work:"作为 CEO 的战略伙伴，主导中长期计划、资源配置、M&A、新业务与高层决策支持。",salary:"上限约 1,500 万日元",onsite:"全远程可",commute:"无需固定通勤",distance:"远程",management:"董事会级战略领导",reports:"未公开",fit:"中",reason:"战略规划匹配，但 CSO 级别及直接 P&L/管理履历要求高。",status:"待确认",tags:["CSO","数字健康","高管"]},
@@ -42,7 +42,8 @@ const companyProfiles: Record<string, CompanyProfile> = {
   stryker: {hq:"美国 Portage, Michigan",listing:"NYSE: SYK",size:"约 56,000 人（全球，2025 年末）",sourceHref:"https://www.stryker.com/ir/en/about.html",sourceLabel:"Stryker 官方公司资料"},
 };
 
-const options: Status[] = ["待确认","待研究","已联系","面谈待排期","已投递","暂停"];
+const options: Status[] = ["待确认","待研究","已联系","面谈待排期","面谈已确定","已投递","暂停"];
+const activeStatuses: Status[] = ["待研究","已联系","面谈待排期","面谈已确定","已投递"];
 const classFor = (fit: Fit) => fit === "高" ? "high" : fit === "中" ? "mid" : "low";
 const commuteFor = (value: Role["distance"]) => ({近:"near",中:"medium",远:"far",远程:"remote",待确认:"unknown"})[value];
 
@@ -55,6 +56,7 @@ export default function Home() {
   const [saved, setSaved] = useState<Record<string, Status>>({});
   const [reactions, setReactions] = useState<Record<string, Reaction>>({});
   const [reactionFilter, setReactionFilter] = useState<"全部" | "已点赞" | "已点踩">("全部");
+  const [activeOnly, setActiveOnly] = useState(false);
   useEffect(() => {
     const rawStatus = localStorage.getItem("career-radar-status");
     const rawReactions = localStorage.getItem("career-radar-reactions");
@@ -68,33 +70,37 @@ export default function Home() {
     setReactions(next); localStorage.setItem("career-radar-reactions",JSON.stringify(next));
   };
   const fitFor = (role: Role): Fit => reactions[role.id] === "赞" ? "高" : reactions[role.id] === "踩" ? "低" : role.fit;
+  const statusFor = (role: Role): Status => saved[role.id] ?? role.status;
+  const isActive = (role: Role) => activeStatuses.includes(statusFor(role));
   const visible = useMemo(() => roles.filter((r) => {
     const text = [r.company,r.title,r.work,r.source,...r.tags].join(" ").toLowerCase();
     const reaction = reactions[r.id];
-    return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || fitFor(r) === fit) && (status === "全部" || (saved[r.id] ?? r.status) === status) && (!remoteOnly || r.distance === "远程") && (reactionFilter === "全部" || (reactionFilter === "已点赞" && reaction === "赞") || (reactionFilter === "已点踩" && reaction === "踩"));
+    return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || fitFor(r) === fit) && (status === "全部" || statusFor(r) === status) && (!remoteOnly || r.distance === "远程") && (!activeOnly || isActive(r)) && (reactionFilter === "全部" || (reactionFilter === "已点赞" && reaction === "赞") || (reactionFilter === "已点踩" && reaction === "踩"));
   }).sort((a,b) => {
-    const priority = (role: Role) => reactions[role.id] === "赞" ? 0 : reactions[role.id] === "踩" ? 2 : 1;
+    const priority = (role: Role) => reactions[role.id] === "赞" ? 0 : reactions[role.id] === "踩" ? 3 : isActive(role) && fitFor(role) === "高" ? 1 : 2;
     return priority(a) - priority(b);
-  }), [query,fit,status,saved,remoteOnly,reactions,reactionFilter]);
+  }), [query,fit,status,saved,remoteOnly,reactions,reactionFilter,activeOnly]);
   const selected = roles.find((r) => r.id === selectedId) ?? roles[0];
   const company = companyProfiles[selected.id];
   const high = roles.filter((r) => fitFor(r) === "高").length;
+  const active = roles.filter(isActive).length;
 
   return <main>
     <section className="hero">
       <div className="eyebrow">CAREER RADAR · 2026</div>
-      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“管理职 / 年收不低于 1,300 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>JMDC casual 面谈</strong><p>已回复并请求本周四、周五或下周的可选时间。</p></div></div>
-      <div className="metrics"><div><b>12</b><span>个职位</span></div><div><b>{high}</b><span>高适配</span></div><div><b>3</b><span>可远程</span></div><div><b>¥13M+</b><span>年收基线</span></div></div>
+      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“管理职 / 年收不低于 1,300 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>JMDC casual 面谈已确认</strong><p>8 月 27 日（周四）10:00–11:00 · 线上</p></div></div>
+      <div className="metrics"><div><b>12</b><span>个职位</span></div><div><b>{active}</b><span>进行中</span></div><div><b>{high}</b><span>高适配</span></div><div><b>¥13M+</b><span>年收基线</span></div></div>
     </section>
     <section className="controls">
       <label className="search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="搜索公司、职位、关键词"/></label>
       <div className="buttons">{(["全部","高","中","低"] as const).map((x) => <button className={fit===x?"active":""} onClick={() => setFit(x)} key={x}>{x==="全部"?"全部适配度":x+"适配"}</button>)}</div>
+      <button className={"active-filter "+(activeOnly ? "active" : "")} onClick={() => setActiveOnly((value) => !value)} aria-pressed={activeOnly}>⚡ 仅进行中</button>
       <button className={"remote-filter "+(remoteOnly ? "active" : "")} onClick={() => setRemoteOnly((value) => !value)} aria-pressed={remoteOnly}>⌂ 无需通勤</button>
       <select value={status} onChange={(e) => setStatus(e.target.value as Status | "全部")}><option>全部</option>{options.map((x) => <option key={x}>{x}</option>)}</select>
       <select aria-label="按我的判断筛选" value={reactionFilter} onChange={(e) => setReactionFilter(e.target.value as "全部" | "已点赞" | "已点踩")}><option>我的判断：全部</option><option value="已点赞">已点赞</option><option value="已点踩">已点踩</option></select>
     </section>
     <section className="workspace">
-      <div className="list"><div className="list-title"><span>职位池</span><b>{visible.length} / 12</b></div>{visible.map((r) => <article key={r.id} tabIndex={0} onClick={() => setSelectedId(r.id)} onKeyDown={(e) => e.key==="Enter" && setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(fitFor(r))}>{fitFor(r)}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><span className="card-state">{reactions[r.id] ? reactions[r.id] === "赞" ? "👍 已赞" : "👎 已踩" : <i className="status">{saved[r.id] ?? r.status}</i>}</span></div></article>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
+      <div className="list"><div className="list-title"><span>职位池 <small>（点赞 → 进行中高适配 → 其他 → 点踩）</small></span><b>{visible.length} / 12</b></div>{visible.map((r) => <article key={r.id} tabIndex={0} onClick={() => setSelectedId(r.id)} onKeyDown={(e) => e.key==="Enter" && setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected ":"")+(isActive(r)?"active-card":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(fitFor(r))}>{fitFor(r)}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><span className="card-state">{isActive(r) && <i className="active-status">进行中</i>} {reactions[r.id] ? reactions[r.id] === "赞" ? "👍 已赞" : "👎 已踩" : <i className="status">{statusFor(r)}</i>}</span></div></article>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
       <aside className="detail"><div className="eyebrow">职位详情</div><div className="detail-head"><div><small>{selected.company}</small><h2>{selected.title}</h2></div><i className={classFor(fitFor(selected))}>{fitFor(selected)}适配</i></div><p className="summary">{selected.work}</p><div className="tags">{selected.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         <div className="facts"><Fact label="来源" value={selected.source+" · "+selected.date}/><Fact label="总部 HQ" value={company.hq}/><Fact label="上市状态" value={company.listing}/><Fact label="公司规模" value={company.size}/><Fact label="想定年收入" value={selected.salary}/><Fact label="出社要求" value={selected.onsite}/><Fact label="新小岩通勤" value={selected.commute} cls={commuteFor(selected.distance)}/><Fact label="管理职能" value={selected.management}/><Fact label="直属部下" value={selected.reports}/></div>
         <a className="company-source" href={company.sourceHref} target="_blank" rel="noreferrer">↗ {company.sourceLabel}</a>
