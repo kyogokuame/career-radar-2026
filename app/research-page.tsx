@@ -38,6 +38,29 @@ const paths = [
   { code: "R3", title: "伙伴 → GM", route: "战略账户 / 伙伴组合 → 收入、部署和采用 → 场景或地区负责人 → Japan / APAC GM 或商业联合创始人", gate: "陌生开发不是核心；拥有产品输入、商业条款和资源配置权。" },
 ];
 
+const functionRoles = [
+  { name: "客户成功 / 部署 / 实施经营", reach: "A−/B+", ownership: "采用、留存、上线、ROI、扩张", decision: "第一跳首选；必须负责上线后的采用和价值，不做长期救火驻场。" },
+  { name: "产品商业化 / 新业务经营", reach: "A−/B", ownership: "定价、商业模型、PoC、采用、收入", decision: "第一跳首选；最符合 30% 策略 / 70% 执行。" },
+  { name: "非技术产品经理 / Product Owner", reach: "B", ownership: "路线图、backlog、发布、采用", decision: "机器人主投；用需求到落地的等效经历争取面试。" },
+  { name: "既有伙伴激活 / Alliances", reach: "B+", ownership: "联合方案、合同义务、伙伴采用、共同收入", decision: "拉伸主投；只有关系维护、活动和会议则淘汰。" },
+  { name: "战略账户 / 解决方案经营", reach: "B−/C+", ownership: "账户收入、采用、续约、组合方案", decision: "第一跳后半段或第二跳；不接受个人陌生开发为核心。" },
+  { name: "Commercial Excellence", reach: "A", ownership: "取决于是否亲自落地 BU / 产品结果", decision: "12–18 个月医疗桥梁；至少一半时间用于执行和量化结果。" },
+  { name: "市场准入 / 支付 / Health Economics", reach: "C", ownership: "支付、证据、采用壁垒", decision: "第二跳复合能力；不从零冒充准入专家。" },
+  { name: "商业运营 / RevOps / 数据分析", reach: "A", ownership: "通常只有建议权", decision: "只作短桥梁；必须转向客户、产品或账户结果。" },
+  { name: "企业战略 / BizOps", reach: "A", ownership: "通常弱", decision: "没有预算、产品或业务指标，即使品牌好也否决。" },
+  { name: "Program Manager / PMO", reach: "A", ownership: "通常弱", decision: "默认淘汰；拥有 go-live、采用、成本或收入时才重分类。" },
+  { name: "运营卓越 / 供应链转型", reach: "A−/B+", ownership: "服务、成本、质量、生产率", decision: "医疗/机器人邻接桥梁；不优于直接产品与部署入口。" },
+  { name: "Corporate Venture / Venture Studio", reach: "B", ownership: "客户验证、发布、规模化", decision: "条件式拉伸；只投亲自从发现做到商业化的 builder。" },
+  { name: "Chief of Staff / CEO Office", reach: "B", ownership: "高度不确定", decision: "只接受 18 个月内明确转任业务负责人的机制。" },
+  { name: "CVC / VC / Impact Investing", reach: "B−/C+", ownership: "影响投资组合，不直接经营", decision: "当前被经营岗位支配；五年后作为网络与融资能力重估。" },
+  { name: "公共政策 / 政府事务 / AI 治理政策", reach: "B", ownership: "影响权强，经营权弱", decision: "复合能力而非主线；服务医疗、机器人和 AI 部署。" },
+  { name: "产品营销 / Launch Excellence", reach: "B+", ownership: "定位、上市、采用", decision: "医疗相邻入口；只投能追踪上市后采用与业务影响的岗位。" },
+  { name: "内容平台新业务 / IP 商业化", reach: "B", ownership: "合作、产品和 IP 收入", decision: "有限期权；优先平台、工具和全球发行。" },
+  { name: "技术解决方案 / Forward Deployment", reach: "C", ownership: "生产部署和客户价值", decision: "第二跳；先以作品验证技术深度，不用短课伪装生产经验。" },
+  { name: "医疗事务 / 临床 / 注册 / 核心研发", reach: "D", ownership: "强但有牌照与多年经验门槛", decision: "当前不可达，不为此重读全日制学位。" },
+  { name: "个人猎手销售 / 传统咨询 / PE Value Creation", reach: "A", ownership: "与销售偏好或长期强度冲突", decision: "已被硬约束支配并淘汰。" },
+];
+
 const regions = [
   { place: "日本", share: "70%", level: "主战场", why: "永驻、履历与网络最强；东京为默认基地，大阪是唯一可接受迁居城市。" },
   { place: "中国", share: "20%", level: "总部国际化", why: "只投医疗 AI、机器人或 AI 产品的日本/全球经营岗位；普通国内销售与平台招商不投。" },
@@ -58,7 +81,7 @@ const sidePortfolio = [
 
 const toc = [
   ["结论", "#verdict"], ["行业", "#priority"], ["岗位", "#roles"], ["路径", "#paths"],
-  ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
+  ["职能", "#functions"], ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
 ];
 
 export default function ResearchPage() {
@@ -102,19 +125,25 @@ export default function ResearchPage() {
               <div className="bridge-rule"><b>桥梁岗的 12 个月检查：</b><ol><li>是否拥有产品发布、伙伴合同、客户采用或商业结果？</li><li>是否获得采购、支付、部署、监管或技术工作流知识？</li><li>是否建立至少 5 位能为下一跳背书的行业关系？</li><li>成果能否写成“我改变了什么结果”？</li></ol><p>四项少于三项，12–18 个月内启动下一跳。</p></div>
             </section>
 
+            <section className="research-section" id="functions">
+              <div className="section-kicker">04 · 职能穷尽审计</div><h2>行业正确，还必须选对获得所有权的入口</h2><p className="section-lead">二十类非技术职能逐一审计。主要动词是 launch、deploy、adopt、retain、price、contract、scale 和 own 才加分；只有 coordinate、govern、report、support 和 advise 的岗位降权。</p>
+              <div className="role-table-wrap"><table className="research-table role-table"><thead><tr><th>职能原型</th><th>可达</th><th>可积累的所有权</th><th>当前决策</th></tr></thead><tbody>{functionRoles.map((role) => <tr key={role.name}><td><b>{role.name}</b></td><td>{role.reach}</td><td>{role.ownership}</td><td>{role.decision}</td></tr>)}</tbody></table></div>
+              <div className="evidence-note"><b>排序修正：</b>客户成功 / 部署经营 ≈ 产品商业化 / 新业务 &gt; 非技术产品经理 &gt; 既有伙伴激活 &gt; 有落地的 Commercial Excellence &gt; 纯分析、战略与 PMO。企业创投和 VC 没有被遗漏，但当前仍把你放在“评价或支持别人经营”的位置。</div>
+            </section>
+
             <section className="research-section" id="regions">
-              <div className="section-kicker">04 · 全球地区策略</div><h2>全球不平均撒网：把迁移成本作为真实变量</h2>
+              <div className="section-kicker">05 · 全球地区策略</div><h2>全球不平均撒网：把迁移成本作为真实变量</h2>
               <div className="region-list">{regions.map((region) => <article key={region.place}><div><h3>{region.place}</h3><span>{region.level}</span></div><b>{region.share}</b><p>{region.why}</p></article>)}</div><p className="small-note">中国迁居只有在“完整区域经营权 + 优秀团队 + 显著现金/股权回报”同时成立时考虑。新加坡与香港是定向拉伸，不是为了国际化标签牺牲职位质量。</p>
             </section>
 
             <section className="research-section" id="portfolio">
-              <div className="section-kicker">05 · 主业 + 副业</div><h2>副业不是第二份工作，而是个人所有权实验</h2>
+              <div className="section-kicker">06 · 主业 + 副业</div><h2>副业不是第二份工作，而是个人所有权实验</h2>
               <div className="portfolio-table">{sidePortfolio.map(([rank, title, timing, why]) => <article key={rank}><b>{rank}</b><h3>{title}</h3><span>{timing}</span><p>{why}</p></article>)}</div>
               <div className="topic-choice"><div><span>母题 A</span><h3>机器人真实落地</h3><p>日本物流、零售和养老场景的 ROI、采购、部署与运营，对中国公司出海及全球 RaaS 的启示。</p></div><div><span>母题 B</span><h3>老龄化商业基础设施</h3><p>日本养老健康的使用者—决策者—支付方—服务者结构，以及对中国、新加坡和全球老龄化市场的迁移。</p></div></div>
             </section>
 
             <section className="research-section" id="income">
-              <div className="section-kicker">06 · 收入与股权</div><h2>工资是阶梯；非线性来自所有权</h2>
+              <div className="section-kicker">07 · 收入与股权</div><h2>工资是阶梯；非线性来自所有权</h2>
               <div className="ownership-grid"><article><b>公司所有权</b><p>期权、限制性股票、RSU</p></article><article><b>经营所有权</b><p>P&amp;L、毛利、分红与结果奖金</p></article><article><b>产品所有权</b><p>数据库、工具、课程、顾问产品</p></article><article><b>分发与 IP</b><p>邮件名单、原创数据、版权和客户关系</p></article></div>
               <div className="income-stages"><article><span>0–2 年</span><h3>转入并取得结果</h3><b>优先 ¥9M–12M + 奖金</b><p>不跌破 ¥8M。副业允许 ¥0–1M，先验证问题、关系和第一个资产。</p></article><article><span>2–5 年</span><h3>产品 / 商业负责人</h3><b>情景 ¥12M–20M 总现金</b><p>变量与账户、团队或 P&amp;L 挂钩；工资外收入目标约 10%–20%。</p></article><article><span>5–10 年</span><h3>区域 GM / 早期高管</h3><b>高现金或主动换所有权</b><p>离开雇主后仍保留股权、客户、声誉、产品或 IP。</p></article></div>
               <div className="formula-box"><span>统一公式</span><strong>退出时普通股价值 × 入职完全稀释持股 × 归属 × 后续稀释 × 普通股分配系数</strong><p>再单独扣除失败概率、时间、行权成本、税费和机会成本。只给期权张数、不提供完全稀释比例时，比较 offer 按零计。</p></div>
@@ -123,18 +152,18 @@ export default function ResearchPage() {
             </section>
 
             <section className="research-section" id="plan">
-              <div className="section-kicker">07 · 三个月执行</div><h2>把求职变成可证伪的市场实验</h2>
+              <div className="section-kicker">08 · 三个月执行</div><h2>把求职变成可证伪的市场实验</h2>
               <div className="timeline"><article><span>第 0–1 周</span><h3>建立两套叙事</h3><p>医疗版突出罕见病上市、J&amp;J GTM 和商业执行；机器人版突出复杂运营、客户需求和跨职能落地。各做一页行业作品。</p></article><article><span>第 1–4 周</span><h3>集中启动漏斗</h3><p>医疗 60%、机器人 30%、跨境桥梁 10%；优先推荐与招聘人预筛，记录回复、面试、硬门槛和拒绝原因。</p></article><article><span>第 3–8 周</span><h3>用反向尽调筛团队</h3><p>验证经理、公平、决策权、真实工时、结果指标、现场比例、现金与股权，不因公司品牌降低门槛。</p></article><article><span>第 8–12 周</span><h3>竞争 offer 后签约</h3><p>只有书面 offer、薪酬股权核验、汇报线确认和团队反向尽调全部完成后离职；通知期一个月。</p></article></div>
             </section>
 
             <section className="research-section" id="gates">
-              <div className="section-kicker">08 · Offer 一票否决</div><h2>高薪、品牌或行业标签不能抵消坏结构</h2>
+              <div className="section-kicker">09 · Offer 一票否决</div><h2>高薪、品牌或行业标签不能抵消坏结构</h2>
               <div className="gate-grid"><article><span>01</span><h3>经理与团队</h3><p>不尊重、微观管理、评价不公、政治和缺乏心理安全，直接退出。</p></article><article><span>02</span><h3>结果所有权</h3><p>职责只有协调、报告和治理，没有产品、客户、合同、收入或成本结果，退出。</p></article><article><span>03</span><h3>生活方式</h3><p>长期 always-on、无法解释的高强度，或要求迁往东京/大阪以外，退出。</p></article><article><span>04</span><h3>销售结构</h3><p>个人陌生开发、全流程猎手和硬 quota 是核心，退出；团队/账户采用目标可以接受。</p></article><article><span>05</span><h3>现金与股权</h3><p>现金低于下限，或只报期权张数、拒绝完全稀释比例，退出。</p></article><article><span>06</span><h3>桥梁保质期</h3><p>无法在 12–18 个月转向产品、客户、采用或 P&amp;L，退出。</p></article></div>
               <div className="diligence"><h3>股权签约前必须书面确认</h3><p>授予工具与实体 · 完全稀释比例 · 普通股公允价值与行权价 · 归属与 cliff · refresh grant · 离职行权窗口 · 控制权变更加速 · 期权池与融资稀释 · 优先清算和债务 · 二级流动性 · 日本税务处理 · 董事会批准。</p></div>
             </section>
 
             <section className="research-section" id="sources">
-              <div className="section-kicker">09 · 公开资料</div><h2>政策、产业与股权数据来源</h2>
+              <div className="section-kicker">10 · 公开资料</div><h2>政策、产业与股权数据来源</h2>
               <div className="source-grid"><a href="https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2026/2026_zt03/yw/202603/t20260314_1430877.html" target="_blank" rel="noreferrer"><b>中国“十五五”规划纲要</b><span>AI、机器人、生物医药与未来产业 ↗</span></a><a href="https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=106306" target="_blank" rel="noreferrer"><b>国民健康“十五五”规划</b><span>健康与养老结构性信号 ↗</span></a><a href="https://www8.cao.go.jp/kourei/measure/taikou/r06/hon-index.html" target="_blank" rel="noreferrer"><b>日本高龄社会对策大纲</b><span>老龄化政策与照护需求 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/mono/robot/index.html" target="_blank" rel="noreferrer"><b>日本 METI 机器人政策</b><span>实体 AI 与机器人产业 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/contents/index.html?theme=6" target="_blank" rel="noreferrer"><b>日本内容产业政策</b><span>游戏、IP 与内容国际化 ↗</span></a><a href="https://www.who.int/news-room/fact-sheets/detail/ageing-and-health" target="_blank" rel="noreferrer"><b>WHO · Ageing and health</b><span>全球老龄化长期趋势 ↗</span></a><a href="https://carta.com/data/apac-me-equity-report/" target="_blank" rel="noreferrer"><b>Carta · APAC Equity Report</b><span>期权池、归属与行权数据 ↗</span></a><a href="https://carta.com/data/startup-compensation-h2-2025/" target="_blank" rel="noreferrer"><b>Carta · Startup Compensation</b><span>硬件、healthtech 与游戏就业信号 ↗</span></a></div>
               <div className="research-footer"><b>仍待补齐</b><p>两个医疗项目的时长、地域、个人 workstream、客户采纳和可公开结果；以及是否存在从需求定义走到 go-live、UAT 或客户采用的 IT / DX / 物流项目。</p></div>
             </section>
