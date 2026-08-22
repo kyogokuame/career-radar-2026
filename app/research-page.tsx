@@ -117,6 +117,24 @@ const employerEvidence = [
   { company: "Gaussy", signal: "三菱商事、东大 IPC、Prologis、地产与设备企业共同持股", risk: "产业资源降低单一融资风险，也可能增加治理复杂度、慢决策和员工股权不足。" },
 ];
 
+const coreBusinessModels = [
+  { track: "健康", model: "保险 / 雇主健康数据平台", revenue: "保险方或企业按合同、模块、人数或结果付费", scale: "高：数据、规则和产品模块可跨客户复用；支付与临床语境形成壁垒", work: "中：企业周期长，仍需本地实施与结果证明", decision: "优先 1" },
+  { track: "健康", model: "养老机构工作流 SaaS", revenue: "按机构、床位、门店或模块订阅，加增值服务", scale: "中高：留存、集成深度和跨机构复制决定质量", work: "低—中：混合办公，需定期进入机构", decision: "优先 2" },
+  { track: "健康", model: "远程监测 / 数字诊断", revenue: "设备 + 软件、医院采购、保险报销或按患者收费", scale: "高潜力：临床证据、监管、数据和渠道形成护城河", work: "中：医院/渠道访问，上市和准入周期较长", decision: "优先 3 / 拉伸" },
+  { track: "健康", model: "医疗器械 / 医疗机器人", revenue: "设备、耗材、维护、软件和按次服务", scale: "中高：装机量带来耗材与服务，但资本和培训较重", work: "中—高：现场、临床培训和渠道管理", decision: "条件优先" },
+  { track: "健康", model: "居家照护协调平台", revenue: "家庭自费、保险/政府支付、服务抽成或订阅", scale: "中：匹配和数据可扩张，实际照护仍随人力增长", work: "高风险：24/7 履约、排班、质量和地区运营", decision: "条件优先" },
+  { track: "健康", model: "消费健康 / 长寿品牌", revenue: "电商、会员、检测、服务与订阅", scale: "中：需专有数据、服务闭环或强品牌；否则获客依赖平台", work: "中—高：增长与营销节奏快", decision: "观察" },
+  { track: "健康", model: "生物医药 / 药物研发", revenue: "药品销售、许可与里程碑付款", scale: "高波动：科学、临床与专利壁垒强，失败概率也高", work: "中：周期长，当前科学可信度不足", decision: "降权" },
+  { track: "健康", model: "传统前线养老服务", revenue: "按小时、床位或政府/保险支付", scale: "低—中：扩张常与人员和设施近线性增长", work: "高：现场、排班与人力管理长期存在", decision: "不作第一主业" },
+  { track: "机器人", model: "机器人软件 / 云平台 / 编排", revenue: "软件订阅、许可、设备管理和数据服务", scale: "高：跨硬件复用、切换成本与部署数据形成壁垒", work: "低—中：地点较灵活，仍需客户部署理解", decision: "优先 1" },
+  { track: "机器人", model: "AMR / 仓储 RaaS", revenue: "订阅、租赁、按使用量、软件和维护", scale: "中高：经常性收入成立，但硬件资本、维护和利用率重要", work: "中—高：扩张期多站点上线与异常处理", decision: "优先 2" },
+  { track: "机器人", model: "医疗 / 康复 / 照护机器人", revenue: "设备、租赁、按次服务和机构采购", scale: "高潜力：安全、临床、支付和工作流形成复合壁垒", work: "中—高：现场培训，市场形成较慢", decision: "优先 3 / 终局交叉" },
+  { track: "机器人", model: "通用人形机器人平台", revenue: "硬件、RaaS、开发平台和战略合作", scale: "极高期权：标准平台一旦成立可扩张，当前可靠性与付费场景不确定", work: "很高：早期部署、融资和产品迭代密集", decision: "高风险期权" },
+  { track: "机器人", model: "机器视觉 / 抓取 / 控制组件", revenue: "许可、硬件组件、渠道和集成项目", scale: "中高：技术壁垒强，但易受单一 OEM 与周期影响", work: "中：工业客户与现场较多", decision: "候选 B" },
+  { track: "机器人", model: "大型工业机器人厂商", revenue: "设备、服务、软件、渠道与维护", scale: "中：现金与客户基础稳，员工股权上行有限", work: "中：大组织较稳定，现场不可消失", decision: "训练桥梁" },
+  { track: "机器人", model: "定制系统集成商", revenue: "一次性项目、实施、集成和维护", scale: "低：人员和项目近线性增长，定制越多估值与迁移性越弱", work: "高：驻场、验收和项目峰值", decision: "降权" },
+];
+
 const regions = [
   { place: "日本", share: "70%", level: "主战场", why: "永驻、履历与网络最强；东京为默认基地，大阪是唯一可接受迁居城市。" },
   { place: "中国", share: "20%", level: "总部国际化", why: "只投医疗 AI、机器人或 AI 产品的日本/全球经营岗位；普通国内销售与平台招商不投。" },
@@ -137,7 +155,7 @@ const sidePortfolio = [
 
 const toc = [
   ["结论", "#verdict"], ["优先级", "#priority"], ["全行业", "#universe"], ["岗位", "#roles"], ["路径", "#paths"],
-  ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["雇主", "#employers"], ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
+  ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["雇主", "#employers"], ["模式", "#business-models"], ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
 ];
 
 export default function ResearchPage() {
@@ -210,6 +228,13 @@ export default function ResearchPage() {
               <div className="bridge-rule"><b>两层 Offer 决策：</b><p>先过经理团队、结果决策权、现金、销售结构、地域工时、真实跑道六项硬门槛；再按结果所有权 30%、24 个月可迁移资本 25%、行业/AI 护城河 15%、生活方式 15%、现金 10%、风险调整后股权 5% 排序。</p></div>
             </section>
 
+            <section className="research-section" id="business-models">
+              <div className="section-kicker">06B · 核心商业模式审计</div><h2>行业增长不等于公司质量：经常性收入也不等于低强度</h2><p className="section-lead">对健康和机器人主线逐一拆解买方、支付方式、标准化程度、服务人力和现场强度。这里评估的是职业与公司结构，不是对单一公司的投资建议。</p>
+              <div className="verdict-grid"><article className="thesis-card"><span>健康支付平台样本</span><strong>Amplify Health</strong><p>统一健康数据、模块化产品和结果导向合作形成可复用平台；公开资料也强调地面实施团队，说明价值落地仍需要深行业执行。</p><small>推论：优先产品采用、支付方合作与账户 P&amp;L，不做纯分析。</small></article><article className="thesis-card"><span>照护平台样本</span><strong lang="ja">イチロウ</strong><p>线上匹配、4,000+ 注册照护人员和外部合作支持扩张，但 24/7 线下服务意味着质量、排班与地区运营不会像纯 SaaS 一样消失。</p><small>推论：必须核验平台毛利与总部岗位是否承担运营救火。</small></article><article className="thesis-card"><span>机器人服务样本</span><strong>Gaussy / Rapyuta</strong><p>订阅、按使用量和标准系统集成降低客户初始投入；与此同时，设计、导入、培训、维护和 KPI 改善仍构成真实成本。</p><small>推论：RaaS 更好，但只有标准化、利用率与续约同时成立才有软件式上行。</small></article></div>
+              <div className="role-table-wrap"><table className="research-table role-table business-model-table"><thead><tr><th>主线</th><th>商业模式</th><th>收入 / 支付</th><th>可扩展性与护城河</th><th>工作方式风险</th><th>个人决策</th></tr></thead><tbody>{coreBusinessModels.map((item) => <tr key={item.track + item.model}><td><b>{item.track}</b></td><td><b>{item.model}</b></td><td>{item.revenue}</td><td>{item.scale}</td><td>{item.work}</td><td>{item.decision}</td></tr>)}</tbody></table></div>
+              <div className="bridge-rule"><b>加入增长公司前必须取得七个答案：</b><ol><li>谁拥有预算，谁真正付款？</li><li>收入是订阅、用量、设备、项目还是人时？</li><li>新增一个客户需要增加多少实施与运营人员？</li><li>付费试点、续约、扩张与流失分别如何？</li><li>硬件利用率、维护、临床支持或服务履约由谁承担？</li><li>日本形成的数据、流程与产品能否复制到中国或其他市场？</li><li>本人的奖金和股权是否与可控结果一致？</li></ol><p>公司拒绝说明续约、毛利、客户集中度、实施人力或完全稀释股权时，不因“AI、养老、机器人”标签降低标准。</p></div>
+            </section>
+
             <section className="research-section" id="regions">
               <div className="section-kicker">07 · 全球地区策略</div><h2>全球不平均撒网：把迁移成本作为真实变量</h2>
               <div className="region-list">{regions.map((region) => <article key={region.place}><div><h3>{region.place}</h3><span>{region.level}</span></div><b>{region.share}</b><p>{region.why}</p></article>)}</div><p className="small-note">中国迁居只有在“完整区域经营权 + 优秀团队 + 显著现金/股权回报”同时成立时考虑。新加坡与香港是定向拉伸，不是为了国际化标签牺牲职位质量。</p>
@@ -244,7 +269,7 @@ export default function ResearchPage() {
             <section className="research-section" id="sources">
               <div className="section-kicker">12 · 公开资料</div><h2>政策、产业与股权数据来源</h2>
               <div className="source-grid"><a href="https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2026/2026_zt03/yw/202603/t20260314_1430877.html" target="_blank" rel="noreferrer"><b>中国“十五五”规划纲要</b><span>AI、机器人、生物医药与未来产业 ↗</span></a><a href="https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=106306" target="_blank" rel="noreferrer"><b>国民健康“十五五”规划</b><span>健康与养老结构性信号 ↗</span></a><a href="https://www8.cao.go.jp/kourei/measure/taikou/r06/hon-index.html" target="_blank" rel="noreferrer"><b>日本高龄社会对策大纲</b><span>老龄化政策与照护需求 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/mono/robot/index.html" target="_blank" rel="noreferrer"><b>日本 METI 机器人政策</b><span>实体 AI 与机器人产业 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/contents/index.html?theme=6" target="_blank" rel="noreferrer"><b>日本内容产业政策</b><span>游戏、IP 与内容国际化 ↗</span></a><a href="https://www.who.int/news-room/fact-sheets/detail/ageing-and-health" target="_blank" rel="noreferrer"><b>WHO · Ageing and health</b><span>全球老龄化长期趋势 ↗</span></a><a href="https://carta.com/data/apac-me-equity-report/" target="_blank" rel="noreferrer"><b>Carta · APAC Equity Report</b><span>期权池、归属与行权数据 ↗</span></a><a href="https://carta.com/data/startup-compensation-h2-2025/" target="_blank" rel="noreferrer"><b>Carta · Startup Compensation</b><span>硬件、healthtech 与游戏就业信号 ↗</span></a><a href="https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure" target="_blank" rel="noreferrer"><b>ILO · GenAI and Jobs 2025</b><span>任务暴露、转型与替代边界 ↗</span></a><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/2-jobs-outlook/" target="_blank" rel="noreferrer"><b>WEF · Future of Jobs 2025</b><span>2030 岗位与技能结构信号 ↗</span></a><a href="https://www.rapyuta-robotics.com/2022/04/20/series-c-eng/" target="_blank" rel="noreferrer"><b>Rapyuta · Series C</b><span>融资金额、用途与累计资本 ↗</span></a><a href="https://tx-inc.com/en/blog/2023/07/06/12082/" target="_blank" rel="noreferrer"><b>TELEXISTENCE · Series B</b><span>资本、量产伙伴与商业部署 ↗</span></a><a href="https://corp.ichirou.co.jp/%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BAb%E3%81%A7%E7%B7%8F%E9%A1%8D11-3%E5%84%84%E5%86%86%E3%81%AE%E8%B3%87%E9%87%91%E8%AA%BF%E9%81%94%E3%82%92%E5%AE%8C%E4%BA%86/" target="_blank" rel="noreferrer"><b><span lang="ja">イチロウ</span> · Series B</b><span>融资新鲜度与累计金额 ↗</span></a><a href="https://www.gaussy.com/company" target="_blank" rel="noreferrer"><b>Gaussy · Company</b><span>产业股东与经营团队 ↗</span></a></div>
-              <div className="source-grid source-grid-secondary"><a href="https://openai.com/careers/partner-director-tokyo-tokyo-japan/" target="_blank" rel="noreferrer"><b>OpenAI · Partner Director Tokyo</b><span>已签伙伴激活、联合方案与商业条款 ↗</span></a><a href="https://hrmos.co/pages/ldf/jobs/0000107" target="_blank" rel="noreferrer"><b>LINE Digital Frontier · BizDev</b><span>内容/IP 平台新业务与合作 ↗</span></a><a href="https://job-boards.greenhouse.io/glance/jobs/8020092" target="_blank" rel="noreferrer"><b>Glance AI · Commerce Partnerships</b><span>AI Commerce 日本首批团队与股权 ↗</span></a><a href="https://recruit.jobcan.jp/vej/list" target="_blank" rel="noreferrer"><b>Vena Energy · Japan Careers</b><span>PPA、储能、电力交易与新增收入 ↗</span></a><a href="https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/Startups-Inception-Partner-Manager_JR2011828" target="_blank" rel="noreferrer"><b>NVIDIA · Inception Partner Manager</b><span>AI 算力、创业公司与开发者生态 ↗</span></a></div>
+              <div className="source-grid source-grid-secondary"><a href="https://openai.com/careers/partner-director-tokyo-tokyo-japan/" target="_blank" rel="noreferrer"><b>OpenAI · Partner Director Tokyo</b><span>已签伙伴激活、联合方案与商业条款 ↗</span></a><a href="https://hrmos.co/pages/ldf/jobs/0000107" target="_blank" rel="noreferrer"><b>LINE Digital Frontier · BizDev</b><span>内容/IP 平台新业务与合作 ↗</span></a><a href="https://job-boards.greenhouse.io/glance/jobs/8020092" target="_blank" rel="noreferrer"><b>Glance AI · Commerce Partnerships</b><span>AI Commerce 日本首批团队与股权 ↗</span></a><a href="https://recruit.jobcan.jp/vej/list" target="_blank" rel="noreferrer"><b>Vena Energy · Japan Careers</b><span>PPA、储能、电力交易与新增收入 ↗</span></a><a href="https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/Startups-Inception-Partner-Manager_JR2011828" target="_blank" rel="noreferrer"><b>NVIDIA · Inception Partner Manager</b><span>AI 算力、创业公司与开发者生态 ↗</span></a><a href="https://www.amplifyhealth.com/en/about-us" target="_blank" rel="noreferrer"><b>Amplify Health · Platform</b><span>健康数据、模块化架构与结果型合作 ↗</span></a><a href="https://corp.ichirou.co.jp/" target="_blank" rel="noreferrer"><b><span lang="ja">イチロウ</span> · Service</b><span>线上匹配与 24/7 线下照护履约 ↗</span></a><a href="https://www.rapyuta-robotics.com/ja/2020/05/27/pa-subscription/" target="_blank" rel="noreferrer"><b>Rapyuta · RaaS Subscription</b><span>AMR 订阅商业化 ↗</span></a><a href="https://www.gaussy.com/news/release_260326" target="_blank" rel="noreferrer"><b>Gaussy · Usage-based RaaS</b><span>按使用量计费与客户采用门槛 ↗</span></a></div>
               <div className="research-footer"><b>Q43–47 的保守假设</b><p>未确认项目时长、地域、个人 workstream、采纳与量化结果，因此申请材料只陈述已确认职责，不推断实施成效或个人归因；既往医疗客户默认匿名；复杂日语谈判、高难度书面沟通及传统机构高层沟通默认需要母语支持。</p></div>
             </section>
           </div>
