@@ -1,4 +1,5 @@
 import SiteNav from "./SiteNav";
+import "./roadmap.css";
 
 type Priority = { rank: string; title: string; score: string; role: string; verdict: string };
 
@@ -28,15 +29,6 @@ const industryUniverse = [
   { sector: "农业、食品、食品科技、水资源", status: "低优先 D", entry: "农业机器人、供应链科技、平台商业化", verdict: "长期需求真实但当前进入资本弱；只有与机器人、气候或跨境供应链交叉时保留。" },
   { sector: "航空航天、国防、公共安全、双用途科技", status: "低优先 D", entry: "国际合作、市场开发、战略客户", verdict: "技术和资本上行强，但国籍、出口管制、现场与基地限制破坏中日全球迁移性。" },
   { sector: "GovTech、政府数字化、社会服务、非营利", status: "生态 C", entry: "数字政府、AI 治理、公共服务创新、合作", verdict: "政策背景可用、社会影响强；现金和股权上行通常较弱，更适合作为健康/AI 的客户生态。" },
-];
-
-const paths = [
-  { code: "H0", title: "健康结果部署 → 平台业务负责人", route: "自治体 / 保险方项目与客户成功 → 利用、持续、就诊和医疗费结果 → 标准化跨地区复制 → 健康平台 Japan / APAC Business Lead", gate: "必须拥有采用KPI和改善动作；固定现金达标，正式日语有组织支持，不退化成会议与进度管理。" },
-  { code: "H1", title: "成熟医疗行业学徒 → 战略账户", route: "Commercial Excellence 执行岗 → 12–18 个月取得 BU / 产品落地结果 → 医疗战略账户或解决方案 → Japan / APAC Commercial Lead", gate: "桥梁岗 18 个月到期；若仍只有治理、会议和报告，立即转出。" },
-  { code: "H2", title: "健康科技新业务 → 区域经营", route: "企业客户 PoC、定价和采用 → Japan Business Lead / APAC Partnerships → 早期高管或中日健康基础设施创业", gate: "现金、经理、付费客户和销售结构必须全部通过尽调。" },
-  { code: "R1", title: "机器人产品 → 产品商业化负责人", route: "Product Manager → 标准化模块发布与 ROI / 采用证据 → Lead PM / Product Commercialization → 早期公司产品商业化负责人", gate: "必须拥有路线图、backlog、发布与采用，不做纯需求收集。" },
-  { code: "R2", title: "部署 → 解决方案 / 事业经营", route: "多站点部署、UAT 和上线 → 可复用 ROI 与运营方法 → Solutions / Deployment Lead → Vertical Business / RaaS P&L", gate: "东京基地；现场每周不超过 2–3 天，出差每月不超过一周。" },
-  { code: "R3", title: "伙伴 → GM", route: "战略账户 / 伙伴组合 → 收入、部署和采用 → 场景或地区负责人 → Japan / APAC GM 或商业联合创始人", gate: "陌生开发不是核心；拥有产品输入、商业条款和资源配置权。" },
 ];
 
 const functionRoles = [
@@ -133,7 +125,7 @@ const compensationPaths = [
 ];
 
 const toc = [
-  ["结论", "#verdict"], ["优先级", "#priority"], ["全行业", "#universe"], ["路径", "#paths"],
+  ["路线图", "#paths"], ["结论", "#verdict"], ["优先级", "#priority"], ["全行业", "#universe"],
   ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["雇主", "#employers"], ["模式", "#business-models"], ["地区", "#regions"], ["副业", "#portfolio"], ["薪酬", "#compensation"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
 ];
 
@@ -154,6 +146,53 @@ export default function ResearchPage() {
         <div className="research-layout">
           <aside className="research-toc" aria-label="研究目录"><span>研究目录</span>{toc.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<small>版本 2026-08-22<br/>持续迭代</small></aside>
           <div className="research-content">
+            <section className="research-section roadmap-section" id="paths">
+              <div className="section-kicker">00 · 从当前起点出发</div><h2>两条主线，各用两跳建立结果所有权；第三跳才争取区域经营或早期高管</h2>
+              <p className="section-lead">“跳”指换到能新增职业资本的岗位，不要求机械地换公司。每一步都要先通过经理、工作强度、地点与现金底线；若在现公司已能拿到下一节点的实质所有权，可以内部晋升替代跳槽。</p>
+              <div className="roadmap-stack">
+                <article className="roadmap-lane health-lane">
+                  <header className="roadmap-lane-header"><div><span>主线 A</span><h3>AI 医疗健康与养老科技</h3></div><p>目标：从医疗行业进入，转为拥有采用、商业化与区域经营结果的人。</p></header>
+                  <div className="roadmap-tree">
+                    <article className="roadmap-node origin"><span>现在</span><h4>跨市场 GTM 与复杂执行基础</h4><p>缺口是可披露的医疗客户、产品采用或商业结果所有权。</p></article>
+                    <div className="roadmap-arrow" aria-hidden="true">↓</div>
+                    <div className="roadmap-branches two-branches">
+                      <article className="roadmap-node"><span>跳 1 · 0–18 月</span><h4>成熟医疗的落地型商业岗位</h4><p>Commercial / Launch Excellence、Healthcare Solutions、战略项目执行。</p><ul><li>至少一半时间用于 BU、产品或客户落地</li><li>有采用、上市、成本或合同的单一结果指标</li><li>不是纯 PMO、报告或市场情报</li></ul></article>
+                      <article className="roadmap-node"><span>跳 1 · 0–18 月</span><h4>HealthTech 的采用与产品商业化岗位</h4><p>客户成功、部署经营、产品商业化或新业务执行。</p><ul><li>有付费客户、产品反馈与上线后采用</li><li>总部岗位不承担长期 24/7 调度救火</li><li>避免个人陌生开发成为核心</li></ul></article>
+                    </div>
+                    <div className="roadmap-arrow" aria-hidden="true">↓</div>
+                    <article className="roadmap-node convergence"><span>跳 2 · 18–42 月</span><h4>健康解决方案 / 产品商业化 Lead</h4><p>可选职位性质：战略账户解决方案、市场发展、产品商业化、支付方/机构合作。要同时拥有客户采用与至少一个商业杠杆：定价、合同、产品输入、账户组合或预算。</p><ul><li>形成可复用案例，而非一次性项目</li><li>能把日本工作流迁移到中国或 APAC</li><li>获得采购、支付、监管或临床工作流的行业事实</li></ul></article>
+                    <div className="roadmap-arrow" aria-hidden="true">↓</div>
+                    <div className="roadmap-branches two-branches final-branches">
+                      <article className="roadmap-node outcome"><span>跳 3 · 42–72 月</span><h4>Japan / APAC Business Lead</h4><p>拥有垂直业务、账户组合或区域商业化；向 P&amp;L、团队与资源配置权升级。</p></article>
+                      <article className="roadmap-node outcome"><span>跳 3 · 条件式</span><h4>早期健康科技高管 / 创业</h4><p>只在有付费客户、明确行业问题、可验证个人声誉和有意义股权时进入。</p></article>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="roadmap-lane robotics-lane">
+                  <header className="roadmap-lane-header"><div><span>主线 B</span><h3>实体 AI 与机器人</h3></div><p>目标：从产品、部署或伙伴入口，转为能复制 ROI 与经营垂直业务的人。</p></header>
+                  <div className="roadmap-tree">
+                    <article className="roadmap-node origin"><span>现在</span><h4>客户、运营与跨职能落地能力</h4><p>缺口是产品路线图、部署 ROI 或机器人客户工作流的直接证据。</p></article>
+                    <div className="roadmap-arrow" aria-hidden="true">↓</div>
+                    <div className="roadmap-branches three-branches">
+                      <article className="roadmap-node"><span>跳 1 · 路径 P</span><h4>产品 Owner / 非技术 PM</h4><p>工业、仓储、医疗或照护机器人产品。</p><ul><li>拥有 roadmap、backlog、发布与采用</li><li>不只是收集需求或跨部门协调</li><li>能拿到真实用户与现场数据</li></ul></article>
+                      <article className="roadmap-node"><span>跳 1 · 路径 D</span><h4>部署经营 / 客户价值岗位</h4><p>多站点上线、客户成功、实施经营或 solutions。</p><ul><li>以标准化模块、上线、ROI 与续约衡量</li><li>现场和出差有明确上限</li><li>必须能沉淀可复制方法</li></ul></article>
+                      <article className="roadmap-node"><span>跳 1 · 路径 A</span><h4>既有伙伴激活 / 生态岗位</h4><p>联合方案、合同义务、产品反馈与共同收入。</p><ul><li>不以陌生开发或个人 quota 为核心</li><li>能影响商业条款和资源配置</li><li>有产品输入而非只维护关系</li></ul></article>
+                    </div>
+                    <div className="roadmap-arrow" aria-hidden="true">↓</div>
+                    <div className="roadmap-branches three-branches">
+                      <article className="roadmap-node convergence"><span>跳 2 · P</span><h4>产品商业化 Lead</h4><p>把产品发布、采用、定价和行业方案连接起来；形成一条可规模化的产品—商业闭环。</p></article>
+                      <article className="roadmap-node convergence"><span>跳 2 · D</span><h4>Deployment / Vertical Business Lead</h4><p>拥有垂直场景 ROI、续约或运营指标；拒绝永久定制实施。</p></article>
+                      <article className="roadmap-node convergence"><span>跳 2 · A</span><h4>生态 / 战略账户 Lead</h4><p>拥有伙伴组合、联合收入与部署采用；进入场景或区域经营，而非停留在联盟维护。</p></article>
+                    </div>
+                    <div className="roadmap-arrow" aria-hidden="true">↓</div>
+                    <article className="roadmap-node outcome"><span>跳 3 · 42–72 月</span><h4>Japan / APAC GM、CBO 或早期产品商业化高管</h4><p>前提：能证明产品、部署或伙伴路线中至少一条产生可复用的收入、ROI、采用或 P&amp;L 结果。若只是项目交付，主动转入产品化平台而非继续堆项目。</p></article>
+                  </div>
+                </article>
+              </div>
+              <div className="bridge-rule"><b>每一跳的共同规则：</b><ol><li>先验证经理、心理安全、决策权、东京/大阪基地与长期工时。</li><li>18 个月内必须获得一个可写成“我改变了什么结果”的事实。</li><li>下一跳只为补新资本：行业工作流、产品采用、合同/定价、账户组合或 P&amp;L；不为品牌或职位名跳槽。</li><li>若增长公司要求高强度，现金跑道、职责边界和股权/分成必须同时清楚。</li></ol></div>
+            </section>
+
             <section className="research-section opening" id="verdict">
               <div className="section-kicker">00 · 核心结论</div><h2>下一份工作必须从“给建议”转向“拥有结果”</h2>
               <div className="verdict-grid"><article className="thesis-card"><span>职业终局</span><strong>专家型高管 → 创业者</strong><p>先成为商业化、产品或区域经营的 Senior IC / 无下属 Manager，再用行业事实换早期高管、股权与创业选择权。</p></article><article className="thesis-card"><span>最强资本</span><strong>中日英 × GTM × 复杂执行</strong><p>中日英沟通、GTM 与复杂跨职能执行经历形成跨市场商业底座。</p></article><article className="thesis-card warning"><span>最大缺口</span><strong>没有最终业务结果所有权</strong><p>尚未正式拥有收入、产品采用、成本、合同或 P&L；下一份工作必须补上其中至少一项。</p></article></div>
@@ -171,12 +210,6 @@ export default function ResearchPage() {
               <div className="ownership-grid"><article><b>硬门槛先行</b><p>经理团队、结果权、现金、销售结构、地域与长期工时</p></article><article><b>进入距离</b><p>最多一至两跳；不靠全日制学位重启职业</p></article><article><b>支配检验</b><p>同等护城河下，选择更可达、更灵活、强度更低的路径</p></article><article><b>上行检验</b><p>能否积累 P&amp;L、产品、股权、客户或可重复 IP</p></article></div>
               <div className="role-table-wrap"><table className="research-table role-table universe-table"><thead><tr><th>宏观行业原型</th><th>当前状态</th><th>最适合的非技术入口</th><th>保留 / 降权原因</th></tr></thead><tbody>{industryUniverse.map((item) => <tr key={item.sector}><td><b>{item.sector}</b></td><td>{item.status}</td><td>{item.entry}</td><td>{item.verdict}</td></tr>)}</tbody></table></div>
               <div className="evidence-note"><b>本轮新增但不改主线：</b>AI 伙伴激活与内容平台新业务进入独立拉伸池；AI Commerce 进入条件式桥梁；能源与半导体/算力生态保留为观察或第二跳。它们不是遗漏，只是当前被健康、机器人或更低摩擦的产品伙伴路径支配。</div>
-            </section>
-
-            <section className="research-section" id="paths">
-              <div className="section-kicker">03 · 一至两跳路径</div><h2>职位名称不重要，24 个月后新增的证据才重要</h2>
-              <div className="path-grid">{paths.map((path) => <article className="path-card" key={path.code}><span>{path.code}</span><h3>{path.title}</h3><p>{path.route}</p><div><b>接受门槛</b>{path.gate}</div></article>)}</div>
-              <div className="bridge-rule"><b>桥梁岗的 12 个月检查：</b><ol><li>是否拥有产品发布、伙伴合同、客户采用或商业结果？</li><li>是否获得采购、支付、部署、监管或技术工作流知识？</li><li>是否建立至少 5 位能为下一跳背书的行业关系？</li><li>成果能否写成“我改变了什么结果”？</li></ol><p>四项少于三项，12–18 个月内启动下一跳。</p></div>
             </section>
 
             <section className="research-section" id="functions">

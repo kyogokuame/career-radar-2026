@@ -1,0 +1,31 @@
+.roadmap-section{padding-top:52px}
+.roadmap-stack{display:grid;gap:18px}
+.roadmap-lane{overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#f6f8fb}
+.roadmap-lane-header{display:flex;align-items:end;justify-content:space-between;gap:30px;padding:23px 25px;background:#fff;border-bottom:1px solid var(--line)}
+.roadmap-lane-header span{display:block;color:#71803e;font-size:10px;font-weight:900;letter-spacing:.1em}
+.roadmap-lane-header h3{margin:8px 0 0;font-size:24px;letter-spacing:-.045em}
+.roadmap-lane-header p{max-width:420px;margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.roadmap-tree{padding:20px 22px 24px}
+.roadmap-node{padding:16px 17px;background:#fff;border:1px solid #dce2eb;border-radius:15px;box-shadow:0 5px 15px #1d2a3d08}
+.roadmap-node>span{display:block;color:#71803e;font-size:9px;font-weight:900;letter-spacing:.08em}
+.roadmap-node h4{margin:9px 0 6px;color:var(--ink);font-size:15px;letter-spacing:-.025em}
+.roadmap-node p{margin:0;color:var(--muted);font-size:11px;line-height:1.58}
+.roadmap-node ul{margin:10px 0 0;padding-left:16px;color:#56647a;font-size:10px;line-height:1.6}
+.roadmap-node.origin{max-width:500px;margin:0 auto;background:var(--navy);border-color:var(--navy)}
+.roadmap-node.origin>span{color:var(--lime)}
+.roadmap-node.origin h4{color:#fff}
+.roadmap-node.origin p{color:#c2cee0}
+.roadmap-arrow{height:29px;display:grid;place-items:center;color:#8090a7;font-size:22px;line-height:1}
+.roadmap-branches{position:relative;display:grid;gap:13px}
+.roadmap-branches:before{content:"";position:absolute;top:-13px;left:50%;width:1px;height:13px;background:#9aa8ba}
+.two-branches{grid-template-columns:repeat(2,minmax(0,1fr))}
+.three-branches{grid-template-columns:repeat(3,minmax(0,1fr))}
+.roadmap-node.convergence{background:#f4f8e8;border-color:#d5e1b3}
+.roadmap-node.outcome{background:#edf2fa;border-color:#cfd9e8}
+.final-branches .outcome{min-height:110px}
+.health-lane{border-top:5px solid #819c2f}
+.robotics-lane{border-top:5px solid #4f6f9e}
+.robotics-lane .roadmap-lane-header span,.robotics-lane .roadmap-node>span{color:#4f6f9e}
+.robotics-lane .roadmap-node.origin>span{color:var(--lime)}
+@media(max-width:1050px){.roadmap-lane-header{display:block}.roadmap-lane-header p{margin-top:10px}.three-branches{grid-template-columns:1fr}.three-branches:before{left:50%}}
+@media(max-width:760px){.roadmap-tree{padding:15px}.roadmap-lane-header{padding:19px}.roadmap-lane-header h3{font-size:21px}.two-branches{grid-template-columns:1fr}.roadmap-branches:before{left:50%}.roadmap-node{padding:15px}.roadmap-arrow{height:24px}}
