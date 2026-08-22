@@ -1,7 +1,7 @@
 import SiteNav from "./SiteNav";
 
 type Priority = { rank: string; title: string; score: string; role: string; verdict: string };
-type VerifiedRole = { tier: string; company: string; title: string; href: string; structure: string; access: string; action: string; originalLanguage?: "ja" };
+type VerifiedRole = { tier: string; company: string; title: string; href: string; structure: string; access: string; action: string; companyLanguage?: "ja"; titleLanguage?: "ja" };
 
 const priorities: Priority[] = [
   { rank: "01", title: "AI 医疗健康与养老科技", score: "4.5 / 5", role: "长期主线首选", verdict: "日本验证复杂服务与支付，中国提供规模，专业壁垒来自监管、采购、支付、临床与客户采用。" },
@@ -13,12 +13,30 @@ const priorities: Priority[] = [
   { rank: "—", title: "垂直自媒体", score: "不单列", role: "副业分发层", verdict: "服务于行业声誉、客户来源与数据/IP 沉淀，不把粉丝量等同于商业模式。" },
 ];
 
+const industryUniverse = [
+  { sector: "医疗服务、养老、主动健康", status: "终局 A", entry: "商业化、采用、支付/准入、机构解决方案", verdict: "需求、责任和支付壁垒强；避开低毛利劳动密集服务与无明确支付方的产品。" },
+  { sector: "MedTech、诊断、生物医药、生命科学工具", status: "候选 B", entry: "APAC BD、市场准入、商业战略、生态合作", verdict: "器械、诊断与工具比从零进入药物研发现实；第一跳先取得行业事实与客户采用。" },
+  { sector: "AI、数据、云、网络安全、数字信任", status: "候选 A/B", entry: "伙伴激活、行业解决方案、产品商业化、治理", verdict: "AI 是横向能力层；只保留能部署、签约、采用或承担责任的岗位，纯套壳与泛战略降权。" },
+  { sector: "金融、保险、支付、财富管理、RegTech", status: "强桥梁 A", entry: "跨境支付生态、Treasury 产品、合作、区域经营", verdict: "现有资本最强、转职成功率高；只有增加 P&L、产品或伙伴所有权时接受，防止路径依赖。" },
+  { sector: "工业自动化、机器人、半导体、先进制造", status: "终局 A/B", entry: "产品、部署、解决方案、生态、战略客户", verdict: "实体工作流和技术壁垒强；机器人优先，半导体/算力生态放在取得产品或产业证据后的第二跳。" },
+  { sector: "能源、电网、储能、气候", status: "观察 B", entry: "能源软件商业化、PPA/储能合作、气候风险", verdict: "结构性资本投入成立，但当前行业门槛、固定地点和全流程销售使其被健康与机器人路径支配。" },
+  { sector: "物流、供应链、贸易、移动出行", status: "强桥梁 A", entry: "贸易科技、合规、平台合作、区域 GTM", verdict: "与 APAC 金融和企业客户经历高度相邻，也能连接机器人；不自动成为十年职业身份。" },
+  { sector: "零售、电商、消费品牌、旅游、本地生活", status: "桥梁 C", entry: "产品伙伴、平台生态、跨境品牌、区域经营", verdict: "进入容易但平台依赖、竞争和强度较高；只有 AI Commerce 首批团队或产品伙伴关系构成升级。" },
+  { sector: "游戏、媒体、短剧、创作者、内容 IP", status: "期权 C", entry: "平台新业务、全球发行、工具、IP 商业化", verdict: "保留 LINE Manga / WEBTOON 类平台入口；制作、买量、社区运营与爆款依赖不作长期底座。" },
+  { sector: "教育、企业学习、人才基础设施", status: "副业 C", entry: "企业学习产品、行业教育、知识产品", verdict: "通用课程易被 AI 商品化；必须绑定主业中的原创数据、案例、客户预算和可验证学习结果。" },
+  { sector: "企业服务、专业服务、PE-backed 整合", status: "结构 B/C", entry: "垂直软件 GTM、经营改善、并购整合、P&L", verdict: "未来收购创业/roll-up 可重估；当前纯咨询与 PE Value Creation 被长期强度和代理人角色支配。" },
+  { sector: "房地产、建筑、城市基础设施、PropTech", status: "邻接 C", entry: "城市科技、设施/养老地产运营、解决方案", verdict: "仅在养老设施、机器人或能源交叉场景保留；传统地产周期和现场性降低灵活度。" },
+  { sector: "农业、食品、食品科技、水资源", status: "低优先 D", entry: "农业机器人、供应链科技、平台商业化", verdict: "长期需求真实但当前进入资本弱；只有与机器人、气候或跨境供应链交叉时保留。" },
+  { sector: "航空航天、国防、公共安全、双用途科技", status: "低优先 D", entry: "国际合作、市场开发、战略客户", verdict: "技术和资本上行强，但国籍、出口管制、现场与基地限制破坏中日全球迁移性。" },
+  { sector: "GovTech、政府数字化、社会服务、非营利", status: "生态 C", entry: "数字政府、AI 治理、公共服务创新、合作", verdict: "政策背景可用、社会影响强；现金和股权上行通常较弱，更适合作为健康/AI 的客户生态。" },
+];
+
 const verifiedRoles: VerifiedRole[] = [
   { tier: "第一波", company: "SoftBank", title: "Healthcare Project Manager & Customer Success", href: "https://www.softbank.jp/recruit/career/positions/detail/005038/", structure: "A", access: "A−/B+", action: "医疗采用型主投；先确认固定现金、自治体正式日语支持、出差工时和本人对采用KPI的决策权。" },
   { tier: "第一波", company: "Johnson & Johnson", title: "Strategic Program Lead, Commercial Excellence", href: "https://www.careers.jnj.com/en/jobs/r-081443/innovative-medicine-strategic-program-lead-strategy-operations-dept-commercial-excellence/", structure: "B+", access: "A", action: "医疗主投；确认至少一半时间用于跨 BU 落地并拥有可量化结果。" },
   { tier: "第一波", company: "Rapyuta Robotics", title: "Product Manager, WMS / ASRS", href: "https://www.careercross.com/en/job/detail-1560218", structure: "A", access: "B", action: "机器人产品主投；用需求、路线图、发布和采用率建立产品资本。" },
   { tier: "条件式", company: "TELEXISTENCE", title: "Retail Partnership Development Expert", href: "https://jobs.lever.co/tx-inc.com/82ca69ae-72b1-4008-ac9c-ae0c22441bdc", structure: "A−", access: "B+", action: "先确认陌生开发、个人 quota、现金、现场比例和团队环境。" },
-  { tier: "条件式", company: "イチロウ", title: "介護・医療法人向け新規事業 BizDev", href: "https://herp.careers/v1/link/oGB9VGFVqXNW", structure: "A−", access: "A−", action: "现金需达到下限；关键人开拓不能成为工作核心。", originalLanguage: "ja" },
+  { tier: "条件式", company: "イチロウ", title: "介護・医療法人向け新規事業 BizDev", href: "https://herp.careers/v1/link/oGB9VGFVqXNW", structure: "A−", access: "A−", action: "现金需达到下限；关键人开拓不能成为工作核心。", companyLanguage: "ja", titleLanguage: "ja" },
   { tier: "条件式", company: "Medtronic", title: "Principal Commercial Analyst, EA&S", href: "https://medtronic.wd1.myworkdayjobs.com/en-US/MedtronicCareers/job/Principal-Commercial-Analyst--EA---Tokyo-_R61234-8", structure: "B−", access: "B+", action: "只作 12–18 个月医疗桥梁；必须写明转向战略账户/执行的路径。" },
   { tier: "预筛", company: "Woven by Toyota", title: "Project Manager, Robot PF Business Development", href: "https://jobs.lever.co/woven-by-toyota/356811fb-b4e9-4d77-92be-9be288b278ca", structure: "A", access: "B−/C+", action: "只有永久东京基地得到书面确认才继续；迁往裾野即否决。" },
   { tier: "拉伸", company: "Singtel", title: "Partnership Manager, Robotics", href: "https://groupcareers.singtel.com/job/Partnership-Manager-%28Robotics%29-Sing/1362465766/", structure: "A+", access: "B", action: "新加坡高质量拉伸；补一页 5G + Edge + Robotics 商业化案例。" },
@@ -27,6 +45,11 @@ const verifiedRoles: VerifiedRole[] = [
   { tier: "备选", company: "Johnson & Johnson MedTech", title: "Business Analytics & Market Intelligence Specialist", href: "https://www.careers.jnj.com/en/jobs/r-078120/medtech-business-analytics-market-intelligence-specialist-strategy-commercial-excellence-orthopedics/", structure: "C+", access: "A−", action: "只有外部客户接触、职级现金与内部转岗机制同时成立才保留。" },
   { tier: "第二跳", company: "Medtronic", title: "Strategic Program Manager, EA&S", href: "https://medtronic.wd1.myworkdayjobs.com/ja-JP/MedtronicCareers/job/Strategic-Program-Manager--3_R35798", structure: "A+", access: "C", action: "用作 2–4 年后的终局基准，不消耗当前常规申请时间。" },
   { tier: "部署拉伸", company: "TELEXISTENCE", title: "Business Development Expert, Logistics", href: "https://jobs.lever.co/tx-inc.com/56bfd248-a0ce-4031-8bcd-a2949512a7d1", structure: "A", access: "B−/C+", action: "多站点部署资本有价值；母语日语、高现场和早期团队风险需先筛。" },
+  { tier: "独立拉伸", company: "OpenAI", title: "Partner Director, Tokyo", href: "https://openai.com/careers/partner-director-tokyo-tokyo-japan/", structure: "A", access: "B−/C+", action: "已签伙伴激活而非纯获客；7 年联盟经历与母语日语是主要缺口，只通过推荐推进。" },
+  { tier: "兴趣拉伸", company: "LINE Digital Frontier", title: "新規事業開発・パートナーシップ担当", href: "https://hrmos.co/pages/ldf/jobs/0000107", structure: "A−", access: "B", action: "内容/IP 主业的现实入口；核实 9.5 小时裁量劳动、实际工时、现金和本人可拥有的业务结果。", titleLanguage: "ja" },
+  { tier: "条件桥梁", company: "Glance AI", title: "Manager, Commerce Partnerships — Japan", href: "https://job-boards.greenhouse.io/glance/jobs/8020092", structure: "A−", access: "A−/B+", action: "AI Commerce 首批团队与股权有上行；若陌生开发和个人成交成为核心则否决。" },
+  { tier: "观察", company: "Vena Energy", title: "Business Development, New Business", href: "https://recruit.jobcan.jp/vej/list", structure: "A", access: "C", action: "PPA、储能和新增收入真实；电力市场知识、商业谈判和行业履历使其暂不进入三个月主投。" },
+  { tier: "第二跳", company: "NVIDIA", title: "Senior Startups Inception Partner Manager", href: "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/Startups-Inception-Partner-Manager_JR2011828", structure: "A", access: "C", action: "证明 AI 算力生态岗位存在；先经机器人/AI 产品商业化取得技术与开发者生态可信度。" },
 ];
 
 const paths = [
@@ -113,7 +136,7 @@ const sidePortfolio = [
 ];
 
 const toc = [
-  ["结论", "#verdict"], ["行业", "#priority"], ["岗位", "#roles"], ["路径", "#paths"],
+  ["结论", "#verdict"], ["优先级", "#priority"], ["全行业", "#universe"], ["岗位", "#roles"], ["路径", "#paths"],
   ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["雇主", "#employers"], ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
 ];
 
@@ -126,7 +149,7 @@ export default function ResearchPage() {
           <div>
             <div className="eyebrow">CAREER RESEARCH · AUGUST 2026</div>
             <h1>不是押注热门行业，<br/><em>而是构建可迁移的所有权。</em></h1>
-            <p>基于个人履历、42 项约束问答、中国“十五五”与日本产业政策、全球地区筛选，以及当前或历史真实招聘岗位形成的 2026–2035 职业路线图。</p>
+            <p>基于个人履历、47 项约束问答、中国“十五五”与日本产业政策、全球地区筛选，以及当前或历史真实招聘岗位形成的 2026–2035 职业路线图。</p>
           </div>
           <aside className="research-verdict"><span>首四周市场测试</span><strong>医疗 60% · 机器人 30% · 跨境桥梁 10%</strong><p>不是永久押注。每两周以面试转化、岗位质量、经理和结果所有权重新分配。</p></aside>
         </section>
@@ -138,7 +161,7 @@ export default function ResearchPage() {
               <div className="section-kicker">00 · 核心结论</div><h2>下一份工作必须从“给建议”转向“拥有结果”</h2>
               <div className="verdict-grid"><article className="thesis-card"><span>职业终局</span><strong>专家型高管 → 创业者</strong><p>先成为商业化、产品或区域经营的 Senior IC / 无下属 Manager，再用行业事实换早期高管、股权与创业选择权。</p></article><article className="thesis-card"><span>最强资本</span><strong>中日英 × GTM × 复杂执行</strong><p>TikTok 日本商业规划、麦肯锡 GTM / 转型和交易银行经历形成跨市场商业底座。</p></article><article className="thesis-card warning"><span>最大缺口</span><strong>没有最终业务结果所有权</strong><p>尚未正式拥有收入、产品采用、成本、合同或 P&L；下一份工作必须补上其中至少一项。</p></article></div>
               <div className="constraint-strip"><b>不可妥协</b><span>日本固定现金 ≥ ¥8M</span><span>中国固定现金 ≥ ¥400k</span><span>东京 / 大阪</span><span>长期低—中强度</span><span>尊重、公平、心理安全</span><span>清晰决策权</span></div>
-              <div className="evidence-note"><b>医疗证据已升级：</b>麦肯锡期间参与罕见病药品上市，以及 J&amp;J GTM 组织架构战略。这让 Pharma / MedTech Commercial Excellence 成为当前最可达的行业入口；但在项目时长、落地和客户采纳证据明确前，不夸大为医疗 P&amp;L 经历。</div>
+              <div className="evidence-note"><b>医疗证据已升级：</b>麦肯锡期间参与罕见病药品上市，以及全球医疗公司的 GTM 组织架构战略。这让 Pharma / MedTech Commercial Excellence 成为当前最可达的行业入口；但在项目时长、落地和客户采纳证据明确前，不夸大为医疗 P&amp;L 经历。</div>
             </section>
 
             <section className="research-section" id="priority">
@@ -146,9 +169,16 @@ export default function ResearchPage() {
               <div className="priority-list">{priorities.map((item) => <article key={item.rank + item.title} className="priority-row"><span className="priority-rank">{item.rank}</span><div><h3>{item.title}</h3><p>{item.verdict}</p></div><div className="priority-score"><b>{item.score}</b><small>{item.role}</small></div></article>)}</div>
             </section>
 
+            <section className="research-section" id="universe">
+              <div className="section-kicker">01B · 全行业穷尽审计</div><h2>没有只研究喜欢的赛道：十五类宏观行业全部进入同一套筛选</h2><p className="section-lead">先覆盖 15 类宏观行业，再与 20 类非技术职能、9 类雇主结构及全球地区迁移性组合。任何新增赛道都必须映射到下表，或证明它构成第 16 类独立经济系统。</p>
+              <div className="ownership-grid"><article><b>硬门槛先行</b><p>经理团队、结果权、现金、销售结构、地域与长期工时</p></article><article><b>进入距离</b><p>最多一至两跳；不靠全日制学位重启职业</p></article><article><b>支配检验</b><p>同等护城河下，选择更可达、更灵活、强度更低的路径</p></article><article><b>上行检验</b><p>能否积累 P&amp;L、产品、股权、客户或可重复 IP</p></article></div>
+              <div className="role-table-wrap"><table className="research-table role-table universe-table"><thead><tr><th>宏观行业原型</th><th>当前状态</th><th>最适合的非技术入口</th><th>保留 / 降权原因</th></tr></thead><tbody>{industryUniverse.map((item) => <tr key={item.sector}><td><b>{item.sector}</b></td><td>{item.status}</td><td>{item.entry}</td><td>{item.verdict}</td></tr>)}</tbody></table></div>
+              <div className="evidence-note"><b>本轮新增但不改主线：</b>AI 伙伴激活与内容平台新业务进入独立拉伸池；AI Commerce 进入条件式桥梁；能源与半导体/算力生态保留为观察或第二跳。它们不是遗漏，只是当前被健康、机器人或更低摩擦的产品伙伴路径支配。</div>
+            </section>
+
             <section className="research-section" id="roles">
               <div className="section-kicker">02 · 真实岗位验证</div><h2>结构适配与当前可达性分开评分</h2><p className="section-lead">岗位均来自当前或历史真实招聘页面。点击公司职位可直接查看来源；页面失效不改变它作为岗位结构样本的价值。</p>
-              <div className="role-table-wrap"><table className="research-table role-table"><thead><tr><th>层级</th><th>公司与岗位</th><th>结构</th><th>可达</th><th>动作</th></tr></thead><tbody>{verifiedRoles.map((role) => <tr key={role.company + role.title}><td><span className="tier-pill">{role.tier}</span></td><td><a href={role.href} target="_blank" rel="noreferrer"><b lang={role.originalLanguage}>{role.company}</b><span lang={role.originalLanguage}>{role.title} ↗</span></a></td><td>{role.structure}</td><td>{role.access}</td><td>{role.action}</td></tr>)}</tbody></table></div>
+              <div className="role-table-wrap"><table className="research-table role-table"><thead><tr><th>层级</th><th>公司与岗位</th><th>结构</th><th>可达</th><th>动作</th></tr></thead><tbody>{verifiedRoles.map((role) => <tr key={role.company + role.title}><td><span className="tier-pill">{role.tier}</span></td><td><a href={role.href} target="_blank" rel="noreferrer"><b lang={role.companyLanguage}>{role.company}</b><span lang={role.titleLanguage}>{role.title} ↗</span></a></td><td>{role.structure}</td><td>{role.access}</td><td>{role.action}</td></tr>)}</tbody></table></div>
               <div className="role-legend"><span><b>A</b> 高度成立</span><span><b>B</b> 有一项可补缺口</span><span><b>C</b> 目前硬门槛明显</span></div>
             </section>
 
@@ -214,6 +244,7 @@ export default function ResearchPage() {
             <section className="research-section" id="sources">
               <div className="section-kicker">12 · 公开资料</div><h2>政策、产业与股权数据来源</h2>
               <div className="source-grid"><a href="https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2026/2026_zt03/yw/202603/t20260314_1430877.html" target="_blank" rel="noreferrer"><b>中国“十五五”规划纲要</b><span>AI、机器人、生物医药与未来产业 ↗</span></a><a href="https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=106306" target="_blank" rel="noreferrer"><b>国民健康“十五五”规划</b><span>健康与养老结构性信号 ↗</span></a><a href="https://www8.cao.go.jp/kourei/measure/taikou/r06/hon-index.html" target="_blank" rel="noreferrer"><b>日本高龄社会对策大纲</b><span>老龄化政策与照护需求 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/mono/robot/index.html" target="_blank" rel="noreferrer"><b>日本 METI 机器人政策</b><span>实体 AI 与机器人产业 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/contents/index.html?theme=6" target="_blank" rel="noreferrer"><b>日本内容产业政策</b><span>游戏、IP 与内容国际化 ↗</span></a><a href="https://www.who.int/news-room/fact-sheets/detail/ageing-and-health" target="_blank" rel="noreferrer"><b>WHO · Ageing and health</b><span>全球老龄化长期趋势 ↗</span></a><a href="https://carta.com/data/apac-me-equity-report/" target="_blank" rel="noreferrer"><b>Carta · APAC Equity Report</b><span>期权池、归属与行权数据 ↗</span></a><a href="https://carta.com/data/startup-compensation-h2-2025/" target="_blank" rel="noreferrer"><b>Carta · Startup Compensation</b><span>硬件、healthtech 与游戏就业信号 ↗</span></a><a href="https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure" target="_blank" rel="noreferrer"><b>ILO · GenAI and Jobs 2025</b><span>任务暴露、转型与替代边界 ↗</span></a><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/2-jobs-outlook/" target="_blank" rel="noreferrer"><b>WEF · Future of Jobs 2025</b><span>2030 岗位与技能结构信号 ↗</span></a><a href="https://www.rapyuta-robotics.com/2022/04/20/series-c-eng/" target="_blank" rel="noreferrer"><b>Rapyuta · Series C</b><span>融资金额、用途与累计资本 ↗</span></a><a href="https://tx-inc.com/en/blog/2023/07/06/12082/" target="_blank" rel="noreferrer"><b>TELEXISTENCE · Series B</b><span>资本、量产伙伴与商业部署 ↗</span></a><a href="https://corp.ichirou.co.jp/%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BAb%E3%81%A7%E7%B7%8F%E9%A1%8D11-3%E5%84%84%E5%86%86%E3%81%AE%E8%B3%87%E9%87%91%E8%AA%BF%E9%81%94%E3%82%92%E5%AE%8C%E4%BA%86/" target="_blank" rel="noreferrer"><b><span lang="ja">イチロウ</span> · Series B</b><span>融资新鲜度与累计金额 ↗</span></a><a href="https://www.gaussy.com/company" target="_blank" rel="noreferrer"><b>Gaussy · Company</b><span>产业股东与经营团队 ↗</span></a></div>
+              <div className="source-grid source-grid-secondary"><a href="https://openai.com/careers/partner-director-tokyo-tokyo-japan/" target="_blank" rel="noreferrer"><b>OpenAI · Partner Director Tokyo</b><span>已签伙伴激活、联合方案与商业条款 ↗</span></a><a href="https://hrmos.co/pages/ldf/jobs/0000107" target="_blank" rel="noreferrer"><b>LINE Digital Frontier · BizDev</b><span>内容/IP 平台新业务与合作 ↗</span></a><a href="https://job-boards.greenhouse.io/glance/jobs/8020092" target="_blank" rel="noreferrer"><b>Glance AI · Commerce Partnerships</b><span>AI Commerce 日本首批团队与股权 ↗</span></a><a href="https://recruit.jobcan.jp/vej/list" target="_blank" rel="noreferrer"><b>Vena Energy · Japan Careers</b><span>PPA、储能、电力交易与新增收入 ↗</span></a><a href="https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/Startups-Inception-Partner-Manager_JR2011828" target="_blank" rel="noreferrer"><b>NVIDIA · Inception Partner Manager</b><span>AI 算力、创业公司与开发者生态 ↗</span></a></div>
               <div className="research-footer"><b>Q43–47 的保守假设</b><p>未确认项目时长、地域、个人 workstream、采纳与量化结果，因此申请材料只陈述已确认职责，不推断实施成效或个人归因；既往医疗客户默认匿名；复杂日语谈判、高难度书面沟通及传统机构高层沟通默认需要母语支持。</p></div>
             </section>
           </div>
