@@ -61,6 +61,20 @@ const functionRoles = [
   { name: "个人猎手销售 / 传统咨询 / PE Value Creation", reach: "A", ownership: "与销售偏好或长期强度冲突", decision: "已被硬约束支配并淘汰。" },
 ];
 
+const aiRisks = [
+  { role: "医疗结果型客户成功", exposure: "中", compression: "低—中", replacement: "低", verdict: "首选；AI增强分层与分析，人仍负责公共资金、信任、采用和实施结果。" },
+  { role: "机器人部署 / 产品商业化", exposure: "低—中", compression: "低", replacement: "低", verdict: "长期护城河最强；避免永久定制实施和无产品输入的现场救火。" },
+  { role: "市场准入 / 支付 / 证据", exposure: "中", compression: "低—中", replacement: "低", verdict: "第二跳高价值能力；检索可自动化，证据取舍、支付策略和责任不会快速消失。" },
+  { role: "伙伴激活 / 复杂合同", exposure: "中", compression: "中", replacement: "低—中", verdict: "保留；AI压缩准备工作，关系、条款、承诺与资源调动仍需人负责。" },
+  { role: "非技术产品经理", exposure: "中—高", compression: "中", replacement: "低—中", verdict: "只有写PRD和整理backlog会被压缩；拥有取舍、发布和采用才安全。" },
+  { role: "BU / Japan / APAC P&L", exposure: "中", compression: "低", replacement: "低", verdict: "五至十年终局；AI增强决策，不替代问责、组织领导和资源配置。" },
+  { role: "Commercial / Launch Excellence", exposure: "高", compression: "中—高", replacement: "中", verdict: "只作落地型桥梁；分群、材料和KPI设计将自动化，必须拥有执行结果。" },
+  { role: "Corporate Venture / Chief of Staff / 政策", exposure: "高", compression: "中—高", replacement: "中", verdict: "条件式；只有能调动资本、签约、塑造制度或建设业务时保留。" },
+  { role: "BizOps / 分析 / 市场情报 / 通用战略", exposure: "很高", compression: "高", replacement: "中—高", verdict: "不作为终局；与现有能力重叠且最容易被AI压缩团队规模。" },
+  { role: "PMO / 会议治理 / 进度报告", exposure: "很高", compression: "高", replacement: "高", verdict: "默认否决；除非同时拥有go-live、采用、成本或收入。" },
+  { role: "泛内容 / 通用课程 / 翻译 / 基础研究", exposure: "很高", compression: "高", replacement: "高", verdict: "不作为商业模式；内容只做原创数据、行业关系和产品化服务的分发层。" },
+];
+
 const regions = [
   { place: "日本", share: "70%", level: "主战场", why: "永驻、履历与网络最强；东京为默认基地，大阪是唯一可接受迁居城市。" },
   { place: "中国", share: "20%", level: "总部国际化", why: "只投医疗 AI、机器人或 AI 产品的日本/全球经营岗位；普通国内销售与平台招商不投。" },
@@ -81,7 +95,7 @@ const sidePortfolio = [
 
 const toc = [
   ["结论", "#verdict"], ["行业", "#priority"], ["岗位", "#roles"], ["路径", "#paths"],
-  ["职能", "#functions"], ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
+  ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
 ];
 
 export default function ResearchPage() {
@@ -131,19 +145,27 @@ export default function ResearchPage() {
               <div className="evidence-note"><b>排序修正：</b>客户成功 / 部署经营 ≈ 产品商业化 / 新业务 &gt; 非技术产品经理 &gt; 既有伙伴激活 &gt; 有落地的 Commercial Excellence &gt; 纯分析、战略与 PMO。企业创投和 VC 没有被遗漏，但当前仍把你放在“评价或支持别人经营”的位置。</div>
             </section>
 
+            <section className="research-section" id="ai-resilience">
+              <div className="section-kicker">05 · AI 韧性</div><h2>不是寻找 AI 碰不到的职位，而是拥有 AI 不能独立承担的结果</h2>
+              <div className="evidence-note"><b>公开证据：</b>ILO 2025 估计全球约四分之一就业有某种生成式 AI 暴露，但最高暴露层约占 3.3%；岗位转型比完整替代更可能。高收入经济体暴露更高，所以“高学历、战略、分析”本身不是护城河。</div>
+              <div className="ownership-grid"><article><b>现实执行</b><p>现场、系统集成、异常与组织行为</p></article><article><b>受监管责任</b><p>医疗、支付、隐私、安全与公共资金</p></article><article><b>高信任协商</b><p>合同、联盟、医院、自治体与高层变革</p></article><article><b>最终结果</b><p>采用、收入、成本、预算与 P&amp;L</p></article></div>
+              <div className="role-table-wrap"><table className="research-table role-table"><thead><tr><th>职能 / 任务组合</th><th>任务暴露</th><th>人数压缩</th><th>完整替代</th><th>个人结论</th></tr></thead><tbody>{aiRisks.map((risk) => <tr key={risk.role}><td><b>{risk.role}</b></td><td>{risk.exposure}</td><td>{risk.compression}</td><td>{risk.replacement}</td><td>{risk.verdict}</td></tr>)}</tbody></table></div>
+              <div className="bridge-rule"><b>面试时用六个问题测试：</b><ol><li>若分析和初稿速度提高 70%，岗位还解决什么问题？</li><li>是否亲自进入客户、用户或现场？</li><li>本人能改变采用、合同、预算、成本或收入的哪些杠杆？</li><li>AI 输出错误或实施失败时，谁最终判断并承担责任？</li><li>团队会因 AI 减员，还是扩大客户与产品范围？</li><li>24 个月后能带走行业网络、部署数据与可披露业绩，还是只会更快做报告？</li></ol></div>
+            </section>
+
             <section className="research-section" id="regions">
-              <div className="section-kicker">05 · 全球地区策略</div><h2>全球不平均撒网：把迁移成本作为真实变量</h2>
+              <div className="section-kicker">06 · 全球地区策略</div><h2>全球不平均撒网：把迁移成本作为真实变量</h2>
               <div className="region-list">{regions.map((region) => <article key={region.place}><div><h3>{region.place}</h3><span>{region.level}</span></div><b>{region.share}</b><p>{region.why}</p></article>)}</div><p className="small-note">中国迁居只有在“完整区域经营权 + 优秀团队 + 显著现金/股权回报”同时成立时考虑。新加坡与香港是定向拉伸，不是为了国际化标签牺牲职位质量。</p>
             </section>
 
             <section className="research-section" id="portfolio">
-              <div className="section-kicker">06 · 主业 + 副业</div><h2>副业不是第二份工作，而是个人所有权实验</h2>
+              <div className="section-kicker">07 · 主业 + 副业</div><h2>副业不是第二份工作，而是个人所有权实验</h2>
               <div className="portfolio-table">{sidePortfolio.map(([rank, title, timing, why]) => <article key={rank}><b>{rank}</b><h3>{title}</h3><span>{timing}</span><p>{why}</p></article>)}</div>
               <div className="topic-choice"><div><span>母题 A</span><h3>机器人真实落地</h3><p>日本物流、零售和养老场景的 ROI、采购、部署与运营，对中国公司出海及全球 RaaS 的启示。</p></div><div><span>母题 B</span><h3>老龄化商业基础设施</h3><p>日本养老健康的使用者—决策者—支付方—服务者结构，以及对中国、新加坡和全球老龄化市场的迁移。</p></div></div>
             </section>
 
             <section className="research-section" id="income">
-              <div className="section-kicker">07 · 收入与股权</div><h2>工资是阶梯；非线性来自所有权</h2>
+              <div className="section-kicker">08 · 收入与股权</div><h2>工资是阶梯；非线性来自所有权</h2>
               <div className="ownership-grid"><article><b>公司所有权</b><p>期权、限制性股票、RSU</p></article><article><b>经营所有权</b><p>P&amp;L、毛利、分红与结果奖金</p></article><article><b>产品所有权</b><p>数据库、工具、课程、顾问产品</p></article><article><b>分发与 IP</b><p>邮件名单、原创数据、版权和客户关系</p></article></div>
               <div className="income-stages"><article><span>0–2 年</span><h3>转入并取得结果</h3><b>优先 ¥9M–12M + 奖金</b><p>不跌破 ¥8M。副业允许 ¥0–1M，先验证问题、关系和第一个资产。</p></article><article><span>2–5 年</span><h3>产品 / 商业负责人</h3><b>情景 ¥12M–20M 总现金</b><p>变量与账户、团队或 P&amp;L 挂钩；工资外收入目标约 10%–20%。</p></article><article><span>5–10 年</span><h3>区域 GM / 早期高管</h3><b>高现金或主动换所有权</b><p>离开雇主后仍保留股权、客户、声誉、产品或 IP。</p></article></div>
               <div className="formula-box"><span>统一公式</span><strong>退出时普通股价值 × 入职完全稀释持股 × 归属 × 后续稀释 × 普通股分配系数</strong><p>再单独扣除失败概率、时间、行权成本、税费和机会成本。只给期权张数、不提供完全稀释比例时，比较 offer 按零计。</p></div>
@@ -152,19 +174,19 @@ export default function ResearchPage() {
             </section>
 
             <section className="research-section" id="plan">
-              <div className="section-kicker">08 · 三个月执行</div><h2>把求职变成可证伪的市场实验</h2>
+              <div className="section-kicker">09 · 三个月执行</div><h2>把求职变成可证伪的市场实验</h2>
               <div className="timeline"><article><span>第 0–1 周</span><h3>建立两套叙事</h3><p>医疗版突出罕见病上市、J&amp;J GTM 和商业执行；机器人版突出复杂运营、客户需求和跨职能落地。各做一页行业作品。</p></article><article><span>第 1–4 周</span><h3>集中启动漏斗</h3><p>医疗 60%、机器人 30%、跨境桥梁 10%；优先推荐与招聘人预筛，记录回复、面试、硬门槛和拒绝原因。</p></article><article><span>第 3–8 周</span><h3>用反向尽调筛团队</h3><p>验证经理、公平、决策权、真实工时、结果指标、现场比例、现金与股权，不因公司品牌降低门槛。</p></article><article><span>第 8–12 周</span><h3>竞争 offer 后签约</h3><p>只有书面 offer、薪酬股权核验、汇报线确认和团队反向尽调全部完成后离职；通知期一个月。</p></article></div>
             </section>
 
             <section className="research-section" id="gates">
-              <div className="section-kicker">09 · Offer 一票否决</div><h2>高薪、品牌或行业标签不能抵消坏结构</h2>
+              <div className="section-kicker">10 · Offer 一票否决</div><h2>高薪、品牌或行业标签不能抵消坏结构</h2>
               <div className="gate-grid"><article><span>01</span><h3>经理与团队</h3><p>不尊重、微观管理、评价不公、政治和缺乏心理安全，直接退出。</p></article><article><span>02</span><h3>结果所有权</h3><p>职责只有协调、报告和治理，没有产品、客户、合同、收入或成本结果，退出。</p></article><article><span>03</span><h3>生活方式</h3><p>长期 always-on、无法解释的高强度，或要求迁往东京/大阪以外，退出。</p></article><article><span>04</span><h3>销售结构</h3><p>个人陌生开发、全流程猎手和硬 quota 是核心，退出；团队/账户采用目标可以接受。</p></article><article><span>05</span><h3>现金与股权</h3><p>现金低于下限，或只报期权张数、拒绝完全稀释比例，退出。</p></article><article><span>06</span><h3>桥梁保质期</h3><p>无法在 12–18 个月转向产品、客户、采用或 P&amp;L，退出。</p></article></div>
               <div className="diligence"><h3>股权签约前必须书面确认</h3><p>授予工具与实体 · 完全稀释比例 · 普通股公允价值与行权价 · 归属与 cliff · refresh grant · 离职行权窗口 · 控制权变更加速 · 期权池与融资稀释 · 优先清算和债务 · 二级流动性 · 日本税务处理 · 董事会批准。</p></div>
             </section>
 
             <section className="research-section" id="sources">
-              <div className="section-kicker">10 · 公开资料</div><h2>政策、产业与股权数据来源</h2>
-              <div className="source-grid"><a href="https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2026/2026_zt03/yw/202603/t20260314_1430877.html" target="_blank" rel="noreferrer"><b>中国“十五五”规划纲要</b><span>AI、机器人、生物医药与未来产业 ↗</span></a><a href="https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=106306" target="_blank" rel="noreferrer"><b>国民健康“十五五”规划</b><span>健康与养老结构性信号 ↗</span></a><a href="https://www8.cao.go.jp/kourei/measure/taikou/r06/hon-index.html" target="_blank" rel="noreferrer"><b>日本高龄社会对策大纲</b><span>老龄化政策与照护需求 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/mono/robot/index.html" target="_blank" rel="noreferrer"><b>日本 METI 机器人政策</b><span>实体 AI 与机器人产业 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/contents/index.html?theme=6" target="_blank" rel="noreferrer"><b>日本内容产业政策</b><span>游戏、IP 与内容国际化 ↗</span></a><a href="https://www.who.int/news-room/fact-sheets/detail/ageing-and-health" target="_blank" rel="noreferrer"><b>WHO · Ageing and health</b><span>全球老龄化长期趋势 ↗</span></a><a href="https://carta.com/data/apac-me-equity-report/" target="_blank" rel="noreferrer"><b>Carta · APAC Equity Report</b><span>期权池、归属与行权数据 ↗</span></a><a href="https://carta.com/data/startup-compensation-h2-2025/" target="_blank" rel="noreferrer"><b>Carta · Startup Compensation</b><span>硬件、healthtech 与游戏就业信号 ↗</span></a></div>
+              <div className="section-kicker">11 · 公开资料</div><h2>政策、产业与股权数据来源</h2>
+              <div className="source-grid"><a href="https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2026/2026_zt03/yw/202603/t20260314_1430877.html" target="_blank" rel="noreferrer"><b>中国“十五五”规划纲要</b><span>AI、机器人、生物医药与未来产业 ↗</span></a><a href="https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=106306" target="_blank" rel="noreferrer"><b>国民健康“十五五”规划</b><span>健康与养老结构性信号 ↗</span></a><a href="https://www8.cao.go.jp/kourei/measure/taikou/r06/hon-index.html" target="_blank" rel="noreferrer"><b>日本高龄社会对策大纲</b><span>老龄化政策与照护需求 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/mono/robot/index.html" target="_blank" rel="noreferrer"><b>日本 METI 机器人政策</b><span>实体 AI 与机器人产业 ↗</span></a><a href="https://www.meti.go.jp/policy/mono_info_service/contents/index.html?theme=6" target="_blank" rel="noreferrer"><b>日本内容产业政策</b><span>游戏、IP 与内容国际化 ↗</span></a><a href="https://www.who.int/news-room/fact-sheets/detail/ageing-and-health" target="_blank" rel="noreferrer"><b>WHO · Ageing and health</b><span>全球老龄化长期趋势 ↗</span></a><a href="https://carta.com/data/apac-me-equity-report/" target="_blank" rel="noreferrer"><b>Carta · APAC Equity Report</b><span>期权池、归属与行权数据 ↗</span></a><a href="https://carta.com/data/startup-compensation-h2-2025/" target="_blank" rel="noreferrer"><b>Carta · Startup Compensation</b><span>硬件、healthtech 与游戏就业信号 ↗</span></a><a href="https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure" target="_blank" rel="noreferrer"><b>ILO · GenAI and Jobs 2025</b><span>任务暴露、转型与替代边界 ↗</span></a><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/2-jobs-outlook/" target="_blank" rel="noreferrer"><b>WEF · Future of Jobs 2025</b><span>2030 岗位与技能结构信号 ↗</span></a></div>
               <div className="research-footer"><b>仍待补齐</b><p>两个医疗项目的时长、地域、个人 workstream、客户采纳和可公开结果；以及是否存在从需求定义走到 go-live、UAT 或客户采用的 IT / DX / 物流项目。</p></div>
             </section>
           </div>
