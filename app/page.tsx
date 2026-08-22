@@ -89,8 +89,8 @@ export default function Home() {
   return <><SiteNav active="dashboard"/><main>
     <section className="hero">
       <div className="eyebrow">CAREER RADAR · 2026</div>
-      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“管理职 / 年收不低于 1,300 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>JMDC casual 面谈已确认</strong><p>8 月 27 日（周四）10:00–11:00 · 线上</p></div></div>
-      <div className="metrics"><div><b>12</b><span>个职位</span></div><div><b>{active}</b><span>进行中</span></div><div><b>{high}</b><span>高适配</span></div><div><b>¥13M+</b><span>年收基线</span></div></div>
+      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“保证现金不低于 800 万日元、理想区间 900–1,200 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>JMDC casual 面谈已确认</strong><p>8 月 27 日（周四）10:00–11:00 · 线上</p></div></div>
+      <div className="metrics"><div><b>12</b><span>个职位</span></div><div><b>{active}</b><span>进行中</span></div><div><b>{high}</b><span>高适配</span></div><div><b>¥8M+</b><span>保证现金下限</span></div></div>
     </section>
     <section className="controls">
       <label className="search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="搜索公司、职位、关键词"/></label>

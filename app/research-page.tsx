@@ -153,9 +153,27 @@ const sidePortfolio = [
   ["7", "短剧制作", "暂不做", "买量、平台、合规与爆款风险过高"],
 ];
 
+const compensationBenchmarks = [
+  { company: "SoftBank", role: "Healthcare PM & Customer Success", href: "https://www.softbank.jp/recruit/career/positions/detail/005038/", status: "当前", pay: "理论年收 ¥7.74–14.11M", breakdown: "月给 ¥0.492–0.688M；理论年收含浮动奖金、特别奖金及按 30 小时估算的加班。月给年化约 ¥5.90–8.26M。", work: "可远程；股权未披露", verdict: "只在月给接近上端、采用 KPI 与决策权明确时通过。不能用理论年收上限证明固定现金达标。" },
+  { company: "HOKUTO", role: "Account Manager", href: "https://herp.careers/careers/companies/hokuto/jobs/1otFciqrvxVX", status: "当前", pay: "¥8–15M + SO", breakdown: "低端示例基本给约 ¥5.80M/年，其余含 45 小时固定加班及深夜手当；区间整体是保证年收而非纯基本给。", work: "全远程；期权制度", verdict: "现金与灵活性成立，但未开发客户、个人拓客与高固定加班时数触犯红线；作为市场上限证据，不主投。" },
+  { company: "Ubie", role: "Business Development / New Business Lead", href: "https://herp.careers/v1/ubiehr/EtvP7cIOYs4s", status: "当前", pay: "¥8–15M + SO", breakdown: "¥10M 示例中基本给约 ¥7.44M，固定加班约 ¥2.56M；45 小时固定加班。期权是否授予及水平个别决定。", work: "混合办公；早期经营权高", verdict: "所有权结构好，但现金质量与持续强度需打折；只有明确结果权、团队健康及有意义的完全稀释持股才推进。" },
+  { company: "Gaussy", role: "Roboware Business Owner", href: "https://www.jac-recruitment.jp/search/NJB2394803/", status: "当前", pay: "¥8–12M + 业绩/销售激励", breakdown: "年俸制；月给 ¥0.67–1.00M、基本给 ¥0.60–0.85M；通常加班另付，无固定奖金。", work: "月均加班 10–20h；弹性制", verdict: "目前公开样本中现金质量与工时最匹配；仍需否决个人猎手销售、母语谈判和高现场比例。" },
+  { company: "Rapyuta Robotics", role: "Product Manager, WMS / ASRS", href: "https://www.careercross.com/en/job/detail-1560218", status: "当前", pay: "¥7–15M", breakdown: "公开职位未披露基本给、奖金、固定加班或股权拆分。", work: "东京；弹性制", verdict: "只有 offer 位于区间上半且薪酬拆分通过才成立；产品采用所有权比名义年收更重要。" },
+  { company: "イチロウ", role: "介護・医療法人向け新規事業 BizDev", href: "https://herp.careers/v1/link/oGB9VGFVqXNW", status: "当前", pay: "总年收 ¥7.06–10.30M", breakdown: "含奖金；月给年化约 ¥6.27–9.14M，基本给年化约 ¥4.77–6.96M，另含 40 小时固定加班。", work: "每周出社 3–4 日；平均加班 21.1h；可副业", verdict: "只有接近上端才满足保证现金下限；早期强度可以接受，但关键人开拓不能成为长期核心。" },
+  { company: "Wise", role: "Senior Business Development Manager", href: "https://wise.jobs/job/senior-business-development-manager-in-tokyo-jid-367", status: "历史", pay: "¥19.0–27.4M + RSU", breakdown: "公开历史职位直接披露现金区间与 RSU，证明全球平台桥梁可显著抬高现金上限。", work: "东京；快节奏；职位已关闭", verdict: "岗位明确要求独立获客、pipeline 和个人商业目标，因此即使高薪也否决；只作为机会成本基准。" },
+];
+
+const compensationPaths = [
+  { path: "H0 · 成熟健康平台", now: "目标 ¥9–14M；SoftBank 说明总包上限高，但固定现金需逐项拆解", mid: "情景 ¥12–20M：采用、账户组合或 BU 结果", long: "Japan / APAC P&L + 奖金 / RSU；再叠加个人 IP", verdict: "主线，优先现金与可控结果" },
+  { path: "H2 · 增长型 HealthTech", now: "当前样本 ¥8–15M + SO；常伴 40–45h 固定加班", mid: "产品商业化 / 事业负责人；现金与股权同时升级", long: "早期高管、联合创始人或行业产品化顾问", verdict: "高上行，强度与股权必须匹配" },
+  { path: "R1/R2 · 机器人产品 / RaaS", now: "当前样本 ¥7–15M；Gaussy ¥8–12M 的现金质量最好", mid: "Lead PM / Solutions Lead / Vertical P&L", long: "Japan / APAC GM、CBO 或利润分成", verdict: "主线候选，防止长期定制实施" },
+  { path: "B · 全球科技 / 支付桥梁", now: "历史高端样本 ¥19–27.4M + RSU，但销售结构常冲突", mid: "只有转成产品、伙伴组合或区域经营才继续", long: "不能沉淀健康 / 机器人事实则主动退出", verdict: "机会成本锚，不为现金牺牲红线" },
+  { path: "C · 内容 / IP 平台", now: "当前公开样本薪酬多未披露，不能证明现金下限", mid: "用副业验证付费、复购、数据或 IP", long: "成为主业只在收入与所有权连续验证后", verdict: "先作为副业期权" },
+];
+
 const toc = [
   ["结论", "#verdict"], ["优先级", "#priority"], ["全行业", "#universe"], ["岗位", "#roles"], ["路径", "#paths"],
-  ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["雇主", "#employers"], ["模式", "#business-models"], ["地区", "#regions"], ["副业", "#portfolio"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
+  ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["雇主", "#employers"], ["模式", "#business-models"], ["地区", "#regions"], ["副业", "#portfolio"], ["薪酬", "#compensation"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
 ];
 
 export default function ResearchPage() {
@@ -244,6 +262,15 @@ export default function ResearchPage() {
               <div className="section-kicker">08 · 主业 + 副业</div><h2>副业不是第二份工作，而是个人所有权实验</h2>
               <div className="portfolio-table">{sidePortfolio.map(([rank, title, timing, why]) => <article key={rank}><b>{rank}</b><h3>{title}</h3><span>{timing}</span><p>{why}</p></article>)}</div>
               <div className="topic-choice"><div><span>母题 A</span><h3>机器人真实落地</h3><p>日本物流、零售和养老场景的 ROI、采购、部署与运营，对中国公司出海及全球 RaaS 的启示。</p></div><div><span>母题 B</span><h3>老龄化商业基础设施</h3><p>日本养老健康的使用者—决策者—支付方—服务者结构，以及对中国、新加坡和全球老龄化市场的迁移。</p></div></div>
+            </section>
+
+            <section className="research-section" id="compensation">
+              <div className="section-kicker">08B · 真实薪酬校准</div><h2>先拆“保证现金”，再讨论奖金和股权</h2><p className="section-lead">以下均来自市场上当前或近期公开职位；职位区间不是个人可获得报价，也不是未来收入预测。统一分开基本给、固定加班、奖金、股权与工作方式，避免把理论总包误当固定现金。</p>
+              <div className="verdict-grid"><article className="thesis-card"><span>硬门槛</span><strong>保证现金 ≥ ¥8M</strong><p>奖金、特别奖金和未量化股权不用于满足下限；固定加班虽是保证现金，仍要单独评估对应工时风险。</p></article><article className="thesis-card"><span>理想首跳</span><strong>¥9–12M + 可验证上行</strong><p>上行来自账户、采用、团队或 P&amp;L 奖金，以及可核验的完全稀释持股，不来自模糊的“未来会有期权”。</p></article><article className="thesis-card warning"><span>市场反例</span><strong>高薪不能覆盖红线</strong><p>Wise 的历史职位证明高现金存在，也同时证明个人拓客、pipeline 与 quota 会让高薪岗位失去适配性。</p></article></div>
+              <div className="role-table-wrap"><table className="research-table role-table comp-table"><thead><tr><th>公司 / 职位</th><th>公开区间</th><th>现金拆分</th><th>工作方式 / 股权</th><th>个人判断</th></tr></thead><tbody>{compensationBenchmarks.map((item) => <tr key={item.company + item.role}><td><a href={item.href} target="_blank" rel="noreferrer"><b lang={item.company === "イチロウ" ? "ja" : undefined}>{item.company}</b><span>{item.role} · {item.status} ↗</span></a></td><td><b>{item.pay}</b></td><td>{item.breakdown}</td><td>{item.work}</td><td>{item.verdict}</td></tr>)}</tbody></table></div>
+              <p className="small-note">公开信息截至 2026 年 8 月 22 日。SoftBank“理论年收”包含浮动项；HOKUTO、Ubie、<span lang="ja">イチロウ</span> 的区间包含固定加班；Gaussy 的通常加班费另付。拿到 offer 后仍须以劳动条件通知书和股权授予文件为准。</p>
+              <div className="role-table-wrap comp-path-wrap"><table className="research-table comp-table"><thead><tr><th>路径</th><th>0–2 年证据与目标</th><th>2–5 年情景</th><th>5–10 年非线性机制</th><th>决策</th></tr></thead><tbody>{compensationPaths.map((item) => <tr key={item.path}><td><b>{item.path}</b></td><td>{item.now}</td><td>{item.mid}</td><td>{item.long}</td><td>{item.verdict}</td></tr>)}</tbody></table></div>
+              <p className="small-note">中长期数字是用于筛选 offer 与设计跳槽的目标情景，不是市场预测。若 18 个月后仍未获得产品、采用、合同、成本或 P&amp;L 之一的结果所有权，即使现金上涨也视为路径失败。</p>
             </section>
 
             <section className="research-section" id="income">
