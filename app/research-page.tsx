@@ -14,6 +14,7 @@ const priorities: Priority[] = [
 ];
 
 const verifiedRoles: VerifiedRole[] = [
+  { tier: "第一波", company: "SoftBank", title: "Healthcare Project Manager & Customer Success", href: "https://www.softbank.jp/recruit/career/positions/detail/005038/", structure: "A", access: "A−/B+", action: "医疗采用型主投；先确认固定现金、自治体正式日语支持、出差工时和本人对采用KPI的决策权。" },
   { tier: "第一波", company: "Johnson & Johnson", title: "Strategic Program Lead, Commercial Excellence", href: "https://www.careers.jnj.com/en/jobs/r-081443/innovative-medicine-strategic-program-lead-strategy-operations-dept-commercial-excellence/", structure: "B+", access: "A", action: "医疗主投；确认至少一半时间用于跨 BU 落地并拥有可量化结果。" },
   { tier: "第一波", company: "Rapyuta Robotics", title: "Product Manager, WMS / ASRS", href: "https://www.careercross.com/en/job/detail-1560218", structure: "A", access: "B", action: "机器人产品主投；用需求、路线图、发布和采用率建立产品资本。" },
   { tier: "条件式", company: "TELEXISTENCE", title: "Retail Partnership Development Expert", href: "https://jobs.lever.co/tx-inc.com/82ca69ae-72b1-4008-ac9c-ae0c22441bdc", structure: "A−", access: "B+", action: "先确认陌生开发、个人 quota、现金、现场比例和团队环境。" },
@@ -29,6 +30,7 @@ const verifiedRoles: VerifiedRole[] = [
 ];
 
 const paths = [
+  { code: "H0", title: "健康结果部署 → 平台业务负责人", route: "自治体 / 保险方项目与客户成功 → 利用、持续、就诊和医疗费结果 → 标准化跨地区复制 → 健康平台 Japan / APAC Business Lead", gate: "必须拥有采用KPI和改善动作；固定现金达标，正式日语有组织支持，不退化成会议与进度管理。" },
   { code: "H1", title: "成熟医疗行业学徒 → 战略账户", route: "Commercial Excellence 执行岗 → 12–18 个月取得 BU / 产品落地结果 → 医疗战略账户或解决方案 → Japan / APAC Commercial Lead", gate: "桥梁岗 18 个月到期；若仍只有治理、会议和报告，立即转出。" },
   { code: "H2", title: "健康科技新业务 → 区域经营", route: "企业客户 PoC、定价和采用 → Japan Business Lead / APAC Partnerships → 早期高管或中日健康基础设施创业", gate: "现金、经理、付费客户和销售结构必须全部通过尽调。" },
   { code: "R1", title: "机器人产品 → 产品商业化负责人", route: "Product Manager → 标准化模块发布与 ROI / 采用证据 → Lead PM / Product Commercialization → 早期公司产品商业化负责人", gate: "必须拥有路线图、backlog、发布与采用，不做纯需求收集。" },
