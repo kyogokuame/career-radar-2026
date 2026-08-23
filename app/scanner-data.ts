@@ -1,4 +1,4 @@
-export type Track = "A" | "B";
+export type Track = "A" | "B" | "C";
 export type Candidate = {
   id: string;
   track: Track;
@@ -56,6 +56,10 @@ const companyDetails: Record<string, CompanyDetail> = {
   "Kawasaki Heavy Industries": { listing:"东证 Prime（7012）", funding:"上市公司（不适用）", size:"约 40,000+ 人（全球）", workplace:"兵库·神户市中央区（机器人团队地点待确认）", commute:"跨城；不适用新小岩日常通勤", salary:"待确认" },
   "FANUC": { listing:"东证 Prime（6954）", funding:"上市公司（不适用）", size:"约 10,000+ 人（全球）", workplace:"山梨·忍野村（总部；岗位实际地点待确认）", commute:"跨城；不适用新小岩日常通勤", salary:"待确认" },
   "DOBOT": { listing:"未上市", funding:"最近公开轮次与金额未核验", size:"待确认", workplace:"深圳·南山区（具体园区待确认）", commute:"海外岗位；不适用新小岩日常通勤", salary:"待确认" },
+  "Tencent Games / Level Infinite": { listing:"港交所（0700；Tencent 集团）", funding:"上市公司（不适用）", size:"大型全球游戏事业群（团队人数未单列）", workplace:"深圳·南山区（岗位页披露 China-Shenzhen）", commute:"跨国岗位；不适用新小岩日常通勤", salary:"待确认" },
+  "Garena Japan": { listing:"NYSE: SE（Sea 集团；日本法人未独立上市）", funding:"上市公司集团（不适用）", size:"日本法人约 2 人（2026-02 公开招聘资料）", workplace:"东京（岗位页未披露区）", commute:"办公区待确认后再计算", salary:"约 ¥7–12M（公开招聘区间）" },
+  "Xsolla": { listing:"未上市", funding:"最近公开融资轮次与金额未披露", size:"全球游戏商业化平台（日本团队规模待确认）", workplace:"东京（岗位页未披露区）", commute:"办公区待确认后再计算", salary:"待确认" },
+  "Sony Interactive Entertainment": { listing:"未上市（Sony Group 旗下；母公司东证 Prime 6758）", funding:"母公司资本支持；无独立融资轮次披露", size:"全球游戏平台主管（岗位团队规模待确认）", workplace:"东京（岗位页未披露区）", commute:"办公区待确认后再计算", salary:"待确认" },
 };
 export const detailsFor = (candidate: Candidate): CompanyDetail => companyDetails[candidate.company] ?? { listing:"待确认", funding:"待确认", size:"待确认", workplace:`${candidate.location}（实际办公地待确认）`, commute:"实际办公地待确认后再计算", salary:"约 ¥8–14M（估算）" };
 export const mapsDirectionsUrl = (workplace: string) => `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent("新小岩駅")}&destination=${encodeURIComponent(workplace)}&travelmode=transit`;
@@ -122,4 +126,9 @@ export const candidates: Candidate[] = [
   {id:"b-fanuc-pm",track:"B",company:"FANUC",title:"Robot Product Planning / Solution Business",href:"https://www.fanuc.co.jp/en/recruit/",source:"公司官网",location:"山梨 / 东京 / 全球",roleType:"工业机器人产品经营",why:"从客户自动化场景反推产品和解决方案，有利于建立产品化与 P&L 资本。",gate:"先确认职位开放、办公地与技术背景要求；不为品牌接受地点或工时失配。",verdict:"条件式",scannedOn:"2026-08-23"},
   {id:"b-dobot-overseas",track:"B",company:"DOBOT",title:"Overseas Market / Channel Development",href:"https://www.dobot-robots.com/career.html",source:"公司官网",location:"深圳 / 全球",roleType:"协作机器人海外市场",why:"协作机器人出海需要本地化、渠道、产品定位和客户应用，是中日/全球迁移性很强的入口。",gate:"确认现金、海外出差与个人销售目标；优先区域 GTM 而非纯经销商开拓。",verdict:"条件式",scannedOn:"2026-08-23"},
   {id:"b-dobot-pmm",track:"B",company:"DOBOT",title:"Product Marketing Manager（协作机器人）",href:"https://www.dobot-robots.com/career.html",source:"公司官网",location:"深圳 / 全球",roleType:"协作机器人产品上市",why:"机器人产品定位、场景化卖点和全球发布是与 Anker GTM 类似、但更贴近 B 主线的路径。",gate:"官网需核验实际岗位；确认不要求深度控制/自动化工程履历。",verdict:"条件式",scannedOn:"2026-08-23"},
+  {id:"c-tencent-strategy-ops",track:"C",company:"Tencent Games / Level Infinite",title:"Senior Manager, Business Strategy & Operations",href:"https://tencent.wd1.myworkdayjobs.com/tencent_careers/job/china-shenzhen/senior-manager--business-strategy---operations_r107895-2",source:"公司官网",location:"深圳",roleType:"全球游戏投资 / 战略合作 / 经营决策",why:"直接服务全球投资、投后管理、战略伙伴与商业合作组合；岗位明确不是传统 PMO，且要求将游戏玩家洞察与 AI 实操转成业务判断。是能实质改变职业组合的战略转向机会。",gate:"需证明自己是深度玩家并有 AI 实践案例；确认直属上级、决策参与度、深圳长期工时及两年内是否可主导投资/合作 workstream。",verdict:"优先审阅",scannedOn:"2026-08-24"},
+  {id:"c-tencent-investment",track:"C",company:"Tencent Games / Level Infinite",title:"Strategic Investment Manager",href:"https://tencent.wd1.myworkdayjobs.com/en-US/Tencent_Careers/job/--_R106186-2",source:"公司官网",location:"深圳",roleType:"全球游戏战略投资 / 投后 / 伙伴孵化",why:"连接全球工作室、战略投资、商务合作与产品孵化；对中日游戏市场判断、谈判和跨境生态建设的复利极高，适合作为游戏/IP 主线的高上限转向。",gate:"岗位通常要求游戏投资/BD生态与行业网络；确认是否存在日本市场覆盖、交易执行权、项目来源 ownership 与匹配的现金/长期激励。",verdict:"条件式",scannedOn:"2026-08-24"},
+  {id:"c-garena-licensing",track:"C",company:"Garena Japan",title:"Business Development / 版権商务",href:"https://www.linkedin.com/jobs/view/4451138310/",source:"LinkedIn MCP",location:"东京",roleType:"游戏发行 / IP licensing / 合作谈判",why:"负责 license-in/out、IP 与发行标的发掘、合作评估与合同谈判，能形成稀缺的日本游戏 IP 商务资本；适合作为游戏/内容商业化的高自主入口。",gate:"日本团队约 2 人，个人依赖和不确定性很高；需满足 5 年游戏/数字娱乐同类经验或由雇主明确接受相邻背景，并确认奖金、资源支持和两年扩张路径。",verdict:"条件式",scannedOn:"2026-08-24"},
+  {id:"c-xsolla-product-expert",track:"C",company:"Xsolla",title:"Regional Product Expert, Japan",href:"https://jobs.lever.co/xsolla/d1aae708-8d2a-4bfa-bb86-7e20d49e296a",source:"公司官网",location:"东京",roleType:"游戏变现产品 / GTM / 区域产品战略",why:"作为日本市场的产品声音，连接销售、产品、产品营销与合作方，覆盖复杂交易、产品采用、上市 readiness、定价与产品路线图输入；是把现有商业化能力迁移至游戏科技的优质版本。",gate:"要求 5 年+ 游戏产品/平台经验及游戏变现知识；需确认能以商业策略与广告/增长经验替代部分门槛，且不是以 sales enablement 为主的支持岗。",verdict:"条件式",scannedOn:"2026-08-24"},
+  {id:"c-playstation-omnichannel",track:"C",company:"Sony Interactive Entertainment",title:"Japan Omnichannel Marketing Lead",href:"https://careers.playstation.com/japan-omnichannel-marketing-lead/job/6098493004",source:"公司官网",location:"东京",roleType:"游戏玩家增长 / 区域 GTM / 全渠道商业化",why:"拥有日本市场的玩家体验、CRM、应用、主机与 LINE 的端到端增长 owner 范围；可将 ByteDance 的商业规划和数据驱动增长转成全球游戏产品的本地市场资本。",gate:"要求日本数字营销 3 年+ 和游戏玩家理解；核验实际决策权、是否可负责商业指标而非活动执行，以及薪资能否覆盖当前基线。",verdict:"优先审阅",scannedOn:"2026-08-24"},
 ];
