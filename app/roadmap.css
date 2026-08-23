@@ -29,3 +29,4 @@
 .robotics-lane .roadmap-node.origin>span{color:var(--lime)}
 @media(max-width:1050px){.roadmap-lane-header{display:block}.roadmap-lane-header p{margin-top:10px}.three-branches{grid-template-columns:1fr}.three-branches:before{left:50%}}
 @media(max-width:760px){.roadmap-tree{padding:15px}.roadmap-lane-header{padding:19px}.roadmap-lane-header h3{font-size:21px}.two-branches{grid-template-columns:1fr}.roadmap-branches:before{left:50%}.roadmap-node{padding:15px}.roadmap-arrow{height:24px}}
+.trend-table{min-width:1320px}.trend-table td{min-width:255px}.trend-table td:first-child{min-width:180px}.trend-table td:nth-child(n),.case-table td:nth-child(n){color:#536078;font-weight:400;white-space:normal}.trend-table td:first-child,.case-table td:first-child{color:var(--ink);font-weight:900}.case-table{min-width:1050px}.case-table td{min-width:180px}.case-table td:last-child{min-width:290px}

@@ -17,8 +17,8 @@ export default function SiteNav({ active }: SiteNavProps) {
       </a>
       <div className="site-tabs" aria-label="页面切换">
         <a className={active === "dashboard" ? "current" : ""} href={dashboardHref}>职位雷达</a>
-        <a className={active === "research" ? "current" : ""} href={researchHref}>职业研究</a>
         <a className={active === "scanner" ? "current" : ""} href={scannerHref}>职位扫描</a>
+        <a className={active === "research" ? "current" : ""} href={researchHref}>职业研究</a>
       </div>
     </nav>
   );

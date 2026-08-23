@@ -41,3 +41,15 @@
 .candidate-card > div:not(.candidate-top):not(.candidate-gate):not(.candidate-facts) {
   margin-top: auto;
 }
+
+.candidate-card .candidate-review {
+  margin-top: 14px !important;
+  padding: 12px;
+  border: 1px solid #e0e6ef;
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+
+.candidate-card .candidate-review b { color: #46648d; }
+.candidate-card .candidate-review p { margin-top: 5px; }
+.candidate-card .candidate-review strong { color: #7a5c22; }

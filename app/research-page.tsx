@@ -13,6 +13,23 @@ const priorities: Priority[] = [
   { rank: "—", title: "垂直自媒体", score: "不单列", role: "副业分发层", verdict: "服务于行业声誉、客户来源与数据/IP 沉淀，不把粉丝量等同于商业模式。" },
 ];
 
+type IndustryTrend = { rank: string; direction: string; chinaRecent: string; japanRecent: string; chinaNext: string; japanNext: string; sourceHref: string; sourceLabel: string };
+const industryTrends: IndustryTrend[] = [
+  { rank:"01", direction:"AI 医疗健康与养老科技", chinaRecent:"需求底盘：60 岁+人口约 2.67 亿（2021）→3.10 亿（2024）；养老床位 2023 年 823 万、2024 年 799 万，统计口径/供给结构在调整。养老科技没有独立从业人数序列，机构、床位和卫生技术人员是更可靠代理。", japanRecent:"介护市场：¥11.03T（2021）→¥11.2T（2022，公开可比基线）；介护职员 2022 年约 215 万。医疗/介护需求扩张与劳动供给约束并存。", chinaNext:"2031 前仍是人口和支付体系驱动的扩容，但没有可比的全国“养老科技从业人数”官方预测；关注医养结合、智能养老产品与机构数字化岗位，而非把床位数当成软件市场。", japanNext:"官方需求推计：2026 年需约 240 万介护职员、2040 年 272 万；2031 处于持续补人阶段。市场规模的长周期预测为 2025 年 ¥16.4T、2030 年 ¥19.9T。", sourceHref:"https://www.mhlw.go.jp/stf/newpage_02977.html", sourceLabel:"MHLW 介护人材需求；JETRO 介护市场；中国国家统计局/老龄事业公报" },
+  { rank:"02", direction:"实体 AI 与机器人", chinaRecent:"机器人全行业营收 2021 年已超 ¥1,300 亿；工业机器人运行存量 2022 年突破 150 万台，2024 年中国占全球工业机器人产量约 43%。没有统一的“机器人从业人数”官方口径，不能与制造业总就业混写。", japanRecent:"JARA 记录工业机器人订单 2023 年 ¥8,434 亿；2024 年生产额预期约 ¥8,600 亿，仍受设备投资周期影响。行业没有公开、连续的机器人专属就业总数。", chinaNext:"服务机器人与人形等仍将快增，但要按可验证的付费部署、RaaS 利用率和出口合规筛选；“产量/融资”不能替代岗位质量或从业人数预测。", japanNext:"劳动力短缺是长期需求驱动，但五年内订单波动会很大。优先软件、产品化、部署和客户 ROI 岗；不把制造大盘增长误读为白领岗位等比例增加。", sourceHref:"https://www.jara.jp/data/yearly.html", sourceLabel:"JARA 年度统计；中国机器人安装量/产业统计" },
+  { rank:"03", direction:"AI 原生跨境 B2B", chinaRecent:"AI 核心产业：约 ¥5,784 亿（2023）→超 ¥7,000 亿（2024）；2025 年官方口径已超 ¥1.2T。就业代理：2023 年数字经济核心产业 3,615.9 万从业者，其中数字技术应用业 1,460.9 万；不是 AI 专属人数。", japanRecent:"生成式 AI 国内需求：¥1,188 亿（2023）→¥4,563 亿（2024）。日本 AI 系统支出 2023 年 ¥6,859 亿；没有 AI-native B2B 的独立就业序列。", chinaNext:"“人工智能+”、智能原生业态与行业中试基地将扩张应用岗位；2031 前从业人数只能用数字技术应用/研发人员作代理，不应伪造 AI 专属头数。", japanNext:"JEITA 预测生成式 AI 市场 2030 年 ¥1.7774T（2023–30 CAGR 47.2%）。岗位会更偏实施、治理、行业产品化，基础分析/内容型岗位可能被压缩。", sourceHref:"https://www.jeita.or.jp/japanese/stat/pdf/executive_summary_2024_2025.pdf", sourceLabel:"JEITA 生成式 AI 预测；中国国家统计局数字经济普查" },
+  { rank:"04", direction:"企业学习与 AI 教育基础设施", chinaRecent:"中国没有“企业 AI 学习基础设施”统一市场或从业人数口径；把培训机构、学校教师和内容创作者相加会失真。可追踪的是政策对终身学习/AI 技能培训的需求，而不是一个虚假的总市场数。", japanRecent:"日本法人向 e-learning：¥971.3 亿（2021）→¥1,140 亿（2023 估计）→¥1,173.5 亿（2024 预测）。同样没有企业学习/AI 教育基础设施的独立就业统计。", chinaNext:"需求会随企业 AI 落地扩大，但进入门槛低、课程易商品化；只把有企业预算、可验证学习结果或行业数据的岗位计入机会。", japanNext:"B2B e-learning 仍受 reskilling 推动，市场可延续温和增长；2031 前的价值会从内容制作转向工作流嵌入、评估和企业数据，不适合以通用讲师作为主业。", sourceHref:"https://www2.jpx.co.jp/disc/43080/140120240613527994.pdf", sourceLabel:"日本 e-learning 市场（矢野经济研究所引用）；中日技能/终身学习政策" },
+  { rank:"05", direction:"游戏与全球 IP 工具", chinaRecent:"中国游戏收入约 ¥2,965 亿（2021）→约 ¥3,258 亿（2024）；用户进入存量期。没有全国游戏从业人数连续官方序列，文化产业 2023 年 2,109.9 万从业者只能作过宽的上限代理，不能当作游戏就业。", japanRecent:"日本游戏市场 2024 年约 ¥2.16T；CESA 估计游戏相关总产业人口约 20 万。PC 等细分扩张，但整体受内容周期、平台抽成和汇率影响。", chinaNext:"五年重点不在用户总量，而在海外发行、AI 工具、跨平台商业化与 IP 组合；岗位上行集中在作品组合、投资、平台与区域经营。", japanNext:"成熟市场下，内容/IP 出口和 PC/订阅的结构变化比“总市场高增长”更重要。2031 前以全球发行、产品商业化和合作/投资为优先，而非社区运营。", sourceHref:"https://www.cesa.or.jp/action/industry-research/2024/", sourceLabel:"CESA 游戏产业报告；电通日本游戏市场；中国游戏产业年度报告" },
+  { rank:"06", direction:"微短剧", chinaRecent:"市场：¥101.7 亿（2022）→¥504.4 亿（2024），增速很高；但没有官方、连续的微短剧从业人数统计。机构数、备案/供给和投流量是供给代理，不能等同稳定就业。", japanRecent:"日本尚无可比、独立的纵向短剧市场/就业官方序列；使用全球（中国以外）市场作为方向性代理会比把中国规模套到日本更诚实。", chinaNext:"行业研究预测 2025 年约 ¥677.9 亿、2030 年 ¥1,505.9 亿；增长仍快但会降速。监管、投流和爆款依赖决定它不宜成为主业底座。", japanNext:"全球中国以外市场被预测从 2024 年约 US$1.4B 增至 2030 年 US$9.5B，但这不是日本预测。日本应只作为本地化、IP 研究或平台商业化的副业期权。", sourceHref:"https://www.cnsa.cn/art/2024/11/6/art_1955_45923.html", sourceLabel:"中国网络视听协会微短剧白皮书；iiMedia 全球/中国预测" },
+];
+
+const researchedRoles = [
+  { company:"ByteDance / TikTok GBS", role:"Customer Success Manager", industry:"AI 原生跨境 B2B（广告平台桥梁）", function:"战略客户增长、广告商业化、客户成功", intensity:"已确认：平均凌晨下班，节假日仍可能工作", conclusion:"不建议作为五年主线。现金和平台资本可观，但持续高强度且强化广告商业化标签；只有作为明确 12–18 个月高回报过渡才成立。", href:"https://www.tiktok.com/about/careers/" },
+  { company:"Tencent Games / Level Infinite", role:"Senior Manager, Business Strategy & Operations", industry:"游戏与全球 IP 工具（战略转向）", function:"全球投资、投后、战略伙伴与经营决策", intensity:"深圳高强度需在面谈核验", conclusion:"条件式高上限。若有真实交易/组合/伙伴决策权、长期激励且愿意改变职业组合，可优先；否则不为品牌承受长期强度。", href:"https://tencent.wd1.myworkdayjobs.com/tencent_careers/job/china-shenzhen/senior-manager--business-strategy---operations_r107895-2" },
+  { company:"Garena Japan", role:"Business Development / 版権商务", industry:"游戏与全球 IP 工具（战略转向）", function:"IP licensing、发行标的评估、合作谈判", intensity:"小团队的个人依赖高", conclusion:"条件式。可积累稀缺日本 IP 商务资本，但日本实体极小，且需要直接游戏/娱乐商务记录；必须确认资源、奖金和两年扩张路径。", href:"https://www.linkedin.com/jobs/view/4451138310/" },
+  { company:"Syneos Health Consulting", role:"Consultant / Associate Consultant", industry:"AI 医疗健康与养老科技（Pharma 商业策略入口）", function:"医药市场调研、商业战略、客户项目交付", intensity:"已确认：平均 19–20 点下班", conclusion:"优先进行中。以两年为上限积累医药商业、上市与客户事实，再跳 in-house 药企、数字健康或 MedTech；避免长期停留在泛调研/材料生产。", href:"https://japan.commercialcareers.syneoshealth.com/jobs/17863053-consultant-slash-associate-consultant" },
+];
+
 const industryUniverse = [
   { sector: "医疗服务、养老、主动健康", status: "终局 A", entry: "商业化、采用、支付/准入、机构解决方案", verdict: "需求、责任和支付壁垒强；避开低毛利劳动密集服务与无明确支付方的产品。" },
   { sector: "MedTech、诊断、生物医药、生命科学工具", status: "候选 B", entry: "APAC BD、市场准入、商业战略、生态合作", verdict: "器械、诊断与工具比从零进入药物研发现实；第一跳先取得行业事实与客户采用。" },
@@ -125,7 +142,7 @@ const compensationPaths = [
 ];
 
 const toc = [
-  ["路线图", "#paths"], ["结论", "#verdict"], ["优先级", "#priority"], ["全行业", "#universe"],
+  ["路线图", "#paths"], ["结论", "#verdict"], ["优先级", "#priority"], ["中日趋势", "#trend-data"], ["岗位实例", "#role-cases"], ["全行业", "#universe"],
   ["职能", "#functions"], ["AI韧性", "#ai-resilience"], ["雇主", "#employers"], ["模式", "#business-models"], ["地区", "#regions"], ["副业", "#portfolio"], ["薪酬", "#compensation"], ["收入", "#income"], ["90 天", "#plan"], ["门槛", "#gates"], ["来源", "#sources"],
 ];
 
@@ -144,7 +161,7 @@ export default function ResearchPage() {
         </section>
 
         <div className="research-layout">
-          <aside className="research-toc" aria-label="研究目录"><span>研究目录</span>{toc.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<small>版本 2026-08-22<br/>持续迭代</small></aside>
+          <aside className="research-toc" aria-label="研究目录"><span>研究目录</span>{toc.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<small>版本 2026-08-24<br/>持续迭代</small></aside>
           <div className="research-content">
             <section className="research-section roadmap-section" id="paths">
               <div className="section-kicker">00 · 从当前起点出发</div><h2>两条主线，各用两跳建立结果所有权；第三跳才争取区域经营或早期高管</h2>
@@ -203,6 +220,17 @@ export default function ResearchPage() {
             <section className="research-section" id="priority">
               <div className="section-kicker">01 · 行业优先级</div><h2>七个兴趣方向，按长期结构而不是热度排序</h2><p className="section-lead">评分是职业匹配判断，不是投资收益预测。AI 是能力层：只有与行业数据、监管、产品采用和客户工作流结合时才形成护城河。</p>
               <div className="priority-list">{priorities.map((item) => <article key={item.rank + item.title} className="priority-row"><span className="priority-rank">{item.rank}</span><div><h3>{item.title}</h3><p>{item.verdict}</p></div><div className="priority-score"><b>{item.score}</b><small>{item.role}</small></div></article>)}</div>
+            </section>
+
+            <section className="research-section" id="trend-data">
+              <div className="section-kicker">02 · 中日行业与就业趋势</div><h2>先看可比口径，再谈行业热度</h2><p className="section-lead">数据截至 2026-08 的公开可得版本。行业统计存在发布滞后，且“AI 原生 B2B”“企业学习基础设施”“微短剧”等没有中日一致的从业人数口径；该处明确用可复核的市场、用户、床位、机构或数字产业就业代理，不把代理伪装为精确就业人数。</p>
+              <div className="role-table-wrap"><table className="research-table trend-table"><thead><tr><th>方向</th><th>中国 · 近三年规模 / 从业代理</th><th>日本 · 近三年规模 / 从业代理</th><th>中国 · 未来五年</th><th>日本 · 未来五年</th></tr></thead><tbody>{industryTrends.map((item) => <tr key={item.rank}><td><b>{item.rank}<br/>{item.direction}</b><a href={item.sourceHref} target="_blank" rel="noreferrer"><span>{item.sourceLabel} ↗</span></a></td><td>{item.chinaRecent}</td><td>{item.japanRecent}</td><td>{item.chinaNext}</td><td>{item.japanNext}</td></tr>)}</tbody></table></div>
+              <div className="evidence-note"><b>如何读这张表：</b>规模增长只说明需求或资本可能增加；职业价值还要通过支付方、监管、产品采用、岗位所有权、工时和组织质量验证。没有独立就业口径的方向，反而应提高对业务模型和实际职位的审查标准。</div>
+            </section>
+
+            <section className="research-section" id="role-cases">
+              <div className="section-kicker">03 · 已研究岗位实例</div><h2>把具体机会放回同一套决策框架</h2><p className="section-lead">这是可持续累积的岗位案例库。结论并非对公司作绝对判断，而是“该岗位在你的约束与路线图中是否值得推进”。</p>
+              <div className="role-table-wrap"><table className="research-table case-table"><thead><tr><th>公司 / 职位</th><th>所在行业</th><th>岗位性质</th><th>工时 / 关键约束</th><th>当前结论</th></tr></thead><tbody>{researchedRoles.map((item) => <tr key={item.company + item.role}><td><a href={item.href} target="_blank" rel="noreferrer"><b>{item.company}</b><span>{item.role} ↗</span></a></td><td>{item.industry}</td><td>{item.function}</td><td>{item.intensity}</td><td>{item.conclusion}</td></tr>)}</tbody></table></div>
             </section>
 
             <section className="research-section" id="universe">

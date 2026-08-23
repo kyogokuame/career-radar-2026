@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import SiteNav from "./SiteNav";
-import { candidates, detailsFor, existingRadarKeys, mapsDirectionsUrl, type Candidate, type Track } from "./scanner-data";
+import { candidates, detailsFor, existingRadarKeys, mapsDirectionsUrl, workplaceSignalFor, type Candidate, type Track } from "./scanner-data";
 import "./scanner.css";
 import "./scanner-enhancements.css";
 
@@ -51,9 +51,10 @@ export default function ScannerPage() {
     <section className="candidate-grid">{visible.map((candidate) => {
       const state = adopted.includes(candidate.id) ? "adopted" : declined.includes(candidate.id) ? "declined" : "new";
       const details = detailsFor(candidate);
+      const workplaceSignal = workplaceSignalFor(candidate);
       const workplace = candidate.workplace ?? details.workplace;
       const commute = candidate.commute ?? details.commute;
-      return <article className={`candidate-card ${state}`} key={candidate.id}><div className="candidate-top"><span>{trackLabel[candidate.track]} · {candidate.source}{isNew(candidate) && <mark>新</mark>}</span><i>{candidate.verdict}</i></div><h2>{candidate.company}</h2><a href={candidate.href} target="_blank" rel="noreferrer">{candidate.title} ↗</a><p className="candidate-type">办公地：{workplace} · {candidate.roleType}</p><div className="candidate-facts"><span>上市：{details.listing}</span><span>融资：{details.funding}</span><span>规模：{details.size}</span><span>新小岩：{commute}</span><span>薪资：{details.salary}</span><a href={mapsDirectionsUrl(workplace)} target="_blank" rel="noreferrer">Google Maps 公交通勤 ↗</a></div><div><b>为什么入池</b><p>{candidate.why}</p></div><div className="candidate-gate"><b>采用前必须确认</b><p>{candidate.gate}</p></div><footer>{state === "new" ? <><button className="adopt" onClick={() => adopt(candidate)}>采用 → 加入职位雷达</button><button className="decline" onClick={() => decline(candidate)}>暂不采用</button></> : <><strong>{state === "adopted" ? "已加入职位雷达" : "已标记暂不采用"}</strong><button className="restore" onClick={() => restore(candidate)}>恢复待定</button></>}</footer></article>;
+      return <article className={`candidate-card ${state}`} key={candidate.id}><div className="candidate-top"><span>{trackLabel[candidate.track]} · {candidate.source}{isNew(candidate) && <mark>新</mark>}</span><i>{candidate.verdict}</i></div><h2>{candidate.company}</h2><a href={candidate.href} target="_blank" rel="noreferrer">{candidate.title} ↗</a><p className="candidate-type">办公地：{workplace} · {candidate.roleType}</p><div className="candidate-facts"><span>上市：{details.listing}</span><span>融资：{details.funding}</span><span>规模：{details.size}</span><span>新小岩：{commute}</span><span>薪资：{details.salary}</span><a href={mapsDirectionsUrl(workplace)} target="_blank" rel="noreferrer">Google Maps 公交通勤 ↗</a></div><div className="candidate-review"><b>职场评价 · {workplaceSignal.platform}</b><p>{workplaceSignal.score}</p><p><strong>主要风险：</strong>{workplaceSignal.risk}</p></div><div><b>为什么入池</b><p>{candidate.why}</p></div><div className="candidate-gate"><b>采用前必须确认</b><p>{candidate.gate}</p></div><footer>{state === "new" ? <><button className="adopt" onClick={() => adopt(candidate)}>采用 → 加入职位雷达</button><button className="decline" onClick={() => decline(candidate)}>暂不采用</button></> : <><strong>{state === "adopted" ? "已加入职位雷达" : "已标记暂不采用"}</strong><button className="restore" onClick={() => restore(candidate)}>恢复待定</button></>}</footer></article>;
     })}</section>
   </main></>;
 }

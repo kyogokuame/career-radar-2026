@@ -24,6 +24,11 @@ type CompanyDetail = {
   commute: string;
   salary: string;
 };
+type WorkplaceSignal = {
+  platform: string;
+  score: string;
+  risk: string;
+};
 const companyDetails: Record<string, CompanyDetail> = {
   "Ubie": { listing:"未上市", funding:"Series C extension：US$19M（2022）；累计 US$74M", size:"约 254 人", workplace:"东京·中央区日本桥本町（Nihonbashi Life Science Building）", commute:"约 15 分钟（Google Maps 公交；抓取于 2026-08-23）", salary:"约 ¥8–15M" },
   "JMDC": { listing:"东证 Prime（4483）", funding:"上市公司（不适用）", size:"约 500 人（单体）", workplace:"东京·港区芝大门（岗位实际楼层待确认）", commute:"约 35–45 分钟（办公楼待确认）", salary:"约 ¥8–16M" },
@@ -62,6 +67,22 @@ const companyDetails: Record<string, CompanyDetail> = {
   "Sony Interactive Entertainment": { listing:"未上市（Sony Group 旗下；母公司东证 Prime 6758）", funding:"母公司资本支持；无独立融资轮次披露", size:"全球游戏平台主管（岗位团队规模待确认）", workplace:"东京（岗位页未披露区）", commute:"办公区待确认后再计算", salary:"待确认" },
 };
 export const detailsFor = (candidate: Candidate): CompanyDetail => companyDetails[candidate.company] ?? { listing:"待确认", funding:"待确认", size:"待确认", workplace:`${candidate.location}（实际办公地待确认）`, commute:"实际办公地待确认后再计算", salary:"约 ¥8–14M（估算）" };
+const japanCompanies = new Set([
+  "Ubie", "JMDC", "HOKUTO", "Mujin", "Woven by Toyota", "Rapyuta Robotics", "Prox Industries", "inaho", "MI-6", "OMRON", "SoftBank Robotics", "Telexistence", "Preferred Robotics", "Ascent Robotics", "Terra Drone", "SENSYN ROBOTICS", "DENSO", "Yaskawa Electric", "Kawasaki Heavy Industries", "FANUC", "Sony Interactive Entertainment",
+]);
+const mainlandChinaCompanies = new Set([
+  "MicroPort MedBot", "ECOVACS", "BangBang Robotics", "万拿机器人", "Unitree Robotics", "DOBOT", "Tencent Games / Level Infinite",
+]);
+const workplaceRisks: Record<string, string> = {
+  "Ubie":"医疗机构导入周期、数据/合规与初创阶段的职能宽度。", "JMDC":"药企项目/客户交付压力与集团整合后的优先级变化。", "HOKUTO":"小团队商业化节奏、药企客户集中度与岗位边界。", "Mujin":"硬件资本开支、现场部署峰值与全球供应链。", "Woven by Toyota":"大企业治理、产品重组与决策速度。", "Rapyuta Robotics":"融资依赖、仓储现场交付与客户项目集中。", "Prox Industries":"早期跑道、岗位定义与薪酬/股权透明度。", "inaho":"农业季节性、远距离现场与早期商业化。", "MI-6":"材料研发客户的长销售周期与项目制交付。", "Entegris":"半导体周期、全球组织矩阵与客户现场要求。", "Intuitive Surgical":"临床/医院准入、现场培训与合规责任。", "Medtronic":"大矩阵组织、业务单元差异与临床现场负荷。", "MicroPort MedBot":"中国医疗器械审批、海外扩张执行与薪酬职级错配。", "Zimmer Biomet":"骨科周期、渠道/临床依赖与跨区协同。", "CMR Surgical":"未上市融资与手术机器人商业化、跨国签证。", "ECOVACS":"消费硬件竞争、海外渠道 KPI 与发布节奏。", "BangBang Robotics":"早期融资、GTM 与项目交付并行的强度。", "万拿机器人":"天使期跑道、股权兑现与高强度客户拓展。", "OMRON":"大型制造业决策层级、自动化周期和京都出勤。", "Unitree Robotics":"高速扩张、产品成熟度、出口/合规与岗位具体性。", "SoftBank Robotics":"产品线稳定性、集团战略与部署支持负荷。", "Telexistence":"资本跑道、零售部署可靠性与客户集中。", "Preferred Robotics":"研究到商业化转换、母公司协同与岗位实际授权。", "Ascent Robotics":"小团队跑道、自动驾驶商业化周期与现场比例。", "Terra Drone":"无人机监管、出差与项目交付波动。", "SENSYN ROBOTICS":"公共部门采购周期、融资与项目型现金流。", "DENSO":"汽车/制造周期、组织层级和爱知/海外驻在要求。", "Yaskawa Electric":"工业资本开支周期、福冈基地与大组织晋升速度。", "Kawasaki Heavy Industries":"重工业周期、兵库基地和部门间决策速度。", "FANUC":"制造业/出口周期、山梨基地与岗位地点限制。", "DOBOT":"协作机器人同质化、海外渠道 quota 与深圳强度。", "Tencent Games / Level Infinite":"深圳高强度、游戏项目/投资组合波动与岗位门槛。", "Garena Japan":"日本实体极小、个人依赖、IP 交易节奏与薪资上限。", "Xsolla":"未上市平台的区域资源优先级与角色是否偏 sales enablement。", "Sony Interactive Entertainment":"内容组合/平台周期、大组织跨区域决策和营销绩效压力。",
+};
+export const workplaceSignalFor = (candidate: Candidate): WorkplaceSignal => {
+  const platform = japanCompanies.has(candidate.company) ? "OpenWork" : mainlandChinaCompanies.has(candidate.company) ? "脉脉 / 天眼查 / 企查查" : "Glassdoor";
+  const verifiedScores: Record<string, string> = {
+    "JMDC":"4.55 / 5（公开搜索快照；样本/日期待面谈复核）", "OMRON":"3.17 / 5（OpenWork 公开页快照）", "Medtronic":"3.7 / 5（Glassdoor，10,031 条全球评价）", "Garena Japan":"日本实体样本不足", "Anker Japan":"3.47 / 5（OpenWork；119 条快照）",
+  };
+  return { platform, score: verifiedScores[candidate.company] ?? "未检索到可核验的同名评分/样本不足", risk: workplaceRisks[candidate.company] ?? "公开职场样本不足；在面试中核验经理、工时、决策权、现金跑道与组织变动。" };
+};
 export const mapsDirectionsUrl = (workplace: string) => `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent("新小岩駅")}&destination=${encodeURIComponent(workplace)}&travelmode=transit`;
 
 export const existingRadarKeys = new Set([
