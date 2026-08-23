@@ -99,7 +99,7 @@ const coreBusinessModels = [
 ];
 
 const regions = [
-  { place: "日本", share: "70%", level: "主战场", why: "永驻、履历与网络最强；东京为默认基地，大阪是唯一可接受迁居城市。" },
+  { place: "日本", share: "70%", level: "主战场", why: "永驻、履历与网络最强；东京为默认基地，京都与大阪均可接受迁居。" },
   { place: "中国", share: "20%", level: "总部国际化", why: "只投医疗 AI、机器人或 AI 产品的日本/全球经营岗位；普通国内销售与平台招商不投。" },
   { place: "新加坡", share: "其他地区的 60%", level: "第三基地", why: "APAC 医疗商业化和机器人伙伴岗位密度最高；第一次沟通即确认 EP 担保与工资门槛。" },
   { place: "香港", share: "其他地区的 30%", level: "定向补充", why: "中英粤组合稀缺，适合医疗机器人商业化；优质岗位少且现金、合约期限需核实。" },
@@ -190,13 +190,13 @@ export default function ResearchPage() {
                   </div>
                 </article>
               </div>
-              <div className="bridge-rule"><b>每一跳的共同规则：</b><ol><li>先验证经理、心理安全、决策权、东京/大阪基地与长期工时。</li><li>18 个月内必须获得一个可写成“我改变了什么结果”的事实。</li><li>下一跳只为补新资本：行业工作流、产品采用、合同/定价、账户组合或 P&amp;L；不为品牌或职位名跳槽。</li><li>若增长公司要求高强度，现金跑道、职责边界和股权/分成必须同时清楚。</li></ol></div>
+              <div className="bridge-rule"><b>每一跳的共同规则：</b><ol><li>先验证经理、心理安全、决策权、东京/京都/大阪基地与长期工时。</li><li>18 个月内必须获得一个可写成“我改变了什么结果”的事实。</li><li>下一跳只为补新资本：行业工作流、产品采用、合同/定价、账户组合或 P&amp;L；不为品牌或职位名跳槽。</li><li>若增长公司要求高强度，现金跑道、职责边界和股权/分成必须同时清楚。</li></ol></div>
             </section>
 
             <section className="research-section opening" id="verdict">
               <div className="section-kicker">00 · 核心结论</div><h2>下一份工作必须从“给建议”转向“拥有结果”</h2>
               <div className="verdict-grid"><article className="thesis-card"><span>职业终局</span><strong>专家型高管 → 创业者</strong><p>先成为商业化、产品或区域经营的 Senior IC / 无下属 Manager，再用行业事实换早期高管、股权与创业选择权。</p></article><article className="thesis-card"><span>最强资本</span><strong>中日英 × GTM × 复杂执行</strong><p>中日英沟通、GTM 与复杂跨职能执行经历形成跨市场商业底座。</p></article><article className="thesis-card warning"><span>最大缺口</span><strong>没有最终业务结果所有权</strong><p>尚未正式拥有收入、产品采用、成本、合同或 P&L；下一份工作必须补上其中至少一项。</p></article></div>
-              <div className="constraint-strip"><b>不可妥协</b><span>日本固定现金 ≥ ¥8M</span><span>中国固定现金 ≥ ¥400k</span><span>东京 / 大阪</span><span>长期低—中强度</span><span>尊重、公平、心理安全</span><span>清晰决策权</span></div>
+              <div className="constraint-strip"><b>不可妥协</b><span>日本固定现金 ≥ ¥8M</span><span>中国固定现金 ≥ ¥400k</span><span>东京 / 京都 / 大阪</span><span>长期低—中强度</span><span>尊重、公平、心理安全</span><span>清晰决策权</span></div>
               <div className="evidence-note"><b>医疗证据已升级：</b>既有医疗相关项目涉及罕见病药品上市与全球医疗公司 GTM 组织架构战略。这让 Pharma / MedTech Commercial Excellence 成为当前可达的行业入口；但在项目时长、落地和客户采纳证据明确前，不夸大为医疗 P&amp;L 经历。</div>
             </section>
 
@@ -273,7 +273,7 @@ export default function ResearchPage() {
 
             <section className="research-section" id="gates">
               <div className="section-kicker">11 · Offer 一票否决</div><h2>高薪、品牌或行业标签不能抵消坏结构</h2>
-              <div className="gate-grid"><article><span>01</span><h3>经理与团队</h3><p>不尊重、微观管理、评价不公、政治和缺乏心理安全，直接退出。</p></article><article><span>02</span><h3>结果所有权</h3><p>职责只有协调、报告和治理，没有产品、客户、合同、收入或成本结果，退出。</p></article><article><span>03</span><h3>生活方式</h3><p>长期 always-on、无法解释的高强度，或要求迁往东京/大阪以外，退出。</p></article><article><span>04</span><h3>销售结构</h3><p>个人陌生开发、全流程猎手和硬 quota 是核心，退出；团队/账户采用目标可以接受。</p></article><article><span>05</span><h3>现金与股权</h3><p>现金低于下限，或只报期权张数、拒绝完全稀释比例，退出。</p></article><article><span>06</span><h3>桥梁保质期</h3><p>无法在 12–18 个月转向产品、客户、采用或 P&amp;L，退出。</p></article></div>
+              <div className="gate-grid"><article><span>01</span><h3>经理与团队</h3><p>不尊重、微观管理、评价不公、政治和缺乏心理安全，直接退出。</p></article><article><span>02</span><h3>结果所有权</h3><p>职责只有协调、报告和治理，没有产品、客户、合同、收入或成本结果，退出。</p></article><article><span>03</span><h3>生活方式</h3><p>长期 always-on、无法解释的高强度，或要求迁往东京/京都/大阪以外的日本城市，退出。</p></article><article><span>04</span><h3>销售结构</h3><p>个人陌生开发、全流程猎手和硬 quota 是核心，退出；团队/账户采用目标可以接受。</p></article><article><span>05</span><h3>现金与股权</h3><p>现金低于下限，或只报期权张数、拒绝完全稀释比例，退出。</p></article><article><span>06</span><h3>桥梁保质期</h3><p>无法在 12–18 个月转向产品、客户、采用或 P&amp;L，退出。</p></article></div>
               <div className="diligence"><h3>股权签约前必须书面确认</h3><p>授予工具与实体 · 完全稀释比例 · 普通股公允价值与行权价 · 归属与 cliff · refresh grant · 离职行权窗口 · 控制权变更加速 · 期权池与融资稀释 · 优先清算和债务 · 二级流动性 · 日本税务处理 · 董事会批准。</p></div>
             </section>
 
