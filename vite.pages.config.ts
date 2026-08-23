@@ -14,6 +14,7 @@ export default defineConfig({
       input: {
         dashboard: fileURLToPath(new URL("./github-pages/index.html", import.meta.url)),
         research: fileURLToPath(new URL("./github-pages/research/index.html", import.meta.url)),
+        scan: fileURLToPath(new URL("./github-pages/scan/index.html", import.meta.url)),
       },
     },
   },

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import SiteNav from "./SiteNav";
+import { candidates } from "./scanner-data";
 
 type Fit = "高" | "中" | "低";
 type Status = "待确认" | "待研究" | "已联系" | "面谈待排期" | "面谈已确定" | "已投递" | "暂停";
@@ -62,6 +63,7 @@ export default function Home() {
   const [selectedId, setSelectedId] = useState("jmdc");
   const [saved, setSaved] = useState<Record<string, Status>>(() => loadLocal("career-radar-status", {}));
   const [reactions, setReactions] = useState<Record<string, Reaction>>(() => loadLocal("career-radar-reactions", {}));
+  const [adoptedIds] = useState<string[]>(() => loadLocal("career-radar-adopted", []));
   const [reactionFilter, setReactionFilter] = useState<"全部" | "已点赞" | "已点踩">("全部");
   const [activeOnly, setActiveOnly] = useState(false);
   const setRoleStatus = (id: string, value: Status) => { const next = {...saved,[id]:value}; setSaved(next); localStorage.setItem("career-radar-status",JSON.stringify(next)); };
@@ -73,7 +75,14 @@ export default function Home() {
   const fitFor = (role: Role): Fit => reactions[role.id] === "赞" ? "高" : reactions[role.id] === "踩" ? "低" : role.fit;
   const statusFor = (role: Role): Status => saved[role.id] ?? role.status;
   const isActive = (role: Role) => activeStatuses.includes(statusFor(role));
-  const visible = roles.filter((r) => {
+  const adoptedRoles: Role[] = candidates.filter((candidate) => adoptedIds.includes(candidate.id)).map((candidate) => ({
+    id: candidate.id, company: candidate.company, title: candidate.title, href: candidate.href,
+    source: candidate.source, date: "本轮扫描", work: candidate.why, salary: "待确认", onsite: "待确认", commute: "待确认",
+    distance: "待确认", management: candidate.roleType, reports: "待确认", fit: candidate.verdict === "优先审阅" ? "高" : "中",
+    reason: `${candidate.why} 下一步：${candidate.gate}`, status: "待研究", tags: [candidate.track === "A" ? "主线 A" : "主线 B", candidate.roleType, "扫描采用"],
+  }));
+  const allRoles = [...roles, ...adoptedRoles];
+  const visible = allRoles.filter((r) => {
     const text = [r.company,r.title,r.work,r.source,...r.tags].join(" ").toLowerCase();
     const reaction = reactions[r.id];
     return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || fitFor(r) === fit) && (status === "全部" || statusFor(r) === status) && (!remoteOnly || r.distance === "远程") && (!activeOnly || isActive(r)) && (reactionFilter === "全部" || (reactionFilter === "已点赞" && reaction === "赞") || (reactionFilter === "已点踩" && reaction === "踩"));
@@ -81,16 +90,16 @@ export default function Home() {
     const priority = (role: Role) => reactions[role.id] === "赞" ? 0 : reactions[role.id] === "踩" ? 3 : isActive(role) ? 1 : 2;
     return priority(a) - priority(b);
   });
-  const selected = roles.find((r) => r.id === selectedId) ?? roles[0];
-  const company = companyProfiles[selected.id];
-  const high = roles.filter((r) => fitFor(r) === "高").length;
-  const active = roles.filter(isActive).length;
+  const selected = allRoles.find((r) => r.id === selectedId) ?? allRoles[0];
+  const company = companyProfiles[selected.id] ?? {hq:"待面谈确认", listing:"待确认", size:"待确认", sourceHref:selected.href ?? "#", sourceLabel:"岗位来源"};
+  const high = allRoles.filter((r) => fitFor(r) === "高").length;
+  const active = allRoles.filter(isActive).length;
 
   return <><SiteNav active="dashboard"/><main>
     <section className="hero">
       <div className="eyebrow">CAREER RADAR · 2026</div>
       <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“保证现金不低于 800 万日元、理想区间 900–1,200 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>JMDC casual 面谈已确认</strong><p>8 月 27 日（周四）10:00–11:00 · 线上</p></div></div>
-      <div className="metrics"><div><b>12</b><span>个职位</span></div><div><b>{active}</b><span>进行中</span></div><div><b>{high}</b><span>高适配</span></div><div><b>¥8M+</b><span>保证现金下限</span></div></div>
+      <div className="metrics"><div><b>{allRoles.length}</b><span>个职位</span></div><div><b>{active}</b><span>进行中</span></div><div><b>{high}</b><span>高适配</span></div><div><b>¥8M+</b><span>保证现金下限</span></div></div>
     </section>
     <section className="controls">
       <label className="search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="搜索公司、职位、关键词"/></label>
@@ -101,7 +110,7 @@ export default function Home() {
       <select aria-label="按我的判断筛选" value={reactionFilter} onChange={(e) => setReactionFilter(e.target.value as "全部" | "已点赞" | "已点踩")}><option>我的判断：全部</option><option value="已点赞">已点赞</option><option value="已点踩">已点踩</option></select>
     </section>
     <section className="workspace">
-      <div className="list"><div className="list-title"><span>职位池 <small>（点赞 → 进行中 → 其他 → 点踩）</small></span><b>{visible.length} / 12</b></div>{visible.map((r) => <button type="button" key={r.id} onClick={() => setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected ":"")+(isActive(r)?"active-card":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(fitFor(r))}>{fitFor(r)}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><span className="card-state">{isActive(r) && <i className="active-status">进行中</i>} {reactions[r.id] ? reactions[r.id] === "赞" ? "👍 已赞" : "👎 已踩" : <i className="status">{statusFor(r)}</i>}</span></div></button>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
+      <div className="list"><div className="list-title"><span>职位池 <small>（点赞 → 进行中 → 其他 → 点踩）</small></span><b>{visible.length} / {allRoles.length}</b></div>{visible.map((r) => <button type="button" key={r.id} onClick={() => setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected ":"")+(isActive(r)?"active-card":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(fitFor(r))}>{fitFor(r)}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><span className="card-state">{isActive(r) && <i className="active-status">进行中</i>} {reactions[r.id] ? reactions[r.id] === "赞" ? "👍 已赞" : "👎 已踩" : <i className="status">{statusFor(r)}</i>}</span></div></button>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
       <aside className="detail"><div className="eyebrow">职位详情</div><div className="detail-head"><div><small>{selected.company}</small><h2>{selected.href ? <a className="job-title-link" href={selected.href} target="_blank" rel="noreferrer">{selected.title} ↗</a> : selected.title}</h2></div><i className={classFor(fitFor(selected))}>{fitFor(selected)}适配</i></div><p className="summary">{selected.work}</p><div className="tags">{selected.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         <div className="facts"><Fact label="来源" value={selected.source+" · "+selected.date}/><Fact label="总部 HQ" value={company.hq}/><Fact label="上市状态" value={company.listing}/><Fact label="公司规模" value={company.size}/><Fact label="想定年收入" value={selected.salary}/><Fact label="出社要求" value={selected.onsite}/><Fact label="新小岩通勤" value={selected.commute} cls={commuteFor(selected.distance)}/><Fact label="管理职能" value={selected.management}/><Fact label="直属部下" value={selected.reports}/></div>
         <a className="company-source" href={company.sourceHref} target="_blank" rel="noreferrer">↗ {company.sourceLabel}</a>
