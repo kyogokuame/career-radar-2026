@@ -11,7 +11,27 @@ export type Candidate = {
   why: string;
   gate: string;
   verdict: "优先审阅" | "条件式" | "暂不建议";
+  scannedOn?: string;
 };
+
+type CompanyDetail = { listing: string; size: string; commute: string; salary: string };
+const companyDetails: Record<string, CompanyDetail> = {
+  "Ubie": { listing:"未上市", size:"约 200–300 人", commute:"约 40–50 分钟", salary:"约 ¥8–15M" },
+  "JMDC": { listing:"东证 Prime（4483）", size:"约 500 人（单体）", commute:"约 35–45 分钟", salary:"约 ¥8–16M" },
+  "HOKUTO": { listing:"未上市", size:"约 80–100 人", commute:"约 40–50 分钟", salary:"约 ¥8–15M" },
+  "Mujin": { listing:"未上市", size:"约 300–500 人", commute:"约 45–60 分钟", salary:"约 ¥7–15M" },
+  "Woven by Toyota": { listing:"未上市（Toyota 旗下）", size:"约 1,000+ 人", commute:"东京约 30–45 分钟", salary:"约 ¥8–16M" },
+  "Rapyuta Robotics": { listing:"未上市", size:"约 100–200 人", commute:"约 45–60 分钟", salary:"约 ¥7–15M" },
+  "Prox Industries": { listing:"未上市", size:"早期团队", commute:"待确认", salary:"约 ¥7–13M" },
+  "inaho": { listing:"未上市", size:"早期团队", commute:"待确认", salary:"约 ¥6–10M" },
+  "MI-6": { listing:"未上市", size:"约 100–200 人", commute:"约 40–55 分钟", salary:"约 ¥7–12M" },
+  "Entegris": { listing:"NASDAQ: ENTG", size:"约 7,000+ 人", commute:"约 40–50 分钟", salary:"约 ¥9–15M" },
+};
+export const detailsFor = (candidate: Candidate): CompanyDetail => companyDetails[candidate.company] ?? { listing:"待确认", size:"待确认", commute:"待确认", salary:"约 ¥8–14M（估算）" };
+
+export const existingRadarKeys = new Set([
+  "flatiron health|strategic partnerships senior manager", "jmdc|制药业务战略・解决方案 business produce", "syneos health|sr. strategic project manager", "hokuto|solution strategist", "prevent|cso / corporate planning director", "contrea|制药业务负责人", "boehringer ingelheim（人药）|healthcare affairs planning", "coopervision|commercial operations specialist", "alcon|commercial excellence solutions analyst", "boehringer ingelheim animal health|commercial technology & analytics manager", "johnson & johnson medtech|business analytics & market intelligence specialist", "stryker|senior manager, commercial solutions",
+]);
 
 export const candidates: Candidate[] = [
   { id:"a-ubie-cs", track:"A", company:"Ubie", title:"カスタマーサクセスマネージャー（病院DX）", href:"https://herp.careers/v1/ubiehr/QLFY7hOWBA1b", source:"公司官网", location:"日本", roleType:"客户采用 / 部署经营", why:"直接连接医疗现场的活用定着与自律运营，符合主线 A 的 HealthTech 采用入口。", gate:"确认是否拥有采用 KPI、产品反馈与合理的现场/工时边界。", verdict:"优先审阅" },
