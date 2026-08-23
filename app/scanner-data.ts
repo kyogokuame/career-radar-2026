@@ -7,6 +7,8 @@ export type Candidate = {
   href: string;
   source: "LinkedIn MCP" | "公司官网" | "公开招聘平台";
   location: string;
+  workplace?: string;
+  commute?: string;
   roleType: string;
   why: string;
   gate: string;
@@ -14,29 +16,49 @@ export type Candidate = {
   scannedOn?: string;
 };
 
-type CompanyDetail = { listing: string; size: string; commute: string; salary: string };
-const companyDetails: Record<string, CompanyDetail> = {
-  "Ubie": { listing:"未上市", size:"约 200–300 人", commute:"约 40–50 分钟", salary:"约 ¥8–15M" },
-  "JMDC": { listing:"东证 Prime（4483）", size:"约 500 人（单体）", commute:"约 35–45 分钟", salary:"约 ¥8–16M" },
-  "HOKUTO": { listing:"未上市", size:"约 80–100 人", commute:"约 40–50 分钟", salary:"约 ¥8–15M" },
-  "Mujin": { listing:"未上市", size:"约 300–500 人", commute:"约 45–60 分钟", salary:"约 ¥7–15M" },
-  "Woven by Toyota": { listing:"未上市（Toyota 旗下）", size:"约 1,000+ 人", commute:"东京约 30–45 分钟", salary:"约 ¥8–16M" },
-  "Rapyuta Robotics": { listing:"未上市", size:"约 100–200 人", commute:"约 45–60 分钟", salary:"约 ¥7–15M" },
-  "Prox Industries": { listing:"未上市", size:"早期团队", commute:"待确认", salary:"约 ¥7–13M" },
-  "inaho": { listing:"未上市", size:"早期团队", commute:"待确认", salary:"约 ¥6–10M" },
-  "MI-6": { listing:"未上市", size:"约 100–200 人", commute:"约 40–55 分钟", salary:"约 ¥7–12M" },
-  "Entegris": { listing:"NASDAQ: ENTG", size:"约 7,000+ 人", commute:"约 40–50 分钟", salary:"约 ¥9–15M" },
-  "Intuitive Surgical": { listing:"NASDAQ: ISRG", size:"日本约 355 人", commute:"约 45–55 分钟", salary:"约 ¥10–18M（估算）" },
-  "Medtronic": { listing:"NYSE: MDT", size:"约 95,000+ 人（全球）", commute:"待确认", salary:"约 ¥10–17M（估算）" },
-  "MicroPort MedBot": { listing:"HKEX: 2252", size:"待确认", commute:"上海岗位", salary:"约 RMB 96–144k（当前专员岗位）" },
-  "Zimmer Biomet": { listing:"NYSE: ZBH", size:"约 18,000+ 人（全球）", commute:"取决于地区", salary:"约 ¥10–17M（估算）" },
-  "CMR Surgical": { listing:"未上市", size:"待确认", commute:"取决于地区", salary:"待确认" },
-  "ECOVACS": { listing:"上交所 603486", size:"约 5,000+ 人（全球）", commute:"海外岗位", salary:"待确认" },
-  "BangBang Robotics": { listing:"未上市", size:"待确认", commute:"上海岗位", salary:"约 RMB 300–500k（估算）" },
-  "万拿机器人": { listing:"未上市（天使期）", size:"约 20–99 人", commute:"北京岗位", salary:"约 RMB 180–300k" },
-  "OMRON": { listing:"东证 Prime 6645", size:"约 28,000+ 人（全球）", commute:"京都约 2 小时+", salary:"约 ¥8–13M（估算）" },
+type CompanyDetail = {
+  listing: string;
+  funding: string;
+  size: string;
+  workplace: string;
+  commute: string;
+  salary: string;
 };
-export const detailsFor = (candidate: Candidate): CompanyDetail => companyDetails[candidate.company] ?? { listing:"待确认", size:"待确认", commute:"待确认", salary:"约 ¥8–14M（估算）" };
+const companyDetails: Record<string, CompanyDetail> = {
+  "Ubie": { listing:"未上市", funding:"Series C extension：US$19M（2022）；累计 US$74M", size:"约 254 人", workplace:"东京·中央区日本桥本町（Nihonbashi Life Science Building）", commute:"约 15 分钟（Google Maps 公交；抓取于 2026-08-23）", salary:"约 ¥8–15M" },
+  "JMDC": { listing:"东证 Prime（4483）", funding:"上市公司（不适用）", size:"约 500 人（单体）", workplace:"东京·港区芝大门（岗位实际楼层待确认）", commute:"约 35–45 分钟（办公楼待确认）", salary:"约 ¥8–16M" },
+  "HOKUTO": { listing:"未上市", funding:"轮次未披露：¥9 亿（2024-03）", size:"85 人（含兼职）", workplace:"东京·涩谷区涩谷（Cross Office Shibuya）", commute:"约 44 分钟（Google Maps 公交；抓取于 2026-08-23）", salary:"约 ¥8–15M" },
+  "Mujin": { listing:"未上市", funding:"Series D 首次关闭：¥364 亿（股权 ¥209 亿 + 债务 ¥155 亿，2025-12）", size:"约 350 人（全球）", workplace:"东京·江东区辰巳（MJHQ）", commute:"约 57 分钟（Google Maps 公交；抓取于 2026-08-23）", salary:"约 ¥7–15M" },
+  "Woven by Toyota": { listing:"未上市（Toyota 旗下）", funding:"母公司资本支持；无独立融资轮次披露", size:"约 1,000+ 人", workplace:"东京·中央区日本桥（具体团队/裾野出勤待确认）", commute:"约 20–35 分钟（东京办公地估算；裾野不适用）", salary:"约 ¥8–16M" },
+  "Rapyuta Robotics": { listing:"未上市", funding:"Series C Extension（金额未公开；公开估值 ¥240 亿，2024）", size:"约 100–200 人", workplace:"东京·江东区（具体地址待确认）", commute:"约 40–60 分钟（区内办公地待确认）", salary:"约 ¥7–15M" },
+  "Prox Industries": { listing:"未上市", funding:"Seed（金额未公开）", size:"早期团队", workplace:"东京·文京区本乡（本乡K&K大厦）", commute:"Google Maps 路线见链接（随出发时间变化）", salary:"约 ¥7–13M" },
+  "inaho": { listing:"未上市", funding:"资本业务提携（2026-03，金额未公开）", size:"早期团队", workplace:"神奈川·藤泽市鹄沼海岸", commute:"约 1 小时 40 分+（跨城；以 Maps 实时路线为准）", salary:"约 ¥6–10M" },
+  "MI-6": { listing:"未上市", funding:"Series A：¥6.5 亿（含融资等，2023-05）", size:"约 100–200 人", workplace:"东京·中央区日本桥小舟町", commute:"约 22 分钟（Google Maps 公交；抓取于 2026-08-23）", salary:"约 ¥7–12M" },
+  "Entegris": { listing:"NASDAQ: ENTG", funding:"上市公司（不适用）", size:"约 7,000+ 人", workplace:"东京（具体区待确认）", commute:"具体办公地待确认后再计算", salary:"约 ¥9–15M" },
+  "Intuitive Surgical": { listing:"NASDAQ: ISRG", funding:"上市公司（不适用）", size:"日本约 355 人", workplace:"东京·港区赤坂（ARK Mori Building）", commute:"约 37 分钟（Google Maps 公交；抓取于 2026-08-23）", salary:"约 ¥10–18M（估算）" },
+  "Medtronic": { listing:"NYSE: MDT", funding:"上市公司（不适用）", size:"约 95,000+ 人（全球）", workplace:"东京（岗位页仅披露 Tokyo；区待确认）", commute:"办公区待确认后再计算", salary:"约 ¥10–17M（估算）" },
+  "MicroPort MedBot": { listing:"HKEX: 2252", funding:"上市公司（不适用）", size:"待确认", workplace:"上海（岗位页未披露区）", commute:"海外岗位；不适用新小岩日常通勤", salary:"约 RMB 96–144k（当前专员岗位）" },
+  "Zimmer Biomet": { listing:"NYSE: ZBH", funding:"上市公司（不适用）", size:"约 18,000+ 人（全球）", workplace:"美国（具体城市待确认）", commute:"海外岗位；不适用新小岩日常通勤", salary:"约 ¥10–17M（估算）" },
+  "CMR Surgical": { listing:"未上市", funding:"Series F：超过 US$200M（2025-04）", size:"待确认", workplace:"英国·剑桥（岗位具体地点待确认）", commute:"海外岗位；不适用新小岩日常通勤", salary:"待确认" },
+  "ECOVACS": { listing:"上交所 603486", funding:"上市公司（不适用）", size:"约 5,000+ 人（全球）", workplace:"苏州·吴中区（公司总部；具体岗位另列）", commute:"海外岗位；不适用新小岩日常通勤", salary:"待确认" },
+  "BangBang Robotics": { listing:"未上市", funding:"Series B：约 ¥1 亿（2022-06）", size:"待确认", workplace:"上海·松江区中辰路188号", commute:"海外岗位；不适用新小岩日常通勤", salary:"约 RMB 300–500k（估算）" },
+  "万拿机器人": { listing:"未上市（天使期）", funding:"天使期；最近一轮与金额未公开", size:"约 20–99 人", workplace:"北京·大兴区天和西路28号（以 offer 为准）", commute:"海外岗位；不适用新小岩日常通勤", salary:"约 RMB 180–300k" },
+  "OMRON": { listing:"东证 Prime 6645", funding:"上市公司（不适用）", size:"约 28,000+ 人（全球）", workplace:"京都·下京区塩小路通堀川东入（京都事業所/总部）", commute:"跨城；以 Google Maps 出发时刻为准", salary:"约 ¥8–13M（估算）" },
+  "Unitree Robotics": { listing:"上交所科创板（688836）", funding:"上市公司（不适用）", size:"待确认", workplace:"杭州·滨江区（具体园区待确认）", commute:"海外岗位；不适用新小岩日常通勤", salary:"待确认" },
+  "SoftBank Robotics": { listing:"未上市（SoftBank Group 体系）", funding:"集团资本配置；无独立融资轮次披露", size:"待确认", workplace:"东京·港区（具体办公室/团队待确认）", commute:"办公区待确认后再计算", salary:"待确认" },
+  "Telexistence": { listing:"未上市", funding:"最近资本合作：Ricoh（2026-07，金额未公开）；此前 Series B US$170M（2023）", size:"待确认", workplace:"东京（具体区待确认）", commute:"办公区待确认后再计算", salary:"待确认" },
+  "Preferred Robotics": { listing:"未上市（Preferred Networks 子公司）", funding:"战略投资 ¥6 亿（2022）；最新独立轮次未公开", size:"待确认", workplace:"东京·千代田区大手町（大手町大厦）", commute:"约 24 分钟（Google Maps 公交；抓取于 2026-08-23）", salary:"待确认" },
+  "Ascent Robotics": { listing:"未上市", funding:"Series B（2022；金额未公开）", size:"约 28 人（2025-03）", workplace:"东京·涩谷区广尾（Tech Hiroo）", commute:"Google Maps 路线见链接（随出发时间变化）", salary:"待确认" },
+  "Terra Drone": { listing:"东证 Growth（278A）", funding:"上市公司（不适用）", size:"待确认", workplace:"东京·涩谷区南平台町（A-PLACE Shibuya Nanpeidai）", commute:"约 35–50 分钟（办公地路线待实时确认）", salary:"待确认" },
+  "SENSYN ROBOTICS": { listing:"未上市", funding:"最新公开大额融资：约 ¥22.5 亿（2023-11）；其后为战略资本合作", size:"108 人（2026-03）", workplace:"东京·品川区大井（住友不动产大井町站前大厦）", commute:"Google Maps 路线见链接（随出发时间变化）", salary:"待确认" },
+  "DENSO": { listing:"东证 Prime（6902）", funding:"上市公司（不适用）", size:"约 160,000+ 人（全球）", workplace:"爱知·刈谷市（岗位实际办公地待确认）", commute:"跨城；不适用新小岩日常通勤", salary:"待确认" },
+  "Yaskawa Electric": { listing:"东证 Prime（6506）", funding:"上市公司（不适用）", size:"约 13,000+ 人（全球）", workplace:"福冈·北九州市八幡西区（总部；岗位实际地点待确认）", commute:"跨城；不适用新小岩日常通勤", salary:"待确认" },
+  "Kawasaki Heavy Industries": { listing:"东证 Prime（7012）", funding:"上市公司（不适用）", size:"约 40,000+ 人（全球）", workplace:"兵库·神户市中央区（机器人团队地点待确认）", commute:"跨城；不适用新小岩日常通勤", salary:"待确认" },
+  "FANUC": { listing:"东证 Prime（6954）", funding:"上市公司（不适用）", size:"约 10,000+ 人（全球）", workplace:"山梨·忍野村（总部；岗位实际地点待确认）", commute:"跨城；不适用新小岩日常通勤", salary:"待确认" },
+  "DOBOT": { listing:"未上市", funding:"最近公开轮次与金额未核验", size:"待确认", workplace:"深圳·南山区（具体园区待确认）", commute:"海外岗位；不适用新小岩日常通勤", salary:"待确认" },
+};
+export const detailsFor = (candidate: Candidate): CompanyDetail => companyDetails[candidate.company] ?? { listing:"待确认", funding:"待确认", size:"待确认", workplace:`${candidate.location}（实际办公地待确认）`, commute:"实际办公地待确认后再计算", salary:"约 ¥8–14M（估算）" };
+export const mapsDirectionsUrl = (workplace: string) => `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent("新小岩駅")}&destination=${encodeURIComponent(workplace)}&travelmode=transit`;
 
 export const existingRadarKeys = new Set([
   "flatiron health|strategic partnerships senior manager", "jmdc|制药业务战略・解决方案 business produce", "syneos health|sr. strategic project manager", "hokuto|solution strategist", "prevent|cso / corporate planning director", "contrea|制药业务负责人", "boehringer ingelheim（人药）|healthcare affairs planning", "coopervision|commercial operations specialist", "alcon|commercial excellence solutions analyst", "boehringer ingelheim animal health|commercial technology & analytics manager", "johnson & johnson medtech|business analytics & market intelligence specialist", "stryker|senior manager, commercial solutions",
@@ -71,8 +93,8 @@ export const candidates: Candidate[] = [
   {id:"a-microport-overseas",track:"A",company:"MicroPort MedBot",title:"海外市场专员",href:"https://www.linkedin.com/jobs/view/4439642517/",source:"LinkedIn MCP",location:"上海",roleType:"手术机器人海外市场 / KOL",why:"海外市场、KOL、学术活动、销售支持与竞争情报，是中国手术机器人国际化的低门槛商业入口。",gate:"公开区间明显低于当前基线且职级偏初级；仅作进入行业或谈更高职级的参考。",verdict:"条件式",scannedOn:"2026-08-23"},
   {id:"a-zimmer-commercial",track:"A",company:"Zimmer Biomet",title:"Commercial Enablement & Marketing Technology",href:"https://careers.zimmerbiomet.com/us/en/job/10226/Business-Systems-Associate-Director-Commercial-Enablement-Marketing-Technology",source:"公司官网",location:"全球 / 远程视岗位",roleType:"骨科机器人商业卓越",why:"ROSA 机器人平台所在公司已有商业赋能与营销技术职能，是从商业分析切入医疗机器人生态的可迁移路径。",gate:"该具体链接为近期职位证据；先确认当前开放地区及是否接受日本/中国候选人。",verdict:"条件式",scannedOn:"2026-08-23"},
   {id:"a-cmr-commercial",track:"A",company:"CMR Surgical",title:"Commercial / Customer Success / Medical Affairs",href:"https://us.cmrsurgical.com/job-search",source:"公司官网",location:"英国 / 全球",roleType:"手术机器人商业化与客户采用",why:"Versius 的招聘体系明确覆盖 Commercial、Customer Success 与 Medical Affairs，可建立手术机器人部署和采用资本。",gate:"当前公开岗位的地域以英国和其他市场为主；只在非纯猎手、地点和签证可行时审阅。",verdict:"条件式",scannedOn:"2026-08-23"},
-  {id:"b-ecovacs-apj",track:"B",company:"ECOVACS",title:"Marketing Supervisor, APJ",href:"https://www.ecovacs.com/sg/careers/job-detail?id=4",source:"公司官网",location:"新加坡",roleType:"服务机器人区域产品上市",why:"当前岗位覆盖产品发布、GTM 协同、市场定位、渠道与线上/线下营销，是家用服务机器人全球化的直接入口。",gate:"确认新加坡工作许可、实际薪资及工作强度；职责偏品牌执行时降权。",verdict:"优先审阅",scannedOn:"2026-08-23"},
-  {id:"b-ecovacs-emea",track:"B",company:"ECOVACS",title:"Brand Manager, EMEA",href:"https://www.ecovacs.com/de/careers/job-detail?id=91",source:"公司官网",location:"德国杜塞尔多夫",roleType:"机器人品牌本地化 / 区域上市",why:"跨国本地化、产品发布、零售和电商协同，是从日本/中国走向全球的高迁移性商业化路径。",gate:"需要欧洲工作资格和多国营销经历；作为全球路线的第二跳候选。",verdict:"条件式",scannedOn:"2026-08-23"},
+  {id:"b-ecovacs-apj",track:"B",company:"ECOVACS",title:"Marketing Supervisor, APJ",href:"https://www.ecovacs.com/sg/careers/job-detail?id=4",source:"公司官网",location:"新加坡",workplace:"新加坡·Kent Ridge（岗位页披露）",commute:"海外岗位；不适用新小岩日常通勤",roleType:"服务机器人区域产品上市",why:"当前岗位覆盖产品发布、GTM 协同、市场定位、渠道与线上/线下营销，是家用服务机器人全球化的直接入口。",gate:"确认新加坡工作许可、实际薪资及工作强度；职责偏品牌执行时降权。",verdict:"优先审阅",scannedOn:"2026-08-23"},
+  {id:"b-ecovacs-emea",track:"B",company:"ECOVACS",title:"Brand Manager, EMEA",href:"https://www.ecovacs.com/de/careers/job-detail?id=91",source:"公司官网",location:"德国杜塞尔多夫",workplace:"德国·杜塞尔多夫（岗位页披露）",commute:"海外岗位；不适用新小岩日常通勤",roleType:"机器人品牌本地化 / 区域上市",why:"跨国本地化、产品发布、零售和电商协同，是从日本/中国走向全球的高迁移性商业化路径。",gate:"需要欧洲工作资格和多国营销经历；作为全球路线的第二跳候选。",verdict:"条件式",scannedOn:"2026-08-23"},
   {id:"b-bangbang-gtm",track:"B",company:"BangBang Robotics",title:"GTM（智能辅助出行）",href:"https://www.bangbangrobotics.com/job/236.html",source:"公司官网",location:"上海",roleType:"康复机器人产品 GTM",why:"负责产品全生命周期、上市策略、渠道、量价预测和海外市场，连接医疗/养老与实体智能。",gate:"确认团队节奏、出差频率及可获得的产品商业化所有权；中国现金需满足底线。",verdict:"优先审阅",scannedOn:"2026-08-23"},
   {id:"b-wana-gtm",track:"B",company:"万拿机器人",title:"GTM 经理（具身智能）",href:"https://www.zhaopin.com/jobdetail/CCL1502557420J40894259713.htm",source:"公开招聘平台",location:"北京",roleType:"工业具身智能 GTM",why:"岗位覆盖定位、定价、渠道、销售赋能、上市 readiness 与产品反馈，是最完整的具身智能商业化职能之一。",gate:"天使期团队、高强度与个人结果压力都较高；须核验股权、工时和现金补偿。",verdict:"条件式",scannedOn:"2026-08-23"},
   {id:"b-omron-pmm",track:"B",company:"OMRON",title:"AMR / Cobot 产品营销（日本市场）",href:"https://job.axol.jp/qd/c/omron/public/job/detail/0zr5YAPeRlJGnF-hg",source:"公司官网",location:"京都",roleType:"工业机器人产品市场展开",why:"当前岗位将 AMR/Cobot 的客户场景、销售策略、伙伴协同和产品改进闭环，是主线 B 的优质非工程入口。",gate:"需补足机器人/FA 技术理解；京都现已在可接受地点范围内。",verdict:"优先审阅",scannedOn:"2026-08-23"},

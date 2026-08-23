@@ -30,6 +30,14 @@
 
 .candidate-facts span { min-width: 0; }
 
+.candidate-facts a {
+  color: #426f9f;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.candidate-facts a:hover { text-decoration: underline; }
+
 .candidate-card > div:not(.candidate-top):not(.candidate-gate):not(.candidate-facts) {
   margin-top: auto;
 }
