@@ -5,7 +5,7 @@ import SiteNav from "./SiteNav";
 import { candidates } from "./scanner-data";
 
 type Fit = "高" | "中" | "低";
-type Status = "待确认" | "待研究" | "进行中" | "已联系" | "面谈待排期" | "面谈已确定" | "已投递" | "暂停";
+type Status = "待确认" | "待研究" | "进行中" | "已联系" | "面谈待排期" | "面谈已排期" | "面谈已确定" | "已投递" | "暂停";
 type Reaction = "赞" | "踩";
 type Role = {
   id: string; company: string; title: string; source: string; date: string; work: string;
@@ -19,6 +19,7 @@ const roles: Role[] = [
   {id:"jmdc",company:"JMDC",title:"制药业务战略・解决方案 Business Produce",href:"https://hrmos.co/pages/jmdc/jobs/bp-00034",source:"Apex · 工藤悟",date:"7/31",work:"用医疗大数据为药企做战略与解决方案，负责客户开拓、提案、交付和新业务化；目标承担约 1 亿日元级业务。",salary:"1,000–2,000 万日元（邮件沟通）",onsite:"弹性制；天数未公开",commute:"芝大门约 35–40 分钟",distance:"中",management:"业务经营与团队建设职责",reports:"未公开",fit:"高",reason:"McKinsey 战略、商业策略和数据治理经验直接匹配；薪酬也覆盖当前基线。",status:"面谈已确定",tags:["医疗数据","新业务","药企","8/27 10:00 面谈"]},
   {id:"syneos",company:"Syneos Health",title:"Sr. Strategic Project Manager",href:"https://commercialcareers.syneoshealth.com/search/jobs/in/tokyo",source:"Apex · 吉野すみれ",date:"7/29",work:"领导药企新品上市与 Commercial Solutions 项目，连接 BD、方案设计和交付团队。",salary:"未公开",onsite:"每周约 2 天出社",commute:"丸之内约 20–25 分钟",distance:"近",management:"跨职能项目领导",reports:"未公开",fit:"高",reason:"咨询、GTM、跨团队转型经验高度贴合；日英双语符合要求。",status:"待确认",tags:["咨询","上市","药企"]},
   {id:"syneos-consultant",company:"Syneos Health",title:"Consultant / Associate Consultant",href:"https://japan.commercialcareers.syneoshealth.com/jobs/17863053-consultant-slash-associate-consultant",source:"Syneos Health 官网",date:"8/24",work:"作为咨询项目 IC，完成医药/生物医药调研、分析、客户材料与项目交付；路径为 Sr. Consultant / Engagement Manager。",salary:"固定 ¥9.6–13M + 15% 奖金；总包约 ¥11–15M",onsite:"东京办公室；平均 19–20 点下班（本人核验）",commute:"丸之内约 20–25 分钟",distance:"近",management:"高级个人贡献者 / 项目交付",reports:"无",fit:"高",reason:"医疗行业切换的成功率高，且本人已确认工时可接受；以 18–30 个月为期限积累上市、商业战略与客户事实后，跳 in-house 药企、数字健康或 MedTech 商业化。主要风险是利用率、多项目和提案工作，不能长期停在泛调研/材料生产。",status:"进行中",tags:["主线 A","医药商业策略","咨询","进行中"]},
+  {id:"sierra-gtm-operations",company:"Sierra",title:"GTM Operations",href:"https://www.linkedin.com/jobs/view/4446733630/",source:"LinkedIn · Sierra HR",date:"8/24",work:"负责新市场商业案例与执行计划、产品表现的财务/数据分析、年度规划框架，以及 Sales、Marketing、Product、Engineering 间的跨职能经营推进。",salary:"未公开；面谈核对现金、股权数量与行权条款",onsite:"东京现场办公；公司以线下协作为主",commute:"东京办公室（具体区域待 HR 确认）",distance:"待确认",management:"高级个人贡献者；跨职能战略、经营与执行",reports:"无",fit:"高",reason:"咨询 + ByteDance 商业化策略/运营的连续性最强，是进入企业级 AI Agent 的 GTM/经营中枢的一跳。职位明确要求 5–10 年经验，需用两年以上咨询、跨职能规划和商业化成果弥补总年限差距。主要取舍是 Sierra 将 Intensity 列为核心价值，且客户交付与现场协作可能带来持续高工时；明天面谈应先核实日本团队工时、客户 on-call、汇报线及股权。",status:"面谈已排期",tags:["主线 AI","GTM / BizOps","AI Agent","面谈已排期"]},
   {id:"hokuto",company:"HOKUTO",title:"Solution Strategist",href:"https://herp.careers/v1/hokuto/pzQBjDQrhbNs",source:"Apex · 吉野すみれ",date:"7/29",work:"为药企设计营销/销售策略，负责数据分析、交付、KPI 改善和新服务 PoC。",salary:"未公开",onsite:"全远程 / 全弹性",commute:"无需通勤",distance:"远程",management:"项目与客户领导",reports:"未公开",fit:"高",reason:"商业策略、市场洞察和运营体系经验可直接迁移。",status:"待确认",tags:["HealthTech","商业策略","远程"]},
   {id:"prevent",company:"PREVENT",title:"CSO / Corporate Planning Director",href:"https://prevent.co.jp/recruit/",source:"Apex · Andrew Areiter",date:"7/29",work:"作为 CEO 的战略伙伴，主导中长期计划、资源配置、M&A、新业务与高层决策支持。",salary:"上限约 1,500 万日元",onsite:"全远程可",commute:"无需固定通勤",distance:"远程",management:"董事会级战略领导",reports:"未公开",fit:"中",reason:"战略规划匹配，但 CSO 级别及直接 P&L/管理履历要求高。",status:"待确认",tags:["CSO","数字健康","高管"]},
   {id:"contrea",company:"Contrea",title:"制药业务负责人",href:"https://recruit.contrea.jp/open-positions",source:"Apex · 白井美穗",date:"7/29",work:"将 MediOS 药企业务规模化，建立药企–医疗机构模式，推动客户、使用量、PMF 与团队搭建。",salary:"未公开",onsite:"混合办公；天数未公开",commute:"西新宿约 45–50 分钟",distance:"远",management:"业务负责人，向 CEO 汇报",reports:"未公开；含招聘与组织搭建",fit:"中",reason:"业务构建和商业策略相符，但需更强的制药 P&L 与 0→1 经营证明。",status:"待确认",tags:["业务负责人","HealthTech","P&L"]},
@@ -37,6 +38,7 @@ const companyProfiles: Record<string, CompanyProfile> = {
   jmdc: {hq:"日本东京 · 港区芝大门",listing:"东证 Prime · 4483",size:"499 人（单体，2026/3）",sourceHref:"https://www.jmdc.co.jp/en/profile/",sourceLabel:"JMDC 官方公司资料",workplacePlatform:"OpenWork",workplaceScore:"4.55 / 5（公开搜索快照；样本/日期待核验）",workplaceRisk:"药企客户交付压力、集团整合后的优先级与业务经营目标需面谈确认。"},
   syneos: {hq:"美国 Morrisville, North Carolina",listing:"非上市 · 2023 年被私有化",size:"约 29,000 人（全球）",sourceHref:"https://www.syneoshealth.com/clinical-corporate-careers",sourceLabel:"Syneos 官方招聘资料",workplacePlatform:"Glassdoor",workplaceScore:"3.7 / 5（3,959 条全球评价）；Commercial Solutions 3.9 / 5（318 条）",workplaceRisk:"项目/客户依赖与利用率是常见波动源；以东京团队实际 19–20 点下班的验证为准。"},
   "syneos-consultant": {hq:"美国 Morrisville, North Carolina",listing:"非上市 · 2023 年被私有化",size:"约 29,000 人（全球）",sourceHref:"https://japan.commercialcareers.syneoshealth.com/jobs/17863053-consultant-slash-associate-consultant",sourceLabel:"Syneos 岗位资料",workplacePlatform:"Glassdoor",workplaceScore:"3.7 / 5（3,959 条全球评价）；Commercial Solutions 3.9 / 5（318 条）",workplaceRisk:"项目/客户依赖与利用率是常见波动源；以东京团队实际 19–20 点下班的验证为准。"},
+  "sierra-gtm-operations": {hq:"美国旧金山",listing:"非上市 · Series E；最近一轮 2026/5 融资 $950M，估值超 $15B",size:"201–500 人（LinkedIn 公司页；平台显示约 1,000 名员工档案）",sourceHref:"https://techcrunch.com/2026/05/04/sierra-raises-950m-as-the-race-to-own-enterprise-ai-gets-serious/",sourceLabel:"TechCrunch · 2026/5 融资报道",workplacePlatform:"Glassdoor",workplaceScore:"未检索到可核验的 Sierra AI 同名评分/样本不足",workplaceRisk:"公司将 Intensity 定为核心价值且以现场协作为主；日本团队处于扩张期，需面谈核验长期工时、客户紧急响应、东京办公室地点与股权归属。"},
   hokuto: {hq:"日本东京 · 涩谷区涩谷",listing:"非上市 · 医疗科技创业公司",size:"85 人（含兼职，2026/5）",sourceHref:"https://corp.hokuto.app/about",sourceLabel:"HOKUTO 官方公司资料",workplacePlatform:"OpenWork",workplaceScore:"未检索到可核验同名评分/样本不足",workplaceRisk:"小团队、药企客户集中度和岗位边界；核验远程制度是否适用于目标团队。"},
   prevent: {hq:"日本名古屋 · 东区葵",listing:"非上市 · 住友生命 100% 持有",size:"约 111 人（公开职场资料）",sourceHref:"https://prevent.co.jp/company/",sourceLabel:"PREVENT 官方公司资料",workplacePlatform:"OpenWork",workplaceScore:"未检索到可核验同名评分/样本不足",workplaceRisk:"高管直辖角色的授权边界、名古屋/远程实际安排和母公司治理。"},
   contrea: {hq:"日本东京 · 新宿区西新宿",listing:"非上市 · 医疗 SaaS 创业公司",size:"未公开（2023 年约 10 名正式员工）",sourceHref:"https://www.contrea.jp/",sourceLabel:"Contrea 官方公司资料",workplacePlatform:"OpenWork",workplaceScore:"未检索到可核验同名评分/样本不足",workplaceRisk:"极早期规模、药企业务 P&L 压力与招聘/经营职责可能超出当前职级。"},
@@ -49,8 +51,8 @@ const companyProfiles: Record<string, CompanyProfile> = {
   "anker-gtm": {hq:"日本东京 · 港区赤坂",listing:"日本法人非独立上市；母公司 Anker Innovations 为上交所科创板 688410",size:"202 人（Anker Japan，2026/4）",sourceHref:"https://hrmos.co/pages/ankerjapan/jobs/40163838476781405180",sourceLabel:"Anker Japan 官方岗位资料",workplacePlatform:"OpenWork",workplaceScore:"3.47 / 5（119 条评价快照；月均残业 43.6 小时快照）",workplaceRisk:"中国总部协同、消费硬件发布节点与月度工时；薪资低于既定现金目标。"},
 };
 
-const options: Status[] = ["待确认","待研究","进行中","已联系","面谈待排期","面谈已确定","已投递","暂停"];
-const activeStatuses: Status[] = ["待研究","进行中","已联系","面谈待排期","面谈已确定","已投递"];
+const options: Status[] = ["待确认","待研究","进行中","已联系","面谈待排期","面谈已排期","面谈已确定","已投递","暂停"];
+const activeStatuses: Status[] = ["待研究","进行中","已联系","面谈待排期","面谈已排期","面谈已确定","已投递"];
 const classFor = (fit: Fit) => fit === "高" ? "high" : fit === "中" ? "mid" : "low";
 const commuteFor = (value: Role["distance"]) => ({近:"near",中:"medium",远:"far",远程:"remote",待确认:"unknown"})[value];
 const loadLocal = <T,>(key: string, fallback: T): T => {
@@ -102,7 +104,7 @@ export default function Home() {
   return <><SiteNav active="dashboard"/><main>
     <section className="hero">
       <div className="eyebrow">CAREER RADAR · 2026</div>
-      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“保证现金不低于 800 万日元、理想区间 900–1,200 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>JMDC casual 面谈已确认</strong><p>8 月 27 日（周四）10:00–11:00 · 线上</p></div></div>
+      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“保证现金不低于 800 万日元、理想区间 900–1,200 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>Sierra GTM Operations 面谈已排期</strong><p>明日与 HR 沟通 · 核验工时、股权与日本团队边界</p></div></div>
       <div className="metrics"><div><b>{allRoles.length}</b><span>个职位</span></div><div><b>{active}</b><span>进行中</span></div><div><b>{high}</b><span>高适配</span></div><div><b>¥8M+</b><span>保证现金下限</span></div></div>
     </section>
     <section className="controls">
