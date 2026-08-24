@@ -33,7 +33,7 @@ export default function ScannerPage() {
   const companyCounts = new Map<string, number>();
   const selected = ranked.filter((candidate) => {
     const count = companyCounts.get(candidate.company) ?? 0;
-    if (count >= 2) return false;
+    if (count >= 3) return false;
     companyCounts.set(candidate.company, count + 1);
     return true;
   });

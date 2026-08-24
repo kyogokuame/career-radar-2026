@@ -21,6 +21,8 @@ export type Candidate = {
 export const stageFor = (candidate: Candidate): CandidateStage => {
   if (candidate.stage) return candidate.stage;
   if (candidate.verdict === "暂不建议") return "长期目标";
+  const firstHopIds = new Set(["a-hokuto-am", "a-linkedin-pathology-pm", "b-mujin-hwpm", "b-woven-cs", "b-mi6-pdm", "b-preferred-pm", "b-ascent-cs", "b-terra-pm"]);
+  if (firstHopIds.has(candidate.id)) return "现在值得推进";
   const text = `${candidate.title} ${candidate.roleType} ${candidate.why} ${candidate.gate}`;
   const hardFirstHopGate = /要求.{0,12}(行业经验|实务经验|临床|医疗器械|游戏|机器人|工程|技术背景)|需要.{0,12}(深度|丰富|多年|强).{0,8}(经验|人脉|履历)|10\s*年|10年以上|Director|Head|负责人|Senior Manager|战略投资|投后|发行负责人/i;
   if (hardFirstHopGate.test(text)) return "长期目标";
