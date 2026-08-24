@@ -40,8 +40,10 @@ export default function ScannerPage() {
   const visible = selected.filter((candidate) => (track === "全部" || candidate.track === track) && (stage === "全部" || stageFor(candidate) === stage));
   const matchesTrack = (candidate: Candidate) => track === "全部" || candidate.track === track;
   const matchesStage = (candidate: Candidate) => stage === "全部" || stageFor(candidate) === stage;
-  const stageCount = (value: CandidateStage) => selected.filter((candidate) => matchesTrack(candidate) && stageFor(candidate) === value).length;
-  const trackCount = (value: Track) => selected.filter((candidate) => matchesStage(candidate) && candidate.track === value).length;
+  // Counts are bound to the full ranked pool (before the per-company display cap),
+  // so the second filter always reflects the true intersection with the first.
+  const stageCount = (value: CandidateStage) => ranked.filter((candidate) => matchesTrack(candidate) && stageFor(candidate) === value).length;
+  const trackCount = (value: Track) => ranked.filter((candidate) => matchesStage(candidate) && candidate.track === value).length;
   const update = (key: string, ids: string[], setIds: (value: string[]) => void) => { setIds(ids); localStorage.setItem(key, JSON.stringify(ids)); };
   const adopt = (candidate: Candidate) => update(adoptedKey, [...new Set([...adopted, candidate.id])], setAdopted);
   const decline = (candidate: Candidate) => update(declinedKey, [...new Set([...declined, candidate.id])], setDeclined);
@@ -52,8 +54,8 @@ export default function ScannerPage() {
 
   return <><SiteNav active="scanner"/><main className="scanner-page">
     <section className="scanner-hero"><div><span>JOB SCAN · CURATED OPPORTUNITIES</span><h1>先筛岗位结构，<br/><em>再决定是否进入雷达。</em></h1><p>职位池按“现在值得推进 / 有条件探索 / 长期目标”三层排序：第一层强调第一跳可行性，第二层保留一个待验证门槛，第三层只保留长期组合价值。每日扫描目标池建议 30–40 条（约 12–18 / 12–18 / ≤8）。</p></div><aside><b>{adopted.length}</b><span>已采用</span><b>{declined.length}</b><span>暂不采用</span><p>采用与否仅保存在当前浏览器。</p></aside></section>
-    <section className="scanner-controls"><button className={stage === "全部" ? "selected" : ""} onClick={() => setStage("全部")}>全部层级 {selected.filter(matchesTrack).length}</button><button className={stage === "现在值得推进" ? "selected" : ""} onClick={() => setStage("现在值得推进")}>现在值得推进 {stageCount("现在值得推进")}</button><button className={stage === "有条件探索" ? "selected" : ""} onClick={() => setStage("有条件探索")}>有条件探索 {stageCount("有条件探索")}</button><button className={stage === "长期目标" ? "selected" : ""} onClick={() => setStage("长期目标")}>长期目标 {stageCount("长期目标")}</button></section>
-    <section className="scanner-controls"><button className={track === "全部" ? "selected" : ""} onClick={() => setTrack("全部")}>全部赛道 {selected.filter(matchesStage).length}</button><button className={track === "A" ? "selected" : ""} onClick={() => setTrack("A")}>主线 A · 医疗健康 {trackCount("A")}</button><button className={track === "B" ? "selected" : ""} onClick={() => setTrack("B")}>主线 B · 实体 AI / 机器人 {trackCount("B")}</button><button className={track === "C" ? "selected" : ""} onClick={() => setTrack("C")}>战略转向 · 游戏/IP {trackCount("C")}</button></section>
+    <section className="scanner-controls"><button className={stage === "全部" ? "selected" : ""} onClick={() => setStage("全部")}>全部层级 {ranked.filter(matchesTrack).length}</button><button className={stage === "现在值得推进" ? "selected" : ""} onClick={() => setStage("现在值得推进")}>现在值得推进 {stageCount("现在值得推进")}</button><button className={stage === "有条件探索" ? "selected" : ""} onClick={() => setStage("有条件探索")}>有条件探索 {stageCount("有条件探索")}</button><button className={stage === "长期目标" ? "selected" : ""} onClick={() => setStage("长期目标")}>长期目标 {stageCount("长期目标")}</button></section>
+    <section className="scanner-controls"><button className={track === "全部" ? "selected" : ""} onClick={() => setTrack("全部")}>全部赛道 {ranked.filter(matchesStage).length}</button><button className={track === "A" ? "selected" : ""} onClick={() => setTrack("A")}>主线 A · 医疗健康 {trackCount("A")}</button><button className={track === "B" ? "selected" : ""} onClick={() => setTrack("B")}>主线 B · 实体 AI / 机器人 {trackCount("B")}</button><button className={track === "C" ? "selected" : ""} onClick={() => setTrack("C")}>战略转向 · 游戏/IP {trackCount("C")}</button></section>
     {(track !== "全部" || stage !== "全部") && <p className="scanner-filter-summary">当前筛选：{stage === "全部" ? "全部层级" : stage} × {track === "全部" ? "全部赛道" : trackLabel[track]} · 显示 {visible.length} 条</p>}
     <section className="candidate-grid">{visible.map((candidate) => {
       const state = adopted.includes(candidate.id) ? "adopted" : declined.includes(candidate.id) ? "declined" : "new";
