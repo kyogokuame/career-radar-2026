@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./responsive.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kyogokuame.github.io/career-radar-2026/"),

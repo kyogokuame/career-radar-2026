@@ -1,0 +1,37 @@
+/* Shared mobile refinements for the dashboard and scanner. */
+.scanner-filter-summary{margin:-9px 0 17px;color:#63718a;font-size:12px;font-weight:800}
+@media (max-width:760px){
+  .site-nav{min-width:0;gap:10px;align-items:flex-start}
+  .site-tabs{max-width:calc(100vw - 118px);overflow-x:auto;flex-shrink:1;white-space:nowrap}
+  .site-tabs a{flex:0 0 auto}
+  main{width:100%;min-width:0}
+  .hero-grid,.workspace{min-width:0}
+  .hero h1{font-size:clamp(32px,12vw,48px);overflow-wrap:anywhere}
+  .hero p{font-size:13px}
+  .hero-note{padding:16px}
+  .metrics{margin-left:-22px;margin-right:-22px}
+  .metrics div{min-width:0}
+  .metrics b{font-size:21px}
+  .controls{align-items:stretch;gap:8px}
+  .search{min-width:0;max-width:none;flex-basis:100%}
+  .buttons{width:100%;overflow-x:auto;padding-bottom:2px}
+  .buttons button{flex:0 0 auto}
+  .detail{padding:18px;border-radius:16px}
+  .detail-head h2{font-size:21px;overflow-wrap:anywhere}
+  .facts{grid-template-columns:1fr}
+  .scanner-controls{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}
+  .scanner-controls button{flex:0 0 auto;white-space:nowrap}
+  .candidate-card{min-width:0;padding:17px}
+  .candidate-top{align-items:flex-start;font-size:9px}
+  .candidate-top span{min-width:0;overflow-wrap:anywhere}
+  .candidate-card>a{font-size:16px;overflow-wrap:anywhere}
+  .candidate-card footer{flex-wrap:wrap}
+  .candidate-card footer button{flex:1 1 auto}
+}
+@media (max-width:420px){
+  .site-brand b{font-size:12px}
+  .site-tabs a{padding:7px 10px;font-size:11px}
+  .metrics div{padding:13px 16px}
+  .scanner-hero{padding:24px 18px}
+  .scanner-hero h1{font-size:36px}
+}
