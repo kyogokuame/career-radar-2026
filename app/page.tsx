@@ -33,13 +33,36 @@ const roles: Role[] = [
   {id:"anker-gtm",company:"Anker Japan",title:"GTM（市场投入战略＆产品营销）",href:"https://hrmos.co/pages/ankerjapan/jobs/40163838476781405180",source:"Anker Japan 官网",date:"8/23",work:"主导便携储能新品在日本的市场进入：产品策略、本地化、EC/量贩渠道、物流库存与 CS 的上市协同，并与中国总部共同推进。",salary:"600–900 万日元（年俸制；奖金每年 4 次）",onsite:"可远程；原则每周出社 3 天；弹性制",commute:"赤坂约 45–55 分钟",distance:"远",management:"高级个人贡献者；GTM / 产品营销跨职能主导",reports:"无公开",fit:"高",reason:"罕见地同时覆盖市场进入战略、总部–日本本地化、渠道/电商和 launch 运营，与你的 J&J GTM 组织战略与市场推出经验高度重合，并能积累中日可迁移的硬件商业化资本。主要取舍是 ¥6–9M 区间低于理想现金目标，且它是实体 AI/机器人之外的邻接赛道。",status:"待研究",tags:["GTM","产品上市","中日协作","消费硬件","便携储能"]},
 ];
 
+const sierraHrInterviewUpdate: Partial<Role> = {
+  work:"AI Deployment Consulting：面向日本客户设计、部署与优化 AI Agent，连接客户业务诊断、方案/交付和商业化；同时要求独立完成日语销售。",
+  salary:"以固定薪资与现金奖金为主；RSU 不按确定性现金或期权上行计入（HR 面确认）",
+  onsite:"东京日比谷办公室；现场办公",
+  commute:"日比谷约 35–40 分钟（新小岩；精确楼宇待确认）",
+  distance:"中",
+  management:"个人贡献者；AI Deployment Consulting、客户交付与日语销售",
+  memo:{title:"HR 面谈纪要 · Sierra",items:[
+    "岗位实质已确认：除 GTM/运营外，工作包含 AI Deployment Consulting——帮助客户设计、部署与优化 AI Agent，而非纯内部 BizOps。",
+    "岗位要求较强的单独日语销售能力；下一轮须确认个人 quota、现有线索/客户分配，以及销售、方案与交付的实际占比。",
+    "工作强度已确认偏大；须以常态与峰值工时、客户紧急响应、美国时区会议和周末工作频率判断是否只作为 18–24 个月转换期。",
+    "薪酬仅为 RSU，没有期权；RSU 仍属股权型报酬，但私有公司流动性未确定，应按不保证的上行处理，以固定薪资和现金奖金为主作决策。",
+    "确认客户成功与续约由谁负责：这是顾问/部署 owner，还是带明确营收和销售目标的前线岗位？",
+    "确认成功标准：首年是 AI Agent 上线/采用、客户业务结果、销售 pipeline、营收还是续约？",
+    "确认固定薪资、现金奖金、RSU vesting、流动性机制与日本税务；没有足够现金补偿时，不以 headline valuation 承担高强度。",
+    "确认离开时可带走的职业资本：能否在两年内形成可证明的日本企业 AI 部署、客户采用与商业化案例。"
+  ]},
+  fit:"中",
+  reason:"HR 面后下调为条件式机会。它能提供 AI Agent 部署与日本企业客户场景资本，但岗位实质包含独立日语销售和高强度客户交付，不再是纯 GTM/BizOps。RSU 不按确定性股权上行计入，因此只有固定薪资与现金奖金显著足够、且将其设为 18–24 个月 AI 部署转换期时才成立。",
+  status:"进行中",
+  tags:["主线 AI","AI Deployment Consulting","日语销售","高强度","RSU","进行中"],
+};
+
 type CompanyProfile = { hq: string; listing: string; size: string; sourceHref: string; sourceLabel: string; workplacePlatform: string; workplaceScore: string; workplaceRisk: string };
 const companyProfiles: Record<string, CompanyProfile> = {
   flatiron: {hq:"美国纽约",listing:"非上市 · Roche 旗下独立运营",size:"约 2,500+ 人（全球）",sourceHref:"https://www.roche.com/innovation/structure/flatiron",sourceLabel:"Roche · Flatiron 公司资料",workplacePlatform:"Glassdoor",workplaceScore:"3.2 / 5（382 条全球评价快照）",workplaceRisk:"组织仍带有 startup 的高要求；晋升空间、资源与日本团队自主性需核验。"},
   jmdc: {hq:"日本东京 · 港区芝大门",listing:"东证 Prime · 4483",size:"499 人（单体，2026/3）",sourceHref:"https://www.jmdc.co.jp/en/profile/",sourceLabel:"JMDC 官方公司资料",workplacePlatform:"OpenWork",workplaceScore:"4.55 / 5（公开搜索快照；样本/日期待核验）",workplaceRisk:"药企客户交付压力、集团整合后的优先级与业务经营目标需面谈确认。"},
   syneos: {hq:"美国 Morrisville, North Carolina",listing:"非上市 · 2023 年被私有化",size:"约 29,000 人（全球）",sourceHref:"https://www.syneoshealth.com/clinical-corporate-careers",sourceLabel:"Syneos 官方招聘资料",workplacePlatform:"Glassdoor",workplaceScore:"3.7 / 5（3,959 条全球评价）；Commercial Solutions 3.9 / 5（318 条）",workplaceRisk:"项目/客户依赖与利用率是常见波动源；以东京团队实际 19–20 点下班的验证为准。"},
   "syneos-consultant": {hq:"美国 Morrisville, North Carolina",listing:"非上市 · 2023 年被私有化",size:"约 29,000 人（全球）",sourceHref:"https://japan.commercialcareers.syneoshealth.com/jobs/17863053-consultant-slash-associate-consultant",sourceLabel:"Syneos 岗位资料",workplacePlatform:"Glassdoor",workplaceScore:"3.7 / 5（3,959 条全球评价）；Commercial Solutions 3.9 / 5（318 条）",workplaceRisk:"项目/客户依赖与利用率是常见波动源；以东京团队实际 19–20 点下班的验证为准。"},
-  "sierra-gtm-operations": {hq:"美国旧金山",listing:"非上市 · Series E；最近一轮 2026/5 融资 $950M，估值超 $15B",size:"201–500 人（LinkedIn 公司页；平台显示约 1,000 名员工档案）",sourceHref:"https://techcrunch.com/2026/05/04/sierra-raises-950m-as-the-race-to-own-enterprise-ai-gets-serious/",sourceLabel:"TechCrunch · 2026/5 融资报道",workplacePlatform:"Glassdoor",workplaceScore:"未检索到可核验的 Sierra AI 同名评分/样本不足",workplaceRisk:"公司将 Intensity 定为核心价值且以现场协作为主；日本团队处于扩张期，需面谈核验长期工时、客户紧急响应、东京办公室地点与股权归属。"},
+  "sierra-gtm-operations": {hq:"美国旧金山",listing:"非上市 · Series E；最近一轮 2026/5 融资 $950M，估值超 $15B",size:"201–500 人（LinkedIn 公司页；平台显示约 1,000 名员工档案）",sourceHref:"https://techcrunch.com/2026/05/04/sierra-raises-950m-as-the-race-to-own-enterprise-ai-gets-serious/",sourceLabel:"TechCrunch · 2026/5 融资报道",workplacePlatform:"Glassdoor",workplaceScore:"未检索到可核验的 Sierra AI 同名评分/样本不足",workplaceRisk:"HR 面确认：日比谷现场办公、独立日语销售与 AI 部署交付并存，且工作强度偏大；RSU 不视作确定性回报，须以固定现金补偿判断。"},
   "xiaohongshu-community-strategy": {hq:"中国上海",listing:"非上市 · 最近公开融资为 2021 年约 $500M（公开报道估值约 $20B；融资轮次口径不一）",size:"1,001–5,000 人（公开聚合口径；以业务团队实际规模为准）",sourceHref:"https://www.euronews.com/next/2021/11/08/china-xiaohongshu",sourceLabel:"公开融资报道",workplacePlatform:"脉脉 / 天眼查 / 企查查",workplaceScore:"未检索到可核验的同口径评分/样本不足",workplaceRisk:"内容平台的高迭代节奏、社区生态/内容治理的监管变化及团队业务优先级；业务面核验实际工时、核心 KPI 与上海/北京配置。"},
   hokuto: {hq:"日本东京 · 涩谷区涩谷",listing:"非上市 · 医疗科技创业公司",size:"85 人（含兼职，2026/5）",sourceHref:"https://corp.hokuto.app/about",sourceLabel:"HOKUTO 官方公司资料",workplacePlatform:"OpenWork",workplaceScore:"未检索到可核验同名评分/样本不足",workplaceRisk:"小团队、药企客户集中度和岗位边界；核验远程制度是否适用于目标团队。"},
   prevent: {hq:"日本名古屋 · 东区葵",listing:"非上市 · 住友生命 100% 持有",size:"约 111 人（公开职场资料）",sourceHref:"https://prevent.co.jp/company/",sourceLabel:"PREVENT 官方公司资料",workplacePlatform:"OpenWork",workplaceScore:"未检索到可核验同名评分/样本不足",workplaceRisk:"高管直辖角色的授权边界、名古屋/远程实际安排和母公司治理。"},
@@ -89,7 +112,7 @@ export default function Home() {
     distance: "待确认", management: candidate.roleType, reports: "待确认", fit: candidate.verdict === "优先审阅" ? "高" : "中",
     reason: `${candidate.why} 下一步：${candidate.gate}`, status: "待研究", tags: [candidate.track === "A" ? "主线 A" : candidate.track === "B" ? "主线 B" : "战略转向", candidate.roleType, "扫描采用"],
   }));
-  const allRoles = [...roles, ...adoptedRoles];
+  const allRoles = [...roles.map((role) => role.id === "sierra-gtm-operations" ? {...role,...sierraHrInterviewUpdate} : role), ...adoptedRoles];
   const visible = allRoles.filter((r) => {
     const text = [r.company,r.title,r.work,r.source,...r.tags].join(" ").toLowerCase();
     const reaction = reactions[r.id];
