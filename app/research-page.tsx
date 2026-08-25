@@ -4,9 +4,9 @@ import "./roadmap.css";
 type Priority = { rank: string; title: string; score: string; role: string; verdict: string };
 
 const priorities: Priority[] = [
-  { rank: "01", title: "AI 医疗健康与养老科技", score: "4.5 / 5", role: "长期主线首选", verdict: "日本验证复杂服务与支付，中国提供规模，专业壁垒来自监管、采购、支付、临床与客户采用。" },
-  { rank: "02", title: "实体 AI 与机器人", score: "4.2 / 5", role: "产品护城河最强", verdict: "软件、硬件与现场工作流结合，全球迁移性强；优先产品、部署和伙伴经营，不做纯销售。" },
-  { rank: "03", title: "AI 原生跨境 B2B", score: "4.1 / 5", role: "高质量桥梁", verdict: "进入阻力最低，但只有增加产品采用、合同、伙伴或 P&L 的岗位才算升级。" },
+  { rank: "01", title: "AI 医疗健康与养老科技", score: "4.4 / 5", role: "长期主线首选", verdict: "行业仍居首，但日本入口只保留全球药企/MedTech、跨境 Japan entry、APAC 产品与区域商业化；纯日本医院或药企客户、纯日语交付默认降权。" },
+  { rank: "02", title: "实体 AI 与机器人", score: "4.2 / 5", role: "产品护城河最强", verdict: "保留全球产品、海外业务、区域 GTM 与可复制部署；只服务日本工厂/客户、以日语现场协调为核心的岗位不再因赛道正确而优先。" },
+  { rank: "03", title: "AI 原生跨境 B2B", score: "4.3 / 5", role: "第一跳相对上调", verdict: "最能利用中日英与跨市场经验。优先 APAC/全球客户、区域产品和跨境 GTM；Japan-only 销售或日语交付不属于本方向的优质版本。" },
   { rank: "04", title: "企业学习与 AI 教育基础设施", score: "3.5 / 5", role: "稳健备选", verdict: "可与内容和顾问副业结合；避开传统培训、低价课程和纯内容生产。" },
   { rank: "05", title: "游戏与全球 IP 工具", score: "3.3 / 5", role: "有限期权", verdict: "只看平台、工具、发行策略和国际化；不以高频社区运营或项目爆款作为职业底座。" },
   { rank: "06", title: "微短剧", score: "2.9 / 5", role: "创意实验", verdict: "增长真实但平台、买量、监管和项目波动过高；先做 IP 跨境研究或本地化，不做制作主业。" },
@@ -24,10 +24,11 @@ const industryTrends: IndustryTrend[] = [
 ];
 
 const researchedRoles = [
-  { company:"ByteDance / TikTok GBS", role:"Customer Success Manager", industry:"AI 原生跨境 B2B（广告平台桥梁）", function:"战略客户增长、广告商业化、客户成功", intensity:"已确认：平均凌晨下班，节假日仍可能工作", conclusion:"不建议作为五年主线。现金和平台资本可观，但持续高强度且强化广告商业化标签；只有作为明确 12–18 个月高回报过渡才成立。", href:"https://www.tiktok.com/about/careers/" },
+  { company:"ByteDance / TikTok GBS", role:"Customer Success Manager", industry:"AI 原生跨境 B2B（广告平台桥梁）", function:"战略客户增长、广告商业化、客户成功", intensity:"已确认：平均凌晨下班，节假日仍可能工作", conclusion:"不建议作为五年主线。持续高强度已否决；若客户组合和交付语言又以日本本地为主，则同时无法利用中英跨境优势，不再把它视为优质跨境岗位。", href:"https://www.tiktok.com/about/careers/" },
   { company:"Tencent Games / Level Infinite", role:"Senior Manager, Business Strategy & Operations", industry:"游戏与全球 IP 工具（战略转向）", function:"全球投资、投后、战略伙伴与经营决策", intensity:"深圳高强度需在面谈核验", conclusion:"条件式高上限。若有真实交易/组合/伙伴决策权、长期激励且愿意改变职业组合，可优先；否则不为品牌承受长期强度。", href:"https://tencent.wd1.myworkdayjobs.com/tencent_careers/job/china-shenzhen/senior-manager--business-strategy---operations_r107895-2" },
-  { company:"Garena Japan", role:"Business Development / 版権商务", industry:"游戏与全球 IP 工具（战略转向）", function:"IP licensing、发行标的评估、合作谈判", intensity:"小团队的个人依赖高", conclusion:"条件式。可积累稀缺日本 IP 商务资本，但日本实体极小，且需要直接游戏/娱乐商务记录；必须确认资源、奖金和两年扩张路径。", href:"https://www.linkedin.com/jobs/view/4451138310/" },
-  { company:"Syneos Health Consulting", role:"Consultant / Associate Consultant", industry:"AI 医疗健康与养老科技（Pharma 商业策略入口）", function:"医药市场调研、商业战略、客户项目交付", intensity:"已确认：平均 19–20 点下班", conclusion:"优先进行中。以两年为上限积累医药商业、上市与客户事实，再跳 in-house 药企、数字健康或 MedTech；避免长期停留在泛调研/材料生产。", href:"https://japan.commercialcareers.syneoshealth.com/jobs/17863053-consultant-slash-associate-consultant" },
+  { company:"Garena Japan", role:"Business Development / 版権商务", industry:"游戏与全球 IP 工具（战略转向）", function:"IP licensing、发行标的评估、合作谈判", intensity:"小团队的个人依赖高", conclusion:"仅在职责连接日本 IP 与东南亚/全球发行、内部协作使用英文且能利用中文市场判断时保留。若主要是对日本权利方的纯日语拓展与维护，则降权。", href:"https://www.linkedin.com/jobs/view/4451138310/" },
+  { company:"Syneos Health Consulting", role:"Consultant / Associate Consultant", industry:"AI 医疗健康与养老科技（Pharma 商业策略入口）", function:"医药市场调研、商业战略、客户项目交付", intensity:"已确认：平均 19–20 点下班", conclusion:"由无条件优先改为条件式推进。只有美国/中国/全球 biotech 进入日本、North APAC 项目和英文协作构成主要项目组合时成立；若主要服务日本药企并纯日语交付，则不应为行业切换接受。", href:"https://japan.commercialcareers.syneoshealth.com/jobs/17863053-consultant-slash-associate-consultant" },
+  { company:"Sierra", role:"GTM Operations / AI Deployment Consulting", industry:"AI 原生跨境 B2B（日本企业 AI 部署）", function:"客户部署、方案咨询与独立日语销售", intensity:"已确认：强度偏大；仅 RSU、无期权", conclusion:"下调为低优先。岗位目前以日本客户和日语销售/交付为核心，无法形成语言比较优势；只有客户范围扩展到 APAC/全球、英文协作占主导且现金显著补偿高强度时才重新考虑。", href:"https://www.linkedin.com/jobs/view/4446733630/" },
 ];
 
 const industryUniverse = [
@@ -49,7 +50,7 @@ const industryUniverse = [
 ];
 
 const functionRoles = [
-  { name: "客户成功 / 部署 / 实施经营", reach: "A−/B+", ownership: "采用、留存、上线、ROI、扩张", decision: "第一跳首选；必须负责上线后的采用和价值，不做长期救火驻场。" },
+  { name: "客户成功 / 部署 / 实施经营", reach: "A−/B+", ownership: "采用、留存、上线、ROI、扩张", decision: "只在 APAC/全球客户、跨境项目或多语言组合中首选；纯日本客户 + 纯日语交付降权，并且不做长期救火驻场。" },
   { name: "产品商业化 / 新业务经营", reach: "A−/B", ownership: "定价、商业模型、PoC、采用、收入", decision: "第一跳首选；最符合 30% 策略 / 70% 执行。" },
   { name: "非技术产品经理 / Product Owner", reach: "B", ownership: "路线图、backlog、发布、采用", decision: "机器人主投；用需求到落地的等效经历争取面试。" },
   { name: "既有伙伴激活 / Alliances", reach: "B+", ownership: "联合方案、合同义务、伙伴采用、共同收入", decision: "拉伸主投；只有关系维护、活动和会议则淘汰。" },
@@ -116,7 +117,7 @@ const coreBusinessModels = [
 ];
 
 const regions = [
-  { place: "日本", share: "70%", level: "主战场", why: "永驻、履历与网络最强；东京为默认基地，京都与大阪均可接受迁居。" },
+  { place: "日本", share: "70%", level: "跨境基地", why: "永驻、履历与网络最强；东京为默认基地，京都与大阪可接受，但只优先 APAC/全球职责、外资跨境团队或中国企业国际化，不把纯日本客户环境当作默认主战场。" },
   { place: "中国", share: "20%", level: "总部国际化", why: "只投医疗 AI、机器人或 AI 产品的日本/全球经营岗位；普通国内销售与平台招商不投。" },
   { place: "新加坡", share: "其他地区的 60%", level: "第三基地", why: "APAC 医疗商业化和机器人伙伴岗位密度最高；第一次沟通即确认 EP 担保与工资门槛。" },
   { place: "香港", share: "其他地区的 30%", level: "定向补充", why: "中英粤组合稀缺，适合医疗机器人商业化；优质岗位少且现金、合约期限需核实。" },
@@ -157,11 +158,11 @@ export default function ResearchPage() {
             <h1>不是押注热门行业，<br/><em>而是构建可迁移的所有权。</em></h1>
             <p>基于个人履历、约束问答、中国“十五五”与日本产业政策及全球地区筛选形成的 2026–2035 职业路线图。</p>
           </div>
-          <aside className="research-verdict"><span>首四周市场测试</span><strong>医疗 60% · 机器人 30% · 跨境桥梁 10%</strong><p>不是永久押注。每两周以面试转化、岗位质量、经理和结果所有权重新分配。</p></aside>
+          <aside className="research-verdict"><span>首四周市场测试</span><strong>跨境医疗 45% · 机器人 30% · AI 跨境桥梁 25%</strong><p>日本本地纯日语岗位不计入配额；每两周以面试转化、岗位质量、客户地域、交付语言和结果所有权重新分配。</p></aside>
         </section>
 
         <div className="research-layout">
-          <aside className="research-toc" aria-label="研究目录"><span>研究目录</span>{toc.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<small>版本 2026-08-24<br/>持续迭代</small></aside>
+          <aside className="research-toc" aria-label="研究目录"><span>研究目录</span>{toc.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<small>版本 2026-08-25<br/>持续迭代</small></aside>
           <div className="research-content">
             <section className="research-section roadmap-section" id="paths">
               <div className="section-kicker">00 · 从当前起点出发</div><h2>两条主线，各用两跳建立结果所有权；第三跳才争取区域经营或早期高管</h2>
@@ -174,7 +175,7 @@ export default function ResearchPage() {
                     <div className="roadmap-arrow" aria-hidden="true">↓</div>
                     <div className="roadmap-branches two-branches">
                       <article className="roadmap-node"><span>跳 1 · 0–18 月</span><h4>成熟医疗的落地型商业岗位</h4><p>Commercial / Launch Excellence、Healthcare Solutions、战略项目执行。</p><ul><li>至少一半时间用于 BU、产品或客户落地</li><li>有采用、上市、成本或合同的单一结果指标</li><li>不是纯 PMO、报告或市场情报</li></ul></article>
-                      <article className="roadmap-node"><span>跳 1 · 0–18 月</span><h4>HealthTech 的采用与产品商业化岗位</h4><p>客户成功、部署经营、产品商业化或新业务执行。</p><ul><li>有付费客户、产品反馈与上线后采用</li><li>总部岗位不承担长期 24/7 调度救火</li><li>避免个人陌生开发成为核心</li></ul></article>
+                      <article className="roadmap-node"><span>跳 1 · 0–18 月</span><h4>跨境 HealthTech 的采用与产品商业化岗位</h4><p>全球药企/MedTech、Japan entry、APAC 产品或跨境新业务。</p><ul><li>客户组合不是纯日本本地，能使用中英能力</li><li>有付费客户、产品反馈与上线后采用</li><li>避免纯日语交付、个人陌生开发与长期救火</li></ul></article>
                     </div>
                     <div className="roadmap-arrow" aria-hidden="true">↓</div>
                     <article className="roadmap-node convergence"><span>跳 2 · 18–42 月</span><h4>健康解决方案 / 产品商业化 Lead</h4><p>可选职位性质：战略账户解决方案、市场发展、产品商业化、支付方/机构合作。要同时拥有客户采用与至少一个商业杠杆：定价、合同、产品输入、账户组合或预算。</p><ul><li>形成可复用案例，而非一次性项目</li><li>能把日本工作流迁移到中国或 APAC</li><li>获得采购、支付、监管或临床工作流的行业事实</li></ul></article>
@@ -193,7 +194,7 @@ export default function ResearchPage() {
                     <div className="roadmap-arrow" aria-hidden="true">↓</div>
                     <div className="roadmap-branches three-branches">
                       <article className="roadmap-node"><span>跳 1 · 路径 P</span><h4>产品 Owner / 非技术 PM</h4><p>工业、仓储、医疗或照护机器人产品。</p><ul><li>拥有 roadmap、backlog、发布与采用</li><li>不只是收集需求或跨部门协调</li><li>能拿到真实用户与现场数据</li></ul></article>
-                      <article className="roadmap-node"><span>跳 1 · 路径 D</span><h4>部署经营 / 客户价值岗位</h4><p>多站点上线、客户成功、实施经营或 solutions。</p><ul><li>以标准化模块、上线、ROI 与续约衡量</li><li>现场和出差有明确上限</li><li>必须能沉淀可复制方法</li></ul></article>
+                      <article className="roadmap-node"><span>跳 1 · 路径 D</span><h4>跨境部署经营 / 客户价值岗位</h4><p>APAC/全球多站点上线、客户成功、实施经营或 solutions。</p><ul><li>以标准化模块、上线、ROI 与续约衡量</li><li>不以纯日本客户和纯日语现场交付为核心</li><li>现场和出差有上限，并能沉淀可复制方法</li></ul></article>
                       <article className="roadmap-node"><span>跳 1 · 路径 A</span><h4>既有伙伴激活 / 生态岗位</h4><p>联合方案、合同义务、产品反馈与共同收入。</p><ul><li>不以陌生开发或个人 quota 为核心</li><li>能影响商业条款和资源配置</li><li>有产品输入而非只维护关系</li></ul></article>
                     </div>
                     <div className="roadmap-arrow" aria-hidden="true">↓</div>
@@ -207,13 +208,14 @@ export default function ResearchPage() {
                   </div>
                 </article>
               </div>
-              <div className="bridge-rule"><b>每一跳的共同规则：</b><ol><li>先验证经理、心理安全、决策权、东京/京都/大阪基地与长期工时。</li><li>18 个月内必须获得一个可写成“我改变了什么结果”的事实。</li><li>下一跳只为补新资本：行业工作流、产品采用、合同/定价、账户组合或 P&amp;L；不为品牌或职位名跳槽。</li><li>若增长公司要求高强度，现金跑道、职责边界和股权/分成必须同时清楚。</li></ol></div>
+              <div className="bridge-rule"><b>每一跳的共同规则：</b><ol><li>先验证客户地域、交付语言、经理、心理安全、决策权、东京/京都/大阪基地与长期工时。</li><li>日本岗位至少满足一项：APAC/全球客户、跨境业务、英文主协作、中日市场 ownership；纯日本客户 + 纯日语交付默认降权。</li><li>18 个月内必须获得一个可写成“我改变了什么结果”的事实。</li><li>下一跳只为补新资本：行业工作流、产品采用、合同/定价、账户组合或 P&amp;L；不为品牌或职位名跳槽。</li><li>若增长公司要求高强度，现金跑道、职责边界和股权/分成必须同时清楚。</li></ol></div>
             </section>
 
             <section className="research-section opening" id="verdict">
               <div className="section-kicker">00 · 核心结论</div><h2>下一份工作必须从“给建议”转向“拥有结果”</h2>
               <div className="verdict-grid"><article className="thesis-card"><span>职业终局</span><strong>专家型高管 → 创业者</strong><p>先成为商业化、产品或区域经营的 Senior IC / 无下属 Manager，再用行业事实换早期高管、股权与创业选择权。</p></article><article className="thesis-card"><span>最强资本</span><strong>中日英 × GTM × 复杂执行</strong><p>中日英沟通、GTM 与复杂跨职能执行经历形成跨市场商业底座。</p></article><article className="thesis-card warning"><span>最大缺口</span><strong>没有最终业务结果所有权</strong><p>尚未正式拥有收入、产品采用、成本、合同或 P&L；下一份工作必须补上其中至少一项。</p></article></div>
-              <div className="constraint-strip"><b>不可妥协</b><span>日本固定现金 ≥ ¥8M</span><span>中国固定现金 ≥ ¥400k</span><span>东京 / 京都 / 大阪</span><span>长期低—中强度</span><span>尊重、公平、心理安全</span><span>清晰决策权</span></div>
+              <div className="constraint-strip"><b>不可妥协</b><span>日本固定现金 ≥ ¥8M</span><span>中国固定现金 ≥ ¥400k</span><span>东京 / 京都 / 大阪</span><span>拒绝纯日本客户 + 纯日语交付</span><span>长期低—中强度</span><span>尊重、公平、心理安全</span><span>清晰决策权</span></div>
+              <div className="evidence-note"><b>新结论：</b>地域不是价值，语言杠杆才是价值。日本仍可作为生活与职业基地，但岗位应把你放在日本与中国、APAC 或全球之间；若成功主要取决于比日本同事更精细地用日语销售、顾问式交付或协调日本客户，则默认不是你的优势赛道。</div>
               <div className="evidence-note"><b>医疗证据已升级：</b>既有医疗相关项目涉及罕见病药品上市与全球医疗公司 GTM 组织架构战略。这让 Pharma / MedTech Commercial Excellence 成为当前可达的行业入口；但在项目时长、落地和客户采纳证据明确前，不夸大为医疗 P&amp;L 经历。</div>
             </section>
 
@@ -243,7 +245,7 @@ export default function ResearchPage() {
             <section className="research-section" id="functions">
               <div className="section-kicker">04 · 职能穷尽审计</div><h2>行业正确，还必须选对获得所有权的入口</h2><p className="section-lead">二十类非技术职能逐一审计。主要动词是 launch、deploy、adopt、retain、price、contract、scale 和 own 才加分；只有 coordinate、govern、report、support 和 advise 的岗位降权。</p>
               <div className="role-table-wrap"><table className="research-table role-table"><thead><tr><th>职能原型</th><th>可达</th><th>可积累的所有权</th><th>当前决策</th></tr></thead><tbody>{functionRoles.map((role) => <tr key={role.name}><td><b>{role.name}</b></td><td>{role.reach}</td><td>{role.ownership}</td><td>{role.decision}</td></tr>)}</tbody></table></div>
-              <div className="evidence-note"><b>排序修正：</b>客户成功 / 部署经营 ≈ 产品商业化 / 新业务 &gt; 非技术产品经理 &gt; 既有伙伴激活 &gt; 有落地的 Commercial Excellence &gt; 纯分析、战略与 PMO。企业创投和 VC 没有被遗漏，但当前仍把你放在“评价或支持别人经营”的位置。</div>
+              <div className="evidence-note"><b>排序修正：</b>跨境产品商业化 / 新业务 ≈ APAC/全球客户成功与部署 &gt; 非技术产品经理 &gt; 跨境伙伴激活 &gt; 有落地的 Commercial Excellence &gt; 日本本地纯日语客户交付 &gt; 纯分析、战略与 PMO。企业创投和 VC 没有被遗漏，但当前仍把你放在“评价或支持别人经营”的位置。</div>
             </section>
 
             <section className="research-section" id="ai-resilience">

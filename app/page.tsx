@@ -48,12 +48,20 @@ const sierraHrInterviewUpdate: Partial<Role> = {
     "确认客户成功与续约由谁负责：这是顾问/部署 owner，还是带明确营收和销售目标的前线岗位？",
     "确认成功标准：首年是 AI Agent 上线/采用、客户业务结果、销售 pipeline、营收还是续约？",
     "确认固定薪资、现金奖金、RSU vesting、流动性机制与日本税务；没有足够现金补偿时，不以 headline valuation 承担高强度。",
-    "确认离开时可带走的职业资本：能否在两年内形成可证明的日本企业 AI 部署、客户采用与商业化案例。"
+    "确认离开时可带走的职业资本：能否在两年内形成可证明的日本企业 AI 部署、客户采用与商业化案例。",
+    "新增语言/市场门槛：当前已知职责以日本客户、独立日语销售和日语交付为主，正面命中新的降权条件；除非能转为 APAC/全球客户、英文主协作或中日市场职责，否则不再作为优先机会。"
   ]},
-  fit:"中",
-  reason:"HR 面后下调为条件式机会。它能提供 AI Agent 部署与日本企业客户场景资本，但岗位实质包含独立日语销售和高强度客户交付，不再是纯 GTM/BizOps。RSU 不按确定性股权上行计入，因此只有固定薪资与现金奖金显著足够、且将其设为 18–24 个月 AI 部署转换期时才成立。",
+  fit:"低",
+  reason:"新限制下进一步下调。它能提供 AI Agent 部署资本，但岗位实质同时包含纯日本客户、独立日语销售、高强度交付和缺少确定性股权四项风险，无法利用中英与跨境优势。只有客户范围扩至 APAC/全球、英文成为主要协作语言，且固定现金显著补偿强度时才重新考虑。",
   status:"进行中",
   tags:["主线 AI","AI Deployment Consulting","日语销售","高强度","RSU","进行中"],
+};
+
+const languageMarketRoleAdjustments: Record<string, Partial<Role>> = {
+  jmdc: {fit:"中", reason:"医疗数据与业务经营仍有价值，但该岗位的客户开拓、提案和交付主要面向日本药企，日语客户能力很可能成为核心竞争维度。只有存在跨国药企/APAC 项目、产品 ownership 或中日业务职责时保留。"},
+  syneos: {fit:"中", reason:"行业切换和上市项目资本成立，但必须确认项目组合是否以跨国 biotech、Japan entry、North APAC 与英文协作为主；若主要服务日本药企并纯日语交付则降为低。"},
+  "syneos-consultant": {fit:"中", reason:"工时可接受且医疗切换路径清晰，但优先级取决于客户组合。美国/中国/全球 biotech 进入日本、North APAC 项目和英文协作需构成主要工作；若以日本药企纯日语交付为主，不应为行业标签接受。"},
+  hokuto: {fit:"低", reason:"岗位以日本药企的营销/销售策略、分析和项目交付为核心，纯日本客户与纯日语顾问式交付风险高，难以发挥中英跨境优势；除非存在 APAC/中国项目或区域产品 ownership，否则退出优先池。"},
 };
 
 type CompanyProfile = { hq: string; listing: string; size: string; sourceHref: string; sourceLabel: string; workplacePlatform: string; workplaceScore: string; workplaceRisk: string };
@@ -112,7 +120,10 @@ export default function Home() {
     distance: "待确认", management: candidate.roleType, reports: "待确认", fit: candidate.verdict === "优先审阅" ? "高" : "中",
     reason: `${candidate.why} 下一步：${candidate.gate}`, status: "待研究", tags: [candidate.track === "A" ? "主线 A" : candidate.track === "B" ? "主线 B" : "战略转向", candidate.roleType, "扫描采用"],
   }));
-  const allRoles = [...roles.map((role) => role.id === "sierra-gtm-operations" ? {...role,...sierraHrInterviewUpdate} : role), ...adoptedRoles];
+  const allRoles = [...roles.map((role) => {
+    const withInterview = role.id === "sierra-gtm-operations" ? {...role,...sierraHrInterviewUpdate} : role;
+    return {...withInterview, ...(languageMarketRoleAdjustments[role.id] ?? {})};
+  }), ...adoptedRoles];
   const visible = allRoles.filter((r) => {
     const text = [r.company,r.title,r.work,r.source,...r.tags].join(" ").toLowerCase();
     const reaction = reactions[r.id];

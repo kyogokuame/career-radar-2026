@@ -1,5 +1,6 @@
 export type Track = "A" | "B" | "C";
 export type CandidateStage = "现在值得推进" | "有条件探索" | "长期目标";
+export type LanguageMarketFit = "跨境明确" | "需核验" | "日本本地降权";
 export type Candidate = {
   id: string;
   track: Track;
@@ -18,15 +19,71 @@ export type Candidate = {
   stage?: CandidateStage;
 };
 
+const languageMarketOverrides: Record<string, LanguageMarketFit> = {
+  "a-ubie-cs": "日本本地降权",
+  "a-ubie-alliance": "日本本地降权",
+  "a-ubie-newbiz": "日本本地降权",
+  "a-ubie-account": "日本本地降权",
+  "a-jmdc-newbiz": "日本本地降权",
+  "a-jmdc-pdm": "日本本地降权",
+  "a-jmdc-bizlead": "日本本地降权",
+  "a-hokuto-am": "日本本地降权",
+  "a-intuitive-pmm": "日本本地降权",
+  "a-medtronic-surgical": "日本本地降权",
+  "a-lincwell-pjm": "日本本地降权",
+  "a-medimo-bizdev": "日本本地降权",
+  "a-drjoy-newbiz": "日本本地降权",
+  "a-bd-applied-medical": "日本本地降权",
+  "a-bd-product-manager": "日本本地降权",
+  "a-relx-health-pm": "日本本地降权",
+  "b-woven-delivery": "日本本地降权",
+  "b-woven-cs": "日本本地降权",
+  "b-prox-pm": "日本本地降权",
+  "b-ascent-cs": "日本本地降权",
+  "b-sensyn-bd": "日本本地降权",
+  "b-sensyn-pm": "日本本地降权",
+  "b-omron-pmm": "日本本地降权",
+  "c-playstation-omnichannel": "日本本地降权",
+  "a-intuitive-ion-access": "跨境明确",
+  "a-microport-overseas": "跨境明确",
+  "a-zimmer-commercial": "跨境明确",
+  "a-cmr-commercial": "跨境明确",
+  "b-linkedin-entegris": "跨境明确",
+  "b-ecovacs-apj": "跨境明确",
+  "b-ecovacs-emea": "跨境明确",
+  "b-bangbang-gtm": "跨境明确",
+  "b-unitree-global-market": "跨境明确",
+  "b-unitree-application": "跨境明确",
+  "b-terra-bd": "跨境明确",
+  "b-terra-pm": "跨境明确",
+  "b-denso-market": "跨境明确",
+  "b-yaskawa-global": "跨境明确",
+  "b-fanuc-market": "跨境明确",
+  "b-dobot-overseas": "跨境明确",
+  "b-dobot-pmm": "跨境明确",
+  "c-tencent-ugc-investment": "跨境明确",
+  "c-tencent-investment": "跨境明确",
+  "c-google-play-partnerships": "跨境明确",
+};
+
+export const languageMarketFitFor = (candidate: Candidate): LanguageMarketFit => {
+  const explicit = languageMarketOverrides[candidate.id];
+  if (explicit) return explicit;
+  const text = `${candidate.title} ${candidate.roleType}`;
+  if (/APAC|APJ|EMEA|regional|global|overseas|全球|海外|跨境|国际化|中国总部|North APAC|English/i.test(text)) return "跨境明确";
+  return "需核验";
+};
+
 export const stageFor = (candidate: Candidate): CandidateStage => {
-  if (candidate.stage) return candidate.stage;
+  const languageFit = languageMarketFitFor(candidate);
+  if (candidate.stage) return languageFit === "日本本地降权" && candidate.stage === "现在值得推进" ? "有条件探索" : candidate.stage;
   if (candidate.verdict === "暂不建议") return "长期目标";
   const firstHopIds = new Set(["a-hokuto-am", "a-linkedin-pathology-pm", "b-mujin-hwpm", "b-woven-cs", "b-mi6-pdm", "b-preferred-pm", "b-ascent-cs", "b-terra-pm"]);
-  if (firstHopIds.has(candidate.id)) return "现在值得推进";
+  if (firstHopIds.has(candidate.id)) return languageFit === "日本本地降权" ? "有条件探索" : "现在值得推进";
   const text = `${candidate.title} ${candidate.roleType} ${candidate.why} ${candidate.gate}`;
   const hardFirstHopGate = /要求.{0,12}(行业经验|实务经验|临床|医疗器械|游戏|机器人|工程|技术背景)|需要.{0,12}(深度|丰富|多年|强).{0,8}(经验|人脉|履历)|10\s*年|10年以上|Director|Head|负责人|Senior Manager|战略投资|投后|发行负责人/i;
   if (hardFirstHopGate.test(text)) return "长期目标";
-  if (candidate.verdict === "优先审阅") return "现在值得推进";
+  if (candidate.verdict === "优先审阅") return languageFit === "日本本地降权" ? "有条件探索" : "现在值得推进";
   return "有条件探索";
 };
 

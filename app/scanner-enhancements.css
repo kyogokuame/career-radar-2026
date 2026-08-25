@@ -15,6 +15,30 @@
 
 .candidate-type { margin-bottom: 12px; }
 
+.language-fit {
+  width: fit-content;
+  margin: 12px 0 10px;
+  padding: 5px 9px;
+  border: 1px solid #d9e0e9;
+  border-radius: 999px;
+  background: #f5f7fa;
+  color: #59677a;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.language-fit.language-good {
+  border-color: #b8d9c4;
+  background: #eef8f1;
+  color: #2f7147;
+}
+
+.language-fit.language-risk {
+  border-color: #e6c0b4;
+  background: #fff2ed;
+  color: #9b4f36;
+}
+
 .candidate-facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
