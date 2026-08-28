@@ -64,6 +64,8 @@ const languageMarketOverrides: Record<string, LanguageMarketFit> = {
   "c-tencent-ugc-investment": "跨境明确",
   "c-tencent-investment": "跨境明确",
   "c-google-play-partnerships": "跨境明确",
+  // 虽向 APJC 管理层汇报，但 JD 明示服务 AWS Japan business，未披露 APAC 客户组合或语言占比。
+  "b-aws-apjc-strategic-gtm": "需核验",
 };
 
 export const languageMarketFitFor = (candidate: Candidate): LanguageMarketFit => {
