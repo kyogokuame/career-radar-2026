@@ -61,6 +61,7 @@ const languageMarketOverrides: Record<string, LanguageMarketFit> = {
   "b-fanuc-market": "跨境明确",
   "b-dobot-overseas": "跨境明确",
   "b-dobot-pmm": "跨境明确",
+  "b-skydrive-overseas-bd": "跨境明确",
   "c-tencent-ugc-investment": "跨境明确",
   "c-tencent-investment": "跨境明确",
   "c-google-play-partnerships": "跨境明确",
@@ -142,10 +143,11 @@ const companyDetails: Record<string, CompanyDetail> = {
   "BD": { listing:"NYSE: BDX", funding:"上市公司（不适用）", size:"约 70,000+ 人（全球；日本法人规模未单列）", workplace:"东京·港区赤坂（赤坂ガーデンシティ）", commute:"约 40–55 分钟（Google Maps 公交；随出发时间变化）", salary:"未公开" },
   "Google": { listing:"NASDAQ: GOOGL / GOOG（Alphabet）", funding:"上市公司（不适用）", size:"约 180,000+ 人（全球；日本团队未单列）", workplace:"东京·涩谷区涩谷（Shibuya Stream）", commute:"约 35–50 分钟（Google Maps 公交；随出发时间变化）", salary:"未公开" },
   "Amazon Web Services (AWS)": { listing:"NASDAQ: AMZN（Amazon 旗下）", funding:"母公司资本支持；无独立融资轮次披露", size:"约 1,500,000+ 人（Amazon 全球；AWS Japan 团队未单列）", workplace:"东京·区待确认（官方职位页仅披露 Tokyo）", commute:"办公区待确认；Google Maps 公交时间随实际办公地与出发时间变化", salary:"未公开" },
+  "SkyDrive": { listing:"未上市", funding:"Pre-Series D：¥83 亿（2025-07）；累计融资超 ¥430 亿（公司公告）", size:"201–500 人（LinkedIn 公司页；需面谈复核）", workplace:"东京·千代田区平河町 1-3-13（平河町フロントビル 3F）", commute:"约 35–50 分钟（Google Maps 公交；随出发时段变化）", salary:"¥9–12M（职位公开区间）" },
 };
 export const detailsFor = (candidate: Candidate): CompanyDetail => companyDetails[candidate.company] ?? { listing:"待确认", funding:"待确认", size:"待确认", workplace:`${candidate.location}（实际办公地待确认）`, commute:"实际办公地待确认后再计算", salary:"约 ¥8–14M（估算）" };
 const japanCompanies = new Set([
-  "Ubie", "JMDC", "HOKUTO", "Mujin", "Woven by Toyota", "Rapyuta Robotics", "Prox Industries", "inaho", "MI-6", "OMRON", "SoftBank Robotics", "Telexistence", "Preferred Robotics", "Ascent Robotics", "Terra Drone", "SENSYN ROBOTICS", "DENSO", "Yaskawa Electric", "Kawasaki Heavy Industries", "FANUC", "Sony Interactive Entertainment", "Linc'well", "DeNA / DeSC Healthcare", "medimo", "Dr.JOY", "PSP",
+  "Ubie", "JMDC", "HOKUTO", "Mujin", "Woven by Toyota", "Rapyuta Robotics", "Prox Industries", "inaho", "MI-6", "OMRON", "SoftBank Robotics", "Telexistence", "Preferred Robotics", "Ascent Robotics", "Terra Drone", "SENSYN ROBOTICS", "DENSO", "Yaskawa Electric", "Kawasaki Heavy Industries", "FANUC", "Sony Interactive Entertainment", "Linc'well", "DeNA / DeSC Healthcare", "medimo", "Dr.JOY", "PSP", "SkyDrive",
 ]);
 const mainlandChinaCompanies = new Set([
   "MicroPort MedBot", "ECOVACS", "BangBang Robotics", "万拿机器人", "Unitree Robotics", "DOBOT", "Tencent Games / Level Infinite",
@@ -156,6 +158,7 @@ const workplaceRisks: Record<string, string> = {
   "BD":"医疗器械产品营销履历门槛、线下办公，以及销售/KOL/学会协同带来的上市周期压力。",
   "Google":"游戏行业与伙伴网络门槛、跨时区协作，以及大型平台的高标准谈判和绩效压力。",
   "Amazon Web Services (AWS)":"需要日本企业科技网络与云/半导体/机器人领域实绩；高价值商机推进、C-suite 沟通和跨时区协作强度待核验。",
+  "SkyDrive":"eVTOL 取证和商业化周期、45 小时固定加班、国内外出差，以及高目标的从零成交压力。",
 };
 export const workplaceSignalFor = (candidate: Candidate): WorkplaceSignal => {
   const platform = japanCompanies.has(candidate.company) ? "OpenWork" : mainlandChinaCompanies.has(candidate.company) ? "脉脉 / 天眼查 / 企查查" : "Glassdoor";
@@ -243,4 +246,5 @@ export const candidates: Candidate[] = [
   {id:"a-bd-product-manager",track:"A",company:"BD",title:"Product Manager（医疗器械产品上市）",href:"https://jobs.bd.com/en/job/tokyo/product-manager/159/99653242112",source:"公司官网",location:"东京·港区赤坂",workplace:"东京·港区赤坂（赤坂ガーデンシティ）",commute:"约 40–55 分钟（Google Maps 公交；随出发时间变化）",roleType:"医疗器械产品上市 / 市场战略 / KOL",why:"公司官网与 LinkedIn 交叉显示仍在招；岗位直接拥有新产品上市、定价/库存、客户与竞品分析、定位、销售培训、KOL/学会协同及销量/份额监测，是清晰的医疗产品商业化 ownership。",gate:"明确要求 5 年+ 医疗/制药营销及 3–5 年产品管理经验，必须在电话中确认能否以相邻 GTM、上市和商业策略成果弥补行业年限；同时核验具体产品线、薪资与现场节奏。",verdict:"条件式",stage:"有条件探索",scannedOn:"2026-08-25"},
   {id:"c-google-play-partnerships",track:"C",company:"Google",title:"Strategic Partner Manager, Play Games Partnerships",href:"https://www.google.com/about/careers/applications/jobs/results/87303219385901766-strategic-partner-manager-play-games-partnerships-english-japanese",source:"公司官网",location:"东京·涩谷区涩谷",workplace:"东京·涩谷区涩谷（Shibuya Stream）",commute:"约 35–50 分钟（Google Maps 公交；随出发时间变化）",roleType:"游戏 IP / 开发商合作 / 平台 GTM",why:"公司官网与 LinkedIn 均显示开放；该角色直接获取开发商合作机会、争取关键 title/IP、与产品团队对齐平台目标，并向游戏领导层提供市场判断，是游戏/IP 主线少见的高杠杆战略岗位。",gate:"最低要求 7 年 BD/合作/咨询/投行经验，偏好 6 年新业务 BD 与 PC/主机游戏伙伴经验；行业网络和高层谈判要求明显，定位为长期目标而非当前第一跳。",verdict:"条件式",stage:"长期目标",scannedOn:"2026-08-25"},
   {id:"b-aws-apjc-strategic-gtm",track:"B",company:"Amazon Web Services (AWS)",title:"Strategic GTM Specialist, APJC Strategic GTM",href:"https://amazon.jobs/en/jobs/10506005/strategic-gtm-specialist-apjc-strategic-gtm",source:"LinkedIn MCP",location:"东京·区待确认",workplace:"东京·区待确认（官方职位页仅披露 Tokyo）",commute:"办公区待确认；Google Maps 公交时间随实际办公地与出发时间变化",roleType:"Physical AI / 半导体 / 主权云 GTM / APJC 战略执行",why:"LinkedIn 与 Amazon.jobs 均显示开放。该岗位在日本推进 Physical AI、半导体和 Sovereign Cloud & AI 的高价值客户机会，主导商业 case、跨 Sales/BD/伙伴/产品协同，并向 APJC 高层汇报；具备清晰的客户采用、GTM 与商业化 ownership，也直接利用跨市场经验。",gate:"硬门槛为全球科技公司的 BD/战略合作/GTM 6 年+、日本企业科技市场理解，以及云、半导体、HPC、机器人或自主系统经验；电话中核验能否用相邻 GTM/商业策略成果补足、客户地域与日英中使用比例、办公室/出勤/出差与强度、薪资，并确认 18–24 个月转为 APAC/全球职责的实际路径。",verdict:"条件式",stage:"有条件探索",scannedOn:"2026-08-27"},
+  {id:"b-skydrive-overseas-bd",track:"B",company:"SkyDrive",title:"海外事業開発・セールスリード",href:"https://job-boards.eu.greenhouse.io/joblist/jobs/4955686101",source:"公司官网",location:"东京·千代田区平河町",workplace:"东京·千代田区平河町 1-3-13（平河町フロントビル 3F）",commute:"约 35–50 分钟（Google Maps 公交；随出发时段变化）",roleType:"eVTOL / 海外市场进入 / 商业化 / 战略伙伴",why:"LinkedIn 与 SkyDrive 官网 Greenhouse 均显示开放。面向海外自治体、基础设施企业、大型企业和当地伙伴，从客户/市场假设、用例与 ROI 到商业谈判和机体/服务合同签订全程负责；英文客户会议与谈判为硬要求，中文属于加分项，是少见的跨境先进移动/具身系统商业化一跳。",gate:"必须核验能否以策略、GTM 与跨职能商业化成果替代海外 B2B 直销履历；岗位明确是高目标的实际成交 owner，且含国内外出差、45 小时固定加班与初创强度。进一步核验客户实际地域、日英中使用比例，以及入职后 18–24 个月转为 APAC/全球职责的路径、东京出勤和薪酬构成。",verdict:"条件式",stage:"有条件探索",scannedOn:"2026-09-03"},
 ];
