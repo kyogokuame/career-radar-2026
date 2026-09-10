@@ -5,13 +5,13 @@ import SiteNav from "./SiteNav";
 import { candidates } from "./scanner-data";
 
 type Fit = "高" | "中" | "低";
-type Status = "待确认" | "待研究" | "进行中" | "已联系" | "面谈待排期" | "面谈已排期" | "面谈已确定" | "业务面待进行" | "已投递" | "暂停";
+type Status = "待研究" | "待投递" | "待面谈" | "一面" | "二面" | "三面" | "HR面" | "终面" | "谈薪" | "决定不投递" | "面试不通过";
 type Reaction = "赞" | "踩";
 type Role = {
   id: string; company: string; title: string; source: string; date: string; work: string;
   href?: string;
   salary: string; onsite: string; commute: string; distance: "近" | "中" | "远" | "远程" | "待确认";
-  management: string; reports: string; contact?: string; memo?: { title: string; items: string[] }; fit: Fit; reason: string; status: Status; tags: string[];
+  management: string; reports: string; contact?: string; memo?: { title: string; items: string[] }; fit: Fit; reason: string; status: string; tags: string[];
 };
 
 const roles: Role[] = [
@@ -84,8 +84,14 @@ const companyProfiles: Record<string, CompanyProfile> = {
   "anker-gtm": {hq:"日本东京 · 港区赤坂",listing:"日本法人非独立上市；母公司 Anker Innovations 为上交所科创板 688410",size:"202 人（Anker Japan，2026/4）",sourceHref:"https://hrmos.co/pages/ankerjapan/jobs/40163838476781405180",sourceLabel:"Anker Japan 官方岗位资料",workplacePlatform:"OpenWork",workplaceScore:"3.47 / 5（119 条评价快照；月均残业 43.6 小时快照）",workplaceRisk:"中国总部协同、消费硬件发布节点与月度工时；薪资低于既定现金目标。"},
 };
 
-const options: Status[] = ["待确认","待研究","进行中","已联系","面谈待排期","面谈已排期","面谈已确定","业务面待进行","已投递","暂停"];
-const activeStatuses: Status[] = ["待研究","进行中","已联系","面谈待排期","面谈已排期","面谈已确定","业务面待进行","已投递"];
+const options: Status[] = ["待研究","待投递","待面谈","一面","二面","三面","HR面","终面","谈薪","决定不投递","面试不通过"];
+const activeStatuses: Status[] = ["待投递","待面谈","一面","二面","三面","HR面","终面","谈薪"];
+const terminalStatuses: Status[] = ["决定不投递","面试不通过"];
+const stageOrder: Record<Status, number> = {"待研究":0,"待投递":1,"待面谈":2,"一面":3,"二面":4,"三面":5,"HR面":6,"终面":7,"谈薪":8,"决定不投递":9,"面试不通过":10};
+const migrateStatus = (value: unknown): Status | undefined => {
+  if (options.includes(value as Status)) return value as Status;
+  return ({"待确认":"待研究","进行中":"待面谈","已联系":"待面谈","面谈待排期":"待面谈","面谈已排期":"待面谈","面谈已确定":"待面谈","业务面待进行":"一面","已投递":"待面谈","暂停":"待研究"} as Record<string, Status>)[String(value)];
+};
 const classFor = (fit: Fit) => fit === "高" ? "high" : fit === "中" ? "mid" : "low";
 const commuteFor = (value: Role["distance"]) => ({近:"near",中:"medium",远:"far",远程:"remote",待确认:"unknown"})[value];
 const loadLocal = <T,>(key: string, fallback: T): T => {
@@ -100,7 +106,10 @@ export default function Home() {
   const [status, setStatus] = useState<Status | "全部">("全部");
   const [remoteOnly, setRemoteOnly] = useState(false);
   const [selectedId, setSelectedId] = useState("jmdc");
-  const [saved, setSaved] = useState<Record<string, Status>>(() => loadLocal("career-radar-status", {}));
+  const [saved, setSaved] = useState<Record<string, Status>>(() => {
+    const raw = loadLocal<Record<string, unknown>>("career-radar-status", {});
+    return Object.fromEntries(Object.entries(raw).flatMap(([id, value]) => { const migrated = migrateStatus(value); return migrated ? [[id, migrated]] : []; }));
+  });
   const [reactions, setReactions] = useState<Record<string, Reaction>>(() => loadLocal("career-radar-reactions", {}));
   const [adoptedIds] = useState<string[]>(() => loadLocal("career-radar-adopted", []));
   const [reactionFilter, setReactionFilter] = useState<"全部" | "已点赞" | "已点踩">("全部");
@@ -112,8 +121,9 @@ export default function Home() {
     setReactions(next); localStorage.setItem("career-radar-reactions",JSON.stringify(next));
   };
   const fitFor = (role: Role): Fit => reactions[role.id] === "赞" ? "高" : reactions[role.id] === "踩" ? "低" : role.fit;
-  const statusFor = (role: Role): Status => saved[role.id] ?? role.status;
+  const statusFor = (role: Role): Status => migrateStatus(saved[role.id]) ?? migrateStatus(role.status) ?? "待研究";
   const isActive = (role: Role) => activeStatuses.includes(statusFor(role));
+  const isTerminal = (role: Role) => terminalStatuses.includes(statusFor(role));
   const adoptedRoles: Role[] = candidates.filter((candidate) => adoptedIds.includes(candidate.id)).map((candidate) => ({
     id: candidate.id, company: candidate.company, title: candidate.title, href: candidate.href,
     source: candidate.source, date: "本轮扫描", work: candidate.why, salary: "待确认", onsite: "待确认", commute: "待确认",
@@ -129,8 +139,8 @@ export default function Home() {
     const reaction = reactions[r.id];
     return (!query || text.includes(query.toLowerCase())) && (fit === "全部" || fitFor(r) === fit) && (status === "全部" || statusFor(r) === status) && (!remoteOnly || r.distance === "远程") && (!activeOnly || isActive(r)) && (reactionFilter === "全部" || (reactionFilter === "已点赞" && reaction === "赞") || (reactionFilter === "已点踩" && reaction === "踩"));
   }).sort((a,b) => {
-    const priority = (role: Role) => reactions[role.id] === "赞" ? 0 : reactions[role.id] === "踩" ? 3 : isActive(role) ? 1 : 2;
-    return priority(a) - priority(b);
+    const priority = (role: Role) => isTerminal(role) ? 4 : reactions[role.id] === "赞" ? 0 : reactions[role.id] === "踩" ? 3 : isActive(role) ? 1 : 2;
+    return priority(a) - priority(b) || stageOrder[statusFor(a)] - stageOrder[statusFor(b)] || Number(isTerminal(a)) - Number(isTerminal(b));
   });
   const selected = allRoles.find((r) => r.id === selectedId) ?? allRoles[0];
   const company = companyProfiles[selected.id] ?? {hq:"待面谈确认", listing:"待确认", size:"待确认", sourceHref:selected.href ?? "#", sourceLabel:"岗位来源", workplacePlatform:"待按公司注册地核验", workplaceScore:"未检索", workplaceRisk:"在面试中核验经理、工时、决策权、现金跑道与组织变动。"};
@@ -148,15 +158,15 @@ export default function Home() {
       <div className="buttons">{(["全部","高","中","低"] as const).map((x) => <button className={fit===x?"active":""} onClick={() => setFit(x)} key={x}>{x==="全部"?"全部适配度":x+"适配"}</button>)}</div>
       <button className={"active-filter "+(activeOnly ? "active" : "")} onClick={() => setActiveOnly((value) => !value)} aria-pressed={activeOnly}>⚡ 仅进行中</button>
       <button className={"remote-filter "+(remoteOnly ? "active" : "")} onClick={() => setRemoteOnly((value) => !value)} aria-pressed={remoteOnly}>⌂ 无需通勤</button>
-      <select value={status} onChange={(e) => setStatus(e.target.value as Status | "全部")}><option>全部</option>{options.map((x) => <option key={x}>{x}</option>)}</select>
       <select aria-label="按我的判断筛选" value={reactionFilter} onChange={(e) => setReactionFilter(e.target.value as "全部" | "已点赞" | "已点踩")}><option>我的判断：全部</option><option value="已点赞">已点赞</option><option value="已点踩">已点踩</option></select>
     </section>
+    <section className="stage-strip" aria-label="职位推进阶段"><span>推进阶段</span><button className={status === "全部" ? "active" : ""} onClick={() => setStatus("全部")}>全部</button>{options.map((stage) => <button key={stage} className={`${status === stage ? "active " : ""}${terminalStatuses.includes(stage) ? "terminal-stage" : ""}`} onClick={() => setStatus(stage)}>{stage}</button>)}</section>
     <section className="workspace">
-      <div className="list"><div className="list-title"><span>职位池 <small>（点赞 → 进行中 → 其他 → 点踩）</small></span><b>{visible.length} / {allRoles.length}</b></div>{visible.map((r) => <button type="button" key={r.id} onClick={() => setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected ":"")+(isActive(r)?"active-card":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(fitFor(r))}>{fitFor(r)}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><span className="card-state">{isActive(r) && <i className="active-status">进行中</i>} {reactions[r.id] ? reactions[r.id] === "赞" ? "👍 已赞" : "👎 已踩" : <i className="status">{statusFor(r)}</i>}</span></div></button>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
+      <div className="list"><div className="list-title"><span>职位池 <small>（按面试流程排列；终止状态自动置底）</small></span><b>{visible.length} / {allRoles.length}</b></div>{visible.map((r) => <button type="button" key={r.id} onClick={() => setSelectedId(r.id)} className={"card "+(selected.id===r.id?"selected ":"")+(isActive(r)?"active-card ":"")+(isTerminal(r)?"terminal-card":"")}><div className="card-top"><span>{r.company}</span><i className={classFor(fitFor(r))}>{fitFor(r)}适配</i></div><h2>{r.title}</h2><p>{r.work}</p><div className="source"><span>{r.source}</span><span>{r.date}</span></div><div className="card-foot"><i className={"commute "+commuteFor(r.distance)}>{r.distance} · {r.commute}</i><span className="card-state">{isActive(r) && <i className="active-status">进行中</i>} {reactions[r.id] ? reactions[r.id] === "赞" ? "👍 已赞" : "👎 已踩" : <i className={"status "+(isTerminal(r)?"terminal-status":"")}>{statusFor(r)}</i>}</span></div></button>)}{visible.length===0 && <div className="empty">没有符合当前筛选条件的职位。</div>}</div>
       <aside className="detail"><div className="eyebrow">职位详情</div><div className="detail-head"><div><small>{selected.company}</small><h2>{selected.href ? <a className="job-title-link" href={selected.href} target="_blank" rel="noreferrer">{selected.title} ↗</a> : selected.title}</h2></div><i className={classFor(fitFor(selected))}>{fitFor(selected)}适配</i></div><p className="summary">{selected.work}</p><div className="tags">{selected.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         <div className="facts"><Fact label="来源" value={selected.source+" · "+selected.date}/><Fact label="联系人" value={selected.contact ?? "未公开"}/><Fact label="总部 HQ" value={company.hq}/><Fact label="上市状态" value={company.listing}/><Fact label="公司规模" value={company.size}/><Fact label="职场评价" value={`${company.workplacePlatform} · ${company.workplaceScore}`}/><Fact label="主要风险" value={company.workplaceRisk}/><Fact label="想定年收入" value={selected.salary}/><Fact label="出社要求" value={selected.onsite}/><Fact label="新小岩通勤" value={selected.commute} cls={commuteFor(selected.distance)}/><Fact label="管理职能" value={selected.management}/><Fact label="直属部下" value={selected.reports}/></div>
         <a className="company-source" href={company.sourceHref} target="_blank" rel="noreferrer">↗ {company.sourceLabel}</a>
-        <div className="fit-note"><b>适配判断</b><p>{selected.reason}</p></div>{selected.memo && <section className="fit-note deep-dive-memo"><b>{selected.memo.title}</b><ol>{selected.memo.items.map((item) => <li key={item}>{item}</li>)}</ol></section>}<div className="reaction-box"><div><b>我的判断</b><small>点赞置顶并归为高适配；点踩置底并归为低适配</small></div><div className="reaction-buttons"><button className={reactions[selected.id] === "赞" ? "chosen" : ""} onClick={() => setReaction(selected.id,"赞")} aria-pressed={reactions[selected.id] === "赞"}>👍 点赞</button><button className={reactions[selected.id] === "踩" ? "chosen" : ""} onClick={() => setReaction(selected.id,"踩")} aria-pressed={reactions[selected.id] === "踩"}>👎 点踩</button></div></div><div className="editor"><div><b>目前投递情况</b><small>更新会保存在此浏览器</small></div><select value={saved[selected.id] ?? selected.status} onChange={(e) => setRoleStatus(selected.id,e.target.value as Status)}>{options.map((x) => <option key={x}>{x}</option>)}</select></div><div className="note">通勤为从 JR 新小岩站出发的单程估算；未计实时延误、步行及精确办公地址差异。</div>
+        <div className="fit-note"><b>适配判断</b><p>{selected.reason}</p></div>{selected.memo && <section className="fit-note deep-dive-memo"><b>{selected.memo.title}</b><ol>{selected.memo.items.map((item) => <li key={item}>{item}</li>)}</ol></section>}<div className="reaction-box"><div><b>我的判断</b><small>点赞置顶并归为高适配；点踩置底并归为低适配</small></div><div className="reaction-buttons"><button className={reactions[selected.id] === "赞" ? "chosen" : ""} onClick={() => setReaction(selected.id,"赞")} aria-pressed={reactions[selected.id] === "赞"}>👍 点赞</button><button className={reactions[selected.id] === "踩" ? "chosen" : ""} onClick={() => setReaction(selected.id,"踩")} aria-pressed={reactions[selected.id] === "踩"}>👎 点踩</button></div></div><div className="editor"><div><b>职位进度</b><small>选择后自动保存；终止状态会置灰并排到最后</small></div><select value={statusFor(selected)} onChange={(e) => setRoleStatus(selected.id,e.target.value as Status)}>{options.map((x) => <option key={x}>{x}</option>)}</select></div><div className="note">通勤为从 JR 新小岩站出发的单程估算；未计实时延误、步行及精确办公地址差异。</div>
       </aside>
     </section>
   </main></>;
