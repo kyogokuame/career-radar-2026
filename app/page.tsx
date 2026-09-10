@@ -134,6 +134,11 @@ export default function Home() {
     const withInterview = role.id === "sierra-gtm-operations" ? {...role,...sierraHrInterviewUpdate} : role;
     return {...withInterview, ...(languageMarketRoleAdjustments[role.id] ?? {})};
   }), ...adoptedRoles];
+  const focusRole = allRoles
+    .filter((role) => !terminalStatuses.includes(statusFor(role)))
+    .sort((a, b) => stageOrder[statusFor(b)] - stageOrder[statusFor(a)] || (fitFor(b) === "高" ? 1 : 0) - (fitFor(a) === "高" ? 1 : 0))[0];
+  const focusStatus = focusRole ? statusFor(focusRole) : undefined;
+  const focusHint = focusStatus === "待投递" ? "下一步 · 准备并提交申请" : focusStatus === "待面谈" ? "下一步 · 确认面谈安排与准备" : focusStatus ? `当前阶段 · ${focusStatus}` : "暂无进行中的职位";
   const visible = allRoles.filter((r) => {
     const text = [r.company,r.title,r.work,r.source,...r.tags].join(" ").toLowerCase();
     const reaction = reactions[r.id];
@@ -150,7 +155,7 @@ export default function Home() {
   return <><SiteNav active="dashboard"/><main>
     <section className="hero">
       <div className="eyebrow">CAREER RADAR · 2026</div>
-      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“保证现金不低于 800 万日元、理想区间 900–1,200 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点</span><strong>Sierra GTM Operations 面谈已排期</strong><p>明日与 HR 沟通 · 核验工时、股权与日本团队边界</p></div></div>
+      <div className="hero-grid"><div><h1>下一份工作，<br/><em>用同一把尺来比较。</em></h1><p>基于近三个月收到的 JD、你的简历，以及“保证现金不低于 800 万日元、理想区间 900–1,200 万日元”的目标，整理出的职位追踪面板。</p></div><div className="hero-note"><span>当前重点 · 自动跟随投递状态</span><strong>{focusRole ? `${focusRole.company} · ${focusRole.title}` : "暂无进行中的职位"}</strong><p>{focusHint}</p></div></div>
       <div className="metrics"><div><b>{allRoles.length}</b><span>个职位</span></div><div><b>{active}</b><span>进行中</span></div><div><b>{high}</b><span>高适配</span></div><div><b>¥8M+</b><span>保证现金下限</span></div></div>
     </section>
     <section className="controls">
