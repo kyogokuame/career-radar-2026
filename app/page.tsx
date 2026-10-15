@@ -130,7 +130,10 @@ export default function Home() {
     distance: "待确认", management: candidate.roleType, reports: "待确认", fit: candidate.verdict === "优先审阅" ? "高" : "中",
     reason: `${candidate.why} 下一步：${candidate.gate}`, status: "待研究", tags: [candidate.track === "A" ? "主线 A" : candidate.track === "B" ? "主线 B" : "战略转向", candidate.roleType, "扫描采用"],
   }));
-  const allRoles = [...roles.map((role) => {
+  // Keep the radar focused on foreign employers and Japanese companies with clear cross-border scope.
+  // These Japan-only corporate roles are intentionally excluded from the page-level backlog.
+  const excludedJapanOnlyRoleIds = new Set(["hokuto", "prevent", "contrea"]);
+  const allRoles = [...roles.filter((role) => !excludedJapanOnlyRoleIds.has(role.id)).map((role) => {
     const withInterview = role.id === "sierra-gtm-operations" ? {...role,...sierraHrInterviewUpdate} : role;
     return {...withInterview, ...(languageMarketRoleAdjustments[role.id] ?? {})};
   }), ...adoptedRoles];
