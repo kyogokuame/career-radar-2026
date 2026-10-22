@@ -5,7 +5,7 @@ import SiteNav from "./SiteNav";
 import { candidates } from "./scanner-data";
 
 type Fit = "高" | "中" | "低";
-type Status = "待研究" | "待投递" | "待面谈" | "一面" | "二面" | "三面" | "HR面" | "终面" | "谈薪" | "决定不投递" | "面试不通过";
+type Status = "待研究" | "待投递" | "已投递" | "待面谈" | "一面" | "二面" | "三面" | "HR面" | "终面" | "谈薪" | "决定不投递" | "面试不通过";
 type Reaction = "赞" | "踩";
 type Role = {
   id: string; company: string; title: string; source: string; date: string; work: string;
@@ -15,6 +15,7 @@ type Role = {
 };
 
 const roles: Role[] = [
+  {id:"c-tencent-ugc-investment",company:"Tencent Games / Level Infinite",title:"Strategic Investment Manager – UGC/KA",href:"https://tencent.wd1.myworkdayjobs.com/zh-CN/Tencent_Careers/job/China-Shenzhen/Strategic-Investment-Manager_R107748-2",source:"腾讯招聘官网 · 本人确认已投递",date:"2026/10/22",work:"全球游戏战略投资、商务合作机会评估、业务孵化与 GTM；具体职责以腾讯岗位说明及后续沟通为准。",salary:"待确认",onsite:"深圳；出勤安排待确认",commute:"涉及深圳迁居",distance:"远",management:"战略投资 / BD / 业务孵化；团队职责待确认",reports:"待确认",memo:{title:"投递记录",items:["2026-10-22：本人确认已完成投递。","职位编号 R107748-2；申请流程中显示 Strategic Investment Manager-UGC/KA。","下一步：等待招聘方反馈，并准备游戏投资、UGC 生态与跨境商业策略相关案例。"]},fit:"高",reason:"咨询、银行及 ByteDance 商业化策略经验可用于机会评估、财务分析与跨职能推进；游戏投资经验、项目权限、薪酬和深圳工作强度仍需面谈核验。",status:"已投递",tags:["游戏 / UGC","战略投资","已投递","2026-10-22"]},
   {id:"flatiron",company:"Flatiron Health",title:"Strategic Partnerships Senior Manager",href:"https://flatiron.com/careers/open-positions/job?gh_jid=8070086",source:"Apex · 岡本由依",date:"8/18",work:"连接癌症医院、政府和医疗机构，拓展肿瘤 RWD 数据合作；推进伦理、合同、市场洞察和项目落地。",salary:"未公开",onsite:"每周 2 天出社",commute:"品川约 35–40 分钟",distance:"中",management:"高级个人贡献者；跨团队协作",reports:"未公开",fit:"高",reason:"战略项目、跨国协作与医疗数据合作高度相关；需补足医院/肿瘤生态知识。",status:"待研究",tags:["RWD","合作战略","全球"]},
   {id:"jmdc",company:"JMDC",title:"制药业务战略・解决方案 Business Produce",href:"https://hrmos.co/pages/jmdc/jobs/bp-00034",source:"Apex · 工藤悟",date:"7/31",work:"用医疗大数据为药企做战略与解决方案，负责客户开拓、提案、交付和新业务化；目标承担约 1 亿日元级业务。",salary:"1,000–2,000 万日元（邮件沟通）",onsite:"弹性制；天数未公开",commute:"芝大门约 35–40 分钟",distance:"中",management:"业务经营与团队建设职责",reports:"未公开",fit:"高",reason:"McKinsey 战略、商业策略和数据治理经验直接匹配；薪酬也覆盖当前基线。",status:"面谈已确定",tags:["医疗数据","新业务","药企","8/27 10:00 面谈"]},
   {id:"syneos",company:"Syneos Health",title:"Sr. Strategic Project Manager",href:"https://commercialcareers.syneoshealth.com/search/jobs/in/tokyo",source:"Apex · 吉野すみれ",date:"7/29",work:"领导药企新品上市与 Commercial Solutions 项目，连接 BD、方案设计和交付团队。",salary:"未公开",onsite:"每周约 2 天出社",commute:"丸之内约 20–25 分钟",distance:"近",management:"跨职能项目领导",reports:"未公开",fit:"高",reason:"咨询、GTM、跨团队转型经验高度贴合；日英双语符合要求。",status:"待确认",tags:["咨询","上市","药企"]},
@@ -84,13 +85,13 @@ const companyProfiles: Record<string, CompanyProfile> = {
   "anker-gtm": {hq:"日本东京 · 港区赤坂",listing:"日本法人非独立上市；母公司 Anker Innovations 为上交所科创板 688410",size:"202 人（Anker Japan，2026/4）",sourceHref:"https://hrmos.co/pages/ankerjapan/jobs/40163838476781405180",sourceLabel:"Anker Japan 官方岗位资料",workplacePlatform:"OpenWork",workplaceScore:"3.47 / 5（119 条评价快照；月均残业 43.6 小时快照）",workplaceRisk:"中国总部协同、消费硬件发布节点与月度工时；薪资低于既定现金目标。"},
 };
 
-const options: Status[] = ["待研究","待投递","待面谈","一面","二面","三面","HR面","终面","谈薪","决定不投递","面试不通过"];
-const activeStatuses: Status[] = ["待投递","待面谈","一面","二面","三面","HR面","终面","谈薪"];
+const options: Status[] = ["待研究","待投递","已投递","待面谈","一面","二面","三面","HR面","终面","谈薪","决定不投递","面试不通过"];
+const activeStatuses: Status[] = ["待投递","已投递","待面谈","一面","二面","三面","HR面","终面","谈薪"];
 const terminalStatuses: Status[] = ["决定不投递","面试不通过"];
-const stageOrder: Record<Status, number> = {"待研究":0,"待投递":1,"待面谈":2,"一面":3,"二面":4,"三面":5,"HR面":6,"终面":7,"谈薪":8,"决定不投递":9,"面试不通过":10};
+const stageOrder: Record<Status, number> = {"待研究":0,"待投递":1,"已投递":1.5,"待面谈":2,"一面":3,"二面":4,"三面":5,"HR面":6,"终面":7,"谈薪":8,"决定不投递":9,"面试不通过":10};
 const migrateStatus = (value: unknown): Status | undefined => {
   if (options.includes(value as Status)) return value as Status;
-  return ({"待确认":"待研究","进行中":"待面谈","已联系":"待面谈","面谈待排期":"待面谈","面谈已排期":"待面谈","面谈已确定":"待面谈","业务面待进行":"一面","已投递":"待面谈","暂停":"待研究"} as Record<string, Status>)[String(value)];
+  return ({"待确认":"待研究","进行中":"待面谈","已联系":"待面谈","面谈待排期":"待面谈","面谈已排期":"待面谈","面谈已确定":"待面谈","业务面待进行":"一面","暂停":"待研究"} as Record<string, Status>)[String(value)];
 };
 const classFor = (fit: Fit) => fit === "高" ? "high" : fit === "中" ? "mid" : "low";
 const commuteFor = (value: Role["distance"]) => ({近:"near",中:"medium",远:"far",远程:"remote",待确认:"unknown"})[value];
@@ -124,7 +125,7 @@ export default function Home() {
   const statusFor = (role: Role): Status => migrateStatus(saved[role.id]) ?? migrateStatus(role.status) ?? "待研究";
   const isActive = (role: Role) => activeStatuses.includes(statusFor(role));
   const isTerminal = (role: Role) => terminalStatuses.includes(statusFor(role));
-  const adoptedRoles: Role[] = candidates.filter((candidate) => adoptedIds.includes(candidate.id)).map((candidate) => ({
+  const adoptedRoles: Role[] = candidates.filter((candidate) => adoptedIds.includes(candidate.id) && !roles.some((role) => role.id === candidate.id)).map((candidate) => ({
     id: candidate.id, company: candidate.company, title: candidate.title, href: candidate.href,
     source: candidate.source, date: "本轮扫描", work: candidate.why, salary: "待确认", onsite: "待确认", commute: "待确认",
     distance: "待确认", management: candidate.roleType, reports: "待确认", fit: candidate.verdict === "优先审阅" ? "高" : "中",
